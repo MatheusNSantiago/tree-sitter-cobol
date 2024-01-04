@@ -12,11 +12,27 @@ module.exports = {
   // ╰──────────────────────────────────────────────────────────╯
 
   section: ($) =>
-    seq(
-      field("section_header", $.section_header),
-      C($),
-      repeat($._statement), //
+    prec.right(
+      seq(
+        field("section_header", $.section_header),
+        C($),
+        repeat($._statement),
+        repeat($.paragraph),
+      ),
     ),
 
   section_header: ($) => seq($.section_name, $._SECTION, "."),
+
+  // ╭──────────────────────────────────────────────────────────╮
+  // │                        Paragraphs                        │
+  // ╰──────────────────────────────────────────────────────────╯
+
+  paragraph: ($) =>
+    seq(
+      field("paragraph_header", $.paragraph_header),
+      C($),
+      repeat($._statement),
+    ),
+
+  paragraph_header: ($) => seq($.paragraph_name, "."),
 };

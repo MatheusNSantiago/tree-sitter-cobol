@@ -260,6 +260,10 @@
         {
           "type": "perform_statement",
           "named": true
+        },
+        {
+          "type": "stop_run_statement",
+          "named": true
         }
       ]
     }
@@ -375,6 +379,10 @@
         },
         {
           "type": "perform_statement",
+          "named": true
+        },
+        {
+          "type": "stop_run_statement",
           "named": true
         }
       ]
@@ -553,68 +561,7 @@
     }
   },
   {
-    "type": "paragraph",
-    "named": true,
-    "fields": {
-      "paragraph_header": {
-        "multiple": false,
-        "required": true,
-        "types": [
-          {
-            "type": "paragraph_header",
-            "named": true
-          }
-        ]
-      }
-    },
-    "children": {
-      "multiple": true,
-      "required": false,
-      "types": [
-        {
-          "type": "comment",
-          "named": true
-        },
-        {
-          "type": "display_statement",
-          "named": true
-        },
-        {
-          "type": "evaluate_statement",
-          "named": true
-        },
-        {
-          "type": "exit_statement",
-          "named": true
-        },
-        {
-          "type": "if_statement",
-          "named": true
-        },
-        {
-          "type": "perform_statement",
-          "named": true
-        }
-      ]
-    }
-  },
-  {
     "type": "paragraph_header",
-    "named": true,
-    "fields": {},
-    "children": {
-      "multiple": false,
-      "required": true,
-      "types": [
-        {
-          "type": "paragraph_name",
-          "named": true
-        }
-      ]
-    }
-  },
-  {
-    "type": "paragraph_name",
     "named": true,
     "fields": {}
   },
@@ -821,10 +768,6 @@
       "required": false,
       "types": [
         {
-          "type": "comment",
-          "named": true
-        },
-        {
           "type": "section",
           "named": true
         }
@@ -856,10 +799,6 @@
       "required": false,
       "types": [
         {
-          "type": "comment",
-          "named": true
-        },
-        {
           "type": "display_statement",
           "named": true
         },
@@ -876,11 +815,11 @@
           "named": true
         },
         {
-          "type": "paragraph",
+          "type": "perform_statement",
           "named": true
         },
         {
-          "type": "perform_statement",
+          "type": "stop_run_statement",
           "named": true
         }
       ]
@@ -920,6 +859,11 @@
         }
       ]
     }
+  },
+  {
+    "type": "stop_run_statement",
+    "named": true,
+    "fields": {}
   },
   {
     "type": "string",
@@ -1194,6 +1138,10 @@
     "named": false
   },
   {
+    "type": "RUN",
+    "named": false
+  },
+  {
     "type": "SECTION",
     "named": false
   },
@@ -1203,6 +1151,10 @@
   },
   {
     "type": "SPACES",
+    "named": false
+  },
+  {
+    "type": "STOP",
     "named": false
   },
   {
@@ -1370,6 +1322,10 @@
     "named": false
   },
   {
+    "type": "run",
+    "named": false
+  },
+  {
     "type": "section",
     "named": false
   },
@@ -1379,6 +1335,10 @@
   },
   {
     "type": "spaces",
+    "named": false
+  },
+  {
+    "type": "stop",
     "named": false
   },
   {

@@ -4,6 +4,8 @@ module.exports = {
     /([0-9][a-zA-Z0-9-]*[a-zA-Z][a-zA-Z0-9-]*)|([a-zA-Z][a-zA-Z0-9-]*)/,
 
   section_name: ($) => $._WORD,
+  paragraph_name: ($) => $._WORD,
+
   variable: ($) => $._WORD,
 
   // ╭──────────────────────────────────────────────────────────╮
