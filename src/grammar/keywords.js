@@ -11,21 +11,12 @@ kw = (keyword) => {
 };
 
 module.exports = {
-  _PROCEDURE: (_) => kw("PROCEDURE"),
-  _DIVISION: (_) => kw("DIVISION"),
-  _SECTION: (_) => kw("SECTION"),
-  _PERFORM: (_) => kw("PERFORM"),
-  _THRU: (_) => /([tT][hH][rR][uU])|[tT][hH][rR][oO][uU][gG][hH]/,
-  _NOT: (_) => kw("NOT"),
-  _AND: (_) => kw("AND"),
-  _OR: (_) => kw("OR"),
 
   // ╾───────────────────────────────────────────────────────────────────────────────────╼
   // _ADVANCING: (_) => kw("ADVANCING"),
   // _AFTER: (_) => kw("AFTER"),
   // _ALL: (_) => kw("ALL"),
   // _ALPHABET: (_) => kw("ALPHABET"),
-  _ALPHABETIC: (_) => kw("ALPHABETIC"),
   // _ALSO: (_) => kw("ALSO"),
   // _ANY: (_) => kw("ANY"),
   // _APPLY: (_) => kw("APPLY"),

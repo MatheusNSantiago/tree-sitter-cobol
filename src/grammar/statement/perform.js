@@ -3,7 +3,7 @@ module.exports = {
 
   perform_simple: ($) =>
     seq(
-      $._PERFORM,
+      kw("PERFORM"),
       field("label", $.section_name),
       optional(seq($._THRU, $.section_name)),
       optional("."),

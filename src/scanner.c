@@ -1,5 +1,4 @@
 #include <ctype.h>
-#include <stdint.h>
 #include <stdio.h>
 #include <tree_sitter/parser.h>
 
@@ -7,6 +6,7 @@ enum TokenType {
   COMMENT,
   WHITE_SPACES,
   PREFIX_COMMENT,
+  PARAGRAPH_HEADER,
   INLINE_COMMENT,
   SUFFIX_COMMENT,
 };
@@ -111,6 +111,28 @@ bool tree_sitter_cobol_external_scanner_scan(void *payload, TSLexer *lexer,
           advance(lexer);
 
         return end_token(lexer, COMMENT);
+      }
+    }
+  }
+
+  /* ╭──────────────────────────────────────────────────────────╮
+     │                        Paragraph                         │
+     ╰──────────────────────────────────────────────────────────╯
+  */
+
+  if (valid_symbols[PARAGRAPH_HEADER]) {
+    if (col == 7) {
+
+      while (isalnum(*next_char) || *next_char == '-')
+        advance(lexer);
+
+      while (isspace(*next_char))
+        advance(lexer);
+
+      bool is_paragraph = *next_char == '.';
+      if (is_paragraph) {
+        advance(lexer);
+        return end_token(lexer, PARAGRAPH_HEADER);
       }
     }
   }

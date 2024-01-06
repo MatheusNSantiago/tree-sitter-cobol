@@ -4,9 +4,8 @@ module.exports = {
     /([0-9][a-zA-Z0-9-]*[a-zA-Z][a-zA-Z0-9-]*)|([a-zA-Z][a-zA-Z0-9-]*)/,
 
   section_name: ($) => $._WORD,
-  paragraph_name: ($) => $._WORD,
-
   variable: ($) => $._WORD,
+  file_name: ($) => $._WORD,
 
   // ╭──────────────────────────────────────────────────────────╮
   // │                        Data types                        │
@@ -29,4 +28,17 @@ module.exports = {
       kw("HIGH-VALUE"),
       kw("LOW-VALUE"),
     ),
+
+  // ╾───────────────────────────────────────────────────────────────────────────────────╼
+
+  _ALPHABETIC: (_) => kw("ALPHABETIC"),
+  _PROCEDURE: (_) => kw("PROCEDURE"),
+  _DIVISION: (_) => kw("DIVISION"),
+  _SECTION: (_) => kw("SECTION"),
+  _THRU: (_) => choice(kw("THRU"), kw("THROUGH")),
+  _TO: (_) => kw("TO"),
+  _NOT: (_) => kw("NOT"),
+  _AND: (_) => kw("AND"),
+  _OR: (_) => kw("OR"),
+  _IS: (_) => kw("IS"),
 };
