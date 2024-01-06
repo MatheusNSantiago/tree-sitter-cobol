@@ -1,14 +1,3 @@
-      *================================================================*
-      * PROGRAMA: foo
-      * AUTOR:    F7023235 Matheus Santiago.
-      * COMPILACAO: 54 - PSOSE600 - Cobol 6.3 c/otimizacao p/producao
-      * OBJETIVO..: .
-      *================================================================*
-      *
-      * VRS001 06/01/2024 F7023235 Implantação - TAREFA
-      *
-      *================================================================*
-      *************************
        IDENTIFICATION DIVISION.
         PROGRAM-ID. foo.
         AUTHOR. F7023236.
