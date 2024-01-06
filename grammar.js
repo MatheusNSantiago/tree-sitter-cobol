@@ -24,11 +24,13 @@ module.exports = grammar({
       $.identification_division,
       optional($.procedure_division),
       optional($.environment_division),
+      optional($.data_division),
     ),
 
 
     ...require("./src/grammar/division/identification"),
     ...require("./src/grammar/division/environment"),
+    ...require("./src/grammar/division/data"),
     ...require("./src/grammar/division/procedure"),
 // ╾───────────────────────────────────────────────────────────────────────────────────╼
     ...require("./src/grammar/keywords"),
