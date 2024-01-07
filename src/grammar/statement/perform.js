@@ -1,9 +1,12 @@
 module.exports = {
   perform_statement: ($) =>
-    choice(
-      $.perform_simple, //
-      $.perform_until,
-      $.perform_x_until,
+    seq(
+      choice(
+        $.perform_simple, //
+        $.perform_until,
+        $.perform_x_until,
+      ),
+      o("."),
     ),
 
   _PERFORM: (_) => kw("PERFORM"),
@@ -17,7 +20,6 @@ module.exports = {
       $._PERFORM,
       field("label", $.section_name),
       optional(seq($._THRU, $.section_name)),
-      optional("."),
     ),
 
   // ╾───────────────────────────────────────────────────────────────────────────────────╼
@@ -29,7 +31,7 @@ module.exports = {
     seq(
       seq($._PERFORM, kw("UNTIL"), $.expr),
       repeat($._statement),
-      seq($._END_PERFORM, optional(".")),
+      seq($._END_PERFORM),
     ),
 
   // ╾───────────────────────────────────────────────────────────────────────────────────╼

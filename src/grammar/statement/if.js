@@ -9,7 +9,7 @@ module.exports = {
   _END_IF: (_) => kw("END-IF"),
 
   if_statement: ($) =>
-    prec.left(-2,
+    prec.right(2,
       seq(
         $._IF,
         field("condition", $.expr),

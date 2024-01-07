@@ -7,11 +7,11 @@ module.exports = {
   variable: ($) => $._WORD,
   file_name: ($) => $._WORD,
 
+  _anything: ($) => choice($._value, $.variable),
   // ╭──────────────────────────────────────────────────────────╮
   // │                        Data types                        │
   // ╰──────────────────────────────────────────────────────────╯
   _value: ($) => choice($.boolean, $.number, $.string, $.constant),
-
   boolean: ($) => choice($._TRUE, $._FALSE),
   number: ($) => choice($.integer, $.decimal),
   integer: (_) => /[+-]?[0-9,]+/,

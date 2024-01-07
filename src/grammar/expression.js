@@ -14,6 +14,7 @@ module.exports = {
     $.boolean,
     $.number,
     $.variable,
+    $.string,
     $.constant,
   ),
 

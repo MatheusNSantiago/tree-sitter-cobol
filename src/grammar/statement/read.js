@@ -6,12 +6,12 @@ module.exports = {
         $.file_name,
         kw("INTO"),
         $.variable,
-        optional("."),
+        o("."),
         optional(
           seq(
             repeat(choice($.at_end, $.not_at_end, $._statement)),
             kw("END-READ"),
-            optional("."),
+            o("."),
           ),
         ),
       ),

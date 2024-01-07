@@ -90,5 +90,5 @@ module.exports = {
   // ╾───────────────────────────────────────────────────────────────────────────────────╼
   redefines: ($) => seq(kw("REDEFINES"), $.variable),
   pic_value: ($) => seq(kw("VALUE"), repeat1($._value)),
-  occurs: ($) => seq(kw("OCCURS"), $.number, kw("TIMES"), $.picture),
+  occurs: ($) => seq(kw("OCCURS"), $.number, kw("TIMES"), optional($.picture)),
 };
