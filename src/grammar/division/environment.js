@@ -19,16 +19,19 @@ module.exports = {
     ),
   configuration_section_header: ($) => seq(kw("CONFIGURATION"), $._SECTION),
 
-  _configuration_paragraph: ($) => choice($.special_names_paragraph),
+  _configuration_paragraph: ($) => seq(choice($.special_names_paragraph), C($)),
 
   special_names_paragraph: ($) =>
-    seq(
-      seq(field("paragraph_header", $.special_names_paragraph_header), "."),
-      optional(seq($.special_name, ".")),
+    prec.right(
+      seq(
+        seq(field("paragraph_header", $.special_names_paragraph_header), "."),
+        optional(seq($.special_name, ".")),
+        C($),
+      ),
     ),
   special_names_paragraph_header: (_) => kw("SPECIAL-NAMES"),
 
-  special_name: ($) => choice($.decimal_point_clause),
+  special_name: ($) => seq(choice($.decimal_point_clause)),
 
   decimal_point_clause: ($) =>
     seq(kw("DECIMAL-POINT"), optional($._IS), kw("COMMA")),
@@ -47,7 +50,8 @@ module.exports = {
   file_control_paragraph: ($) =>
     seq(
       seq(field("paragraph_header", $.file_control_paragraph_header), "."),
-      repeat($.select_statement),
+      C($),
+      repeat(seq($.select_statement, C($))),
     ),
   file_control_paragraph_header: (_) => kw("FILE-CONTROL"),
 };

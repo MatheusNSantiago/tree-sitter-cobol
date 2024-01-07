@@ -15,8 +15,9 @@ module.exports = {
   file_section: ($) =>
     seq(
       seq(field("section_header", $.file_section_header), "."),
+      C($),
       repeat(
-        seq(choice($.file_description, $.record_description), "."), //
+        seq(choice($.file_description, $.record_description), ".", C($)), //
       ),
     ),
   file_section_header: ($) => seq(kw("FILE"), $._SECTION),
@@ -42,15 +43,8 @@ module.exports = {
   working_storage_section: ($) =>
     seq(
       seq(field("section_header", $.working_storage_section_header), "."),
-      repeat(
-        seq(
-          choice(
-            $.data_description,
-            // $.copy_statement, //
-          ),
-          ".",
-        ),
-      ),
+      C($),
+      repeat(seq(choice($.data_description), ".", C($))),
     ),
   working_storage_section_header: ($) => seq(kw("WORKING-STORAGE"), $._SECTION),
 
@@ -62,28 +56,36 @@ module.exports = {
     seq(
       $.level_number,
       $.data_name,
-      repeat(
-        choice(
-          $.picture_clause,
-          // $.redefines_clause,
-          // $.usage_clause,
-          // $.occurs_clause,
-          // $.value_clause,
-        ),
+      choice(
+        $.picture,
+        $.redefines, // 01 WS-RECORD-1 REDEFINES WS-RECORD-2
+        // $.usage_clause,
+        // $.occurs_clause,
+        $.pic_value, // 88 CND-STATUS-OK VALUE 0
       ),
     ),
   data_name: ($) => choice(kw("FILLER"), $.variable),
   level_number: (_) => /[0-9][0-9]?/,
 
-  picture_clause: ($) => seq(kw("PIC"), $._pic_string),
+  // ╾───────────────────────────────────────────────────────────────────────────────────╼
+  picture: ($) =>
+    seq(kw("PIC"), $._pic_string, optional($.comp), optional($.pic_value)),
+  _pic_string: ($) => choice($.pic_x, $.pic_9),
 
-  _pic_string: ($) => choice($.pic_x),
+  pic_x: (_) => /[xX]+(\([0-9]+\))?/,
+  pic_9: (_) => seq(/[sS]?9(\([0-9]+\))?([vV]9+(\([0-9]+\))?)?/),
 
-  pic_x: (_) => /[xX](\([0-9]+\))?/,
+  comp: (_) =>
+    choice(
+      kw("COMP"),
+      kw("COMP-1"),
+      kw("COMP-2"),
+      kw("COMP-3"),
+      kw("COMP-4"),
+      kw("COMP-5"),
+    ),
+  pic_value: ($) => seq(kw("VALUE"), repeat1($._value)),
+  // ╾───────────────────────────────────────────────────────────────────────────────────╼
 
-  picture_9: ($) => choice($._picture_9_z, $._picture_9_v_1, $._picture_9_v_2),
-  _picture_9_z: (_) => /[sS]?(9(\([0-9]+\))?)+([zZ](\([0-9]+\))?)+/,
-  _picture_9_v_1: (_) =>
-    /[sS]?([pP9](\([0-9]+\))?)+([vV]([pP9](\([0-9]+\))?)*)?/,
-  _picture_9_v_2: (_) => /[sS]?[vV]([pP9](\([0-9]+\))?)*/,
+  redefines: ($) => seq(kw("REDEFINES"), $.variable),
 };

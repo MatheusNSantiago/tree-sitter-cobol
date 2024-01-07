@@ -4,6 +4,7 @@ module.exports = {
       field("division_header", $.identification_division_header),
       $.program_id,
       $.author,
+      C($),
     ),
 
   identification_division_header: (_) =>

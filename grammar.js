@@ -22,9 +22,10 @@ module.exports = grammar({
   rules: {
     source_file: ($) => seq(
       $.identification_division,
-      optional($.procedure_division),
       optional($.environment_division),
       optional($.data_division),
+      optional($.procedure_division),
+      // $.procedure_division,
     ),
 
 

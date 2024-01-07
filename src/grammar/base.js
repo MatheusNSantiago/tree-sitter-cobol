@@ -10,6 +10,7 @@ module.exports = {
   // ╭──────────────────────────────────────────────────────────╮
   // │                        Data types                        │
   // ╰──────────────────────────────────────────────────────────╯
+  _value: ($) => choice($.boolean, $.number, $.string, $.constant),
 
   boolean: ($) => choice($._TRUE, $._FALSE),
   number: ($) => choice($.integer, $.decimal),
