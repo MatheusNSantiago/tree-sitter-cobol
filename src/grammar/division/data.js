@@ -2,9 +2,14 @@ module.exports = {
   data_division: ($) =>
     seq(
       seq(field("division_header", $.data_division_header), "."),
-      optional($.file_section),
-      optional($.working_storage_section),
-      optional($.linkage_section),
+      repeat(
+        choice(
+          $.file_section,
+          $.working_storage_section,
+          $.local_storage_section,
+          $.linkage_section,
+        ),
+      ),
     ),
 
   data_division_header: ($) => seq(kw("DATA"), $._DIVISION),
@@ -88,6 +93,26 @@ module.exports = {
   redefines: ($) => seq(kw("REDEFINES"), $.variable),
   pic_value: ($) => seq(kw("VALUE"), repeat1($._value)),
   occurs: ($) => seq(kw("OCCURS"), $.number, kw("TIMES"), optional($.picture)),
+
+  // ╭──────────────────────────────────────────────────────────╮
+  // │                  LOCAL STORAGE SECTION                   │
+  // ╰──────────────────────────────────────────────────────────╯
+
+  local_storage_section: ($) =>
+    seq(
+      seq(field("section_header", $.local_storage_section_header), "."),
+      C($),
+      repeat(
+        seq(
+          choice(
+            $.exec_sql_statement, //
+            seq($.data_description, "."),
+          ),
+          C($),
+        ),
+      ),
+    ),
+  local_storage_section_header: ($) => seq(kw("LOCAL-STORAGE"), $._SECTION),
 
   // ╭──────────────────────────────────────────────────────────╮
   // │                     Linkage Section                      │

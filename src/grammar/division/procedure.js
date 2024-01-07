@@ -31,6 +31,7 @@ module.exports = {
     prec.right(
       seq(
         field("paragraph_header", $.paragraph_header), //
+        C($),
         repeat($._statement),
       ),
     ),

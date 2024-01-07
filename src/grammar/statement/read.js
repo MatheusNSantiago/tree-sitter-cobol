@@ -4,16 +4,15 @@ module.exports = {
       seq(
         kw("READ"),
         $.file_name,
-        kw("INTO"),
+        $._INTO,
         $.variable,
-        op("."),
         optional(
           seq(
             repeat(choice($.at_end, $.not_at_end, $._statement)),
             kw("END-READ"),
-            op("."),
           ),
         ),
+        op("."),
       ),
     ),
 
