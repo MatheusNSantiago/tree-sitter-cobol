@@ -2,6 +2,7 @@ module.exports = {
   procedure_division: ($) =>
     seq(
       field("division_header", $.procedure_division_header),
+      C($),
       repeat($.section),
     ),
 
@@ -17,7 +18,7 @@ module.exports = {
       repeat(choice($._statement, $.paragraph)),
     ),
 
-  section_header: ($) => seq($.section_name, kw("SECTION"), "."),
+  // section_header: ($) => seq($._SECTION_NAME, kw("SECTION"), "."),
 
   // ╭──────────────────────────────────────────────────────────╮
   // │                        Paragraphs                        │
@@ -26,7 +27,7 @@ module.exports = {
   paragraph: ($) =>
     prec.right(
       seq(
-        field("paragraph_header", $.PARAGRAPH_HEADER), //
+        field("paragraph_header", $.paragraph_header), //
         repeat($._statement),
       ),
     ),

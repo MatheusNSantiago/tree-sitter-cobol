@@ -9,7 +9,6 @@ module.exports = {
       ),
     ),
 
-  // _expr_data: ($) => $._x,
   _expr_data: ($) => choice(
     $.boolean,
     $.number,

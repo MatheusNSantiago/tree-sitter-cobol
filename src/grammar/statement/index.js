@@ -24,6 +24,7 @@ module.exports = {
         $.next_sentence,
         $.multiply_statement,
         $.exec_sql_statement,
+        $.compute_statement,
       ),
       C($),
     ),
@@ -35,7 +36,6 @@ module.exports = {
   ...require("./call"),
   ...require("./open"),
   ...require("./read"),
-  ...require("./move"),
   ...require("./write"),
   ...require("./search"),
 
@@ -44,7 +44,7 @@ module.exports = {
   close_statement: ($) => seq(kw("close"), repeat1($.file_name), "."),
   copy_statement: ($) => seq(kw("COPY"), field("copybook", $.WORD), "."),
   goto_statement: ($) => seq(kw("GO"), $._TO, field("to", $.WORD), o(".")),
-  set_statement: ($) => seq(kw("SET"), $.variable, $._TO, $._anything, o(".")),
+  set_statement: ($) => seq(kw("SET"), $.variable, $._TO, $._expr_data, o(".")),
   cancel_statement: ($) => seq(kw("CANCEL"), $.variable, o(".")),
   next_sentence: (_) => seq(kw("NEXT"), kw("SENTENCE"), o(".")),
   add_statement: ($) =>
@@ -57,14 +57,19 @@ module.exports = {
       $.variable,
       o("."),
     ),
-
+  move_statement: ($) =>
+    prec.right(
+      seq(
+        kw("MOVE"),
+        field("from", $._expr_data),
+        $._TO,
+        field("to", repeat1($.variable)),
+        o("."),
+      ),
+    ),
 
   exec_sql_statement: ($) =>
-    seq(
-      kw("EXEC"),
-      kw("SQL"),
-      repeat($._statement),
-      kw("END-EXEC"),
-      o("."),
-    ),
+    seq(kw("EXEC"), kw("SQL"), repeat($._statement), kw("END-EXEC"), o(".")),
+
+  compute_statement: ($) => seq(kw("COMPUTE"), $.expr),
 };

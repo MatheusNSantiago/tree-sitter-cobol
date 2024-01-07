@@ -1,5 +1,7 @@
 #include <ctype.h>
+#include <stdbool.h>
 #include <stdio.h>
+#include <string.h>
 #include <tree_sitter/parser.h>
 
 enum TokenType {
@@ -7,6 +9,7 @@ enum TokenType {
   WHITE_SPACES,
   PREFIX_COMMENT,
   PARAGRAPH_HEADER,
+  SECTION_HEADER,
   INLINE_COMMENT,
   SUFFIX_COMMENT,
 };
@@ -14,15 +17,19 @@ enum TokenType {
 static inline void advance(TSLexer *lexer) { lexer->advance(lexer, false); }
 static inline void skip(TSLexer *lexer) { lexer->advance(lexer, true); }
 
-// #define advance(lexer) {\
-// 	printf("advance %c, L%d\n", lexer->lookahead, __LINE__);\
-// 	advance(lexer);\
-// }
-//
-// #define skip(lexer) {\
-// 	printf("skip %c, L%d\n", lexer->lookahead, __LINE__);\
-// 	skip(lexer);\
-// }
+static inline bool match_next(TSLexer *lexer, char *string) {
+  int size = strlen(string);
+
+  for (int i = 0; i < size; i++) {
+    char next_char = toupper(lexer->lookahead);
+    if (next_char != string[i])
+      return false;
+
+    advance(lexer);
+  }
+
+  return true;
+}
 
 static inline bool end_token(TSLexer *lexer, enum TokenType token_type) {
   lexer->mark_end(lexer);
@@ -104,8 +111,8 @@ bool tree_sitter_cobol_external_scanner_scan(void *payload, TSLexer *lexer,
 
   if (valid_symbols[COMMENT]) {
     if (col == 6) {
-      bool is_starting_a_comment = *next_char == '*';
 
+      bool is_starting_a_comment = *next_char == '*';
       if (is_starting_a_comment) {
         while (!is_next_char_terminal(lexer))
           advance(lexer);
@@ -116,13 +123,31 @@ bool tree_sitter_cobol_external_scanner_scan(void *payload, TSLexer *lexer,
   }
 
   /* ╭──────────────────────────────────────────────────────────╮
-     │                        Paragraph                         │
+     │                        PARAGRAPH                         │
      ╰──────────────────────────────────────────────────────────╯
   */
+
+  if (valid_symbols[SECTION_HEADER]) {
+    if (col == 7) {
+
+      // Passa pelas labels. Ex: 100000-SECTION-NAME
+      while (isalnum(*next_char) || *next_char == '-')
+        advance(lexer);
+
+      while (isspace(*next_char))
+        advance(lexer);
+
+      if (match_next(lexer, "SECTION.")) {
+        return end_token(lexer, SECTION_HEADER);
+      }
+    }
+  }
+
 
   if (valid_symbols[PARAGRAPH_HEADER]) {
     if (col == 7) {
 
+      // Passa pelas labels. Ex: 100000-SECTION-NAME
       while (isalnum(*next_char) || *next_char == '-')
         advance(lexer);
 
@@ -136,6 +161,7 @@ bool tree_sitter_cobol_external_scanner_scan(void *payload, TSLexer *lexer,
       }
     }
   }
+
 
   /* ╭──────────────────────────────────────────────────────────╮
      │                      Inline comment                      │
