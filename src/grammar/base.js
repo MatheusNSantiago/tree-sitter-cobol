@@ -39,6 +39,7 @@ module.exports = {
   _DIVISION: (_) => kw("DIVISION"),
   _SECTION: (_) => kw("SECTION"),
   _THRU: (_) => choice(kw("THRU"), kw("THROUGH")),
+  _UNTIL: (_) => kw("UNTIL"),
   _TO: (_) => kw("TO"),
   _NOT: (_) => kw("NOT"),
   _AND: (_) => kw("AND"),

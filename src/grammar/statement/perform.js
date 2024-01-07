@@ -1,5 +1,10 @@
 module.exports = {
-  perform_statement: ($) => choice($.perform_simple, $.perform_until),
+  perform_statement: ($) =>
+    choice(
+      $.perform_simple, //
+      $.perform_until,
+      $.perform_x_until,
+    ),
 
   _PERFORM: (_) => kw("PERFORM"),
   _END_PERFORM: (_) => kw("END-PERFORM"),
@@ -25,5 +30,18 @@ module.exports = {
       seq($._PERFORM, kw("UNTIL"), $.expr),
       repeat($._statement),
       seq($._END_PERFORM, optional(".")),
+    ),
+
+  // ╾───────────────────────────────────────────────────────────────────────────────────╼
+  //  PERFORM 200000-PROCESSA UNTIL CND-ARQUIVO-FIM.
+  // ╾───────────────────────────────────────────────────────────────────────────────────╼
+  perform_x_until: ($) =>
+    seq(
+      seq(
+        $._PERFORM,
+        field("label", $.section_name),
+        $._UNTIL,
+        field("condition", $.expr),
+      ),
     ),
 };
