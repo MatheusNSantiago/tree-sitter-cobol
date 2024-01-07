@@ -22,8 +22,8 @@ module.exports = {
   ...require("./select"),
   ...require("./call"),
   ...require("./open"),
-  ...require("./close"),
 
   exit_statement: (_) => prec(2, seq(kw("EXIT"), ".")),
   stop_run_statement: (_) => seq(kw("STOP"), kw("RUN"), "."),
+  close_statement: ($) => seq(kw("close"), repeat1($.file_name), "."),
 };
