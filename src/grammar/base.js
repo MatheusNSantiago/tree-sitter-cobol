@@ -33,6 +33,8 @@ module.exports = {
   // ╾───────────────────────────────────────────────────────────────────────────────────╼
 
   _ALPHABETIC: (_) => kw("ALPHABETIC"),
+  _AT: (_) => kw("AT"),
+  _END: (_) => kw("END"),
   _PROCEDURE: (_) => kw("PROCEDURE"),
   _DIVISION: (_) => kw("DIVISION"),
   _SECTION: (_) => kw("SECTION"),
