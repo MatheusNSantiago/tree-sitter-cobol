@@ -16,6 +16,7 @@ module.exports = {
         $.read_statement,
         $.add_statement,
         $.move_statement,
+        $.goto_statement,
       ),
       C($),
     ),
@@ -34,4 +35,6 @@ module.exports = {
   stop_run_statement: (_) => seq(kw("STOP"), kw("RUN"), "."),
   close_statement: ($) => seq(kw("close"), repeat1($.file_name), "."),
   copy_statement: ($) => seq(kw("COPY"), field("copybook", $.WORD), "."),
+  goto_statement: ($) =>
+    seq(kw("GO"), $._TO, field("to", $.WORD), optional(".")),
 };

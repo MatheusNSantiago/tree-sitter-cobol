@@ -4,7 +4,7 @@ module.exports = {
       seq(
         kw("MOVE"),
         field("from", choice($.variable, $._value)),
-        kw("TO"),
+        $._TO,
         field("to", repeat1($.variable)),
         optional("."),
       ),
