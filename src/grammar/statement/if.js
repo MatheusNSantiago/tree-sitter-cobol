@@ -9,25 +9,26 @@ module.exports = {
   _END_IF: (_) => kw("END-IF"),
 
   if_statement: ($) =>
-    prec.right(2,
+    prec.right(
+      2,
       seq(
         $._IF,
         field("condition", $.expr),
-        optional($._THEN),
+        op($._THEN),
         C($),
         repeat($._statement),
         repeat(
           seq(
             seq($._ELSE, $._IF),
             field("condition", choice($.expr)),
-            optional($._THEN),
+            op($._THEN),
             C($),
             repeat($._statement),
           ),
         ),
         optional(seq($._ELSE, C($), repeat($._statement))),
         $._END_IF,
-        optional("."),
+        op("."),
       ),
     ),
 };

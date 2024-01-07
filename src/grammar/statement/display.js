@@ -4,7 +4,7 @@ module.exports = {
       seq(
         kw("DISPLAY"),
         repeat1(choice($.boolean, $.number, $.variable, $.constant, $.string)),
-        optional("."),
+        op("."),
       ),
     ),
 };

@@ -6,7 +6,7 @@ module.exports = {
         $.perform_until,
         $.perform_x_until,
       ),
-      o("."),
+      op("."),
     ),
 
   _PERFORM: (_) => kw("PERFORM"),

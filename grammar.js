@@ -1,4 +1,4 @@
-o = (thing) => optional(thing);
+op = (thing) => optional(thing);
 C = ($) => repeat(choice($.comment, $._WHITE_SPACES));
 kw = (keyword) => choice(keyword.toUpperCase(), keyword.toLowerCase());
 

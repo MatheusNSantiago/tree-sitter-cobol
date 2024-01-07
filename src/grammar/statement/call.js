@@ -4,7 +4,7 @@ module.exports = {
       kw("CALL"),
       field("program_name", $.program_name),
       optional(field("using", $.using)),
-      ".",
+      op("."),
     ),
   program_name: ($) => $._WORD,
 

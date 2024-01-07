@@ -12,7 +12,7 @@ module.exports = {
         ),
       ),
       kw("END-SEARCH"),
-      o("."),
+      op("."),
     ),
 
   search_when: ($) => seq(kw("WHEN"), field("condition", $.expr)),

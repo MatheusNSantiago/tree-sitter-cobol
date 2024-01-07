@@ -44,19 +44,20 @@ module.exports = {
   stop_run_statement: (_) => seq(kw("STOP"), kw("RUN"), "."),
   close_statement: ($) => seq(kw("close"), repeat1($.file_name), "."),
   copy_statement: ($) => seq(kw("COPY"), field("copybook", $.WORD), "."),
-  goto_statement: ($) => seq(kw("GO"), $._TO, field("to", $.WORD), o(".")),
-  set_statement: ($) => seq(kw("SET"), $.variable, $._TO, $._expr_data, o(".")),
-  cancel_statement: ($) => seq(kw("CANCEL"), $.variable, o(".")),
-  next_sentence: (_) => seq(kw("NEXT"), kw("SENTENCE"), o(".")),
+  goto_statement: ($) => seq(kw("GO"), $._TO, field("to", $.WORD), op(".")),
+  set_statement: ($) =>
+    seq(kw("SET"), $.variable, $._TO, $._expr_data, op(".")),
+  cancel_statement: ($) => seq(kw("CANCEL"), $.variable, op(".")),
+  next_sentence: (_) => seq(kw("NEXT"), kw("SENTENCE"), op(".")),
   add_statement: ($) =>
-    seq(kw("ADD"), choice($.variable, $.number), kw("TO"), $.variable, o(".")),
+    seq(kw("ADD"), choice($.variable, $.number), kw("TO"), $.variable, op(".")),
   multiply_statement: ($) =>
     seq(
       kw("MULTIPLY"),
       choice($.variable, $.number),
       kw("BY"),
       $.variable,
-      o("."),
+      op("."),
     ),
   move_statement: ($) =>
     prec.right(
@@ -65,13 +66,13 @@ module.exports = {
         field("from", $._expr_data),
         $._TO,
         field("to", repeat1($.variable)),
-        o("."),
+        op("."),
       ),
     ),
   exec_sql_statement: ($) =>
-    seq(kw("EXEC"), kw("SQL"), repeat($._statement), kw("END-EXEC"), o(".")),
+    seq(kw("EXEC"), kw("SQL"), repeat($._statement), kw("END-EXEC"), op(".")),
 
-  compute_statement: ($) => seq(kw("COMPUTE"), $.expr, o(".")),
+  compute_statement: ($) => seq(kw("COMPUTE"), $.expr, op(".")),
 
   string_statement: ($) =>
     seq(
@@ -83,6 +84,6 @@ module.exports = {
   string_item: ($) =>
     choice(
       choice($.string, $.variable),
-      seq(kw("DELIMITED"), optional($._BY), $._SIZE),
+      seq(kw("DELIMITED"), op($._BY), $._SIZE),
     ),
 };
