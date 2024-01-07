@@ -44,4 +44,7 @@ module.exports = {
   _AND: (_) => kw("AND"),
   _OR: (_) => kw("OR"),
   _IS: (_) => kw("IS"),
+  _INTO: (_) => kw("INTO"),
+  _SIZE: (_) => kw("SIZE"),
+  _BY: (_) => kw("BY"),
 };

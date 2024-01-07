@@ -25,6 +25,7 @@ module.exports = {
         $.multiply_statement,
         $.exec_sql_statement,
         $.compute_statement,
+        $.string_statement,
       ),
       C($),
     ),
@@ -67,9 +68,21 @@ module.exports = {
         o("."),
       ),
     ),
-
   exec_sql_statement: ($) =>
     seq(kw("EXEC"), kw("SQL"), repeat($._statement), kw("END-EXEC"), o(".")),
 
-  compute_statement: ($) => seq(kw("COMPUTE"), $.expr),
+  compute_statement: ($) => seq(kw("COMPUTE"), $.expr, o(".")),
+
+  string_statement: ($) =>
+    seq(
+      kw("STRING"),
+      field("from", repeat1($.string_item)),
+      $._INTO,
+      field("into", $.variable),
+    ),
+  string_item: ($) =>
+    choice(
+      choice($.string, $.variable),
+      seq(kw("DELIMITED"), optional($._BY), $._SIZE),
+    ),
 };

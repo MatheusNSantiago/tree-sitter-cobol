@@ -29,7 +29,6 @@ module.exports = grammar({
         optional($.environment_division),
         optional($.data_division),
         optional($.procedure_division),
-        // $.procedure_division,
       ),
 
     ...require("./src/grammar/division/identification"),
