@@ -4,6 +4,7 @@ module.exports = {
       seq(field("division_header", $.data_division_header), "."),
       optional($.file_section),
       optional($.working_storage_section),
+      optional($.linkage_section),
     ),
 
   data_division_header: ($) => seq(kw("DATA"), $._DIVISION),
@@ -48,10 +49,6 @@ module.exports = {
     ),
   working_storage_section_header: ($) => seq(kw("WORKING-STORAGE"), $._SECTION),
 
-  // ╭──────────────────────────────────────────────────────────╮
-  // │                     DATA DESCRIPTION                     │
-  // ╰──────────────────────────────────────────────────────────╯
-
   data_description: ($) =>
     seq(
       $.level_number,
@@ -91,4 +88,21 @@ module.exports = {
   redefines: ($) => seq(kw("REDEFINES"), $.variable),
   pic_value: ($) => seq(kw("VALUE"), repeat1($._value)),
   occurs: ($) => seq(kw("OCCURS"), $.number, kw("TIMES"), optional($.picture)),
+
+  // ╭──────────────────────────────────────────────────────────╮
+  // │                     Linkage Section                      │
+  // ╰──────────────────────────────────────────────────────────╯
+
+  linkage_section: ($) =>
+    seq(
+      seq(field("section_header", $.linkage_section_header), "."),
+      C($),
+      repeat(
+        seq(
+          choice(seq($.data_description, "."), $.copy_statement), //
+          C($),
+        ),
+      ),
+    ),
+  linkage_section_header: ($) => seq(kw("LINKAGE"), $._SECTION),
 };

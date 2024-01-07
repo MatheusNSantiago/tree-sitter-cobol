@@ -33,7 +33,6 @@ module.exports = {
 
   _AT: (_) => kw("AT"),
   _END: (_) => kw("END"),
-  _PROCEDURE: (_) => kw("PROCEDURE"),
   _DIVISION: (_) => kw("DIVISION"),
   _SECTION: (_) => kw("SECTION"),
   _THRU: (_) => choice(kw("THRU"), kw("THROUGH")),
