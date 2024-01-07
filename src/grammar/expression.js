@@ -9,13 +9,14 @@ module.exports = {
       ),
     ),
 
-  _expr_data: ($) => choice(
-    $.boolean,
-    $.number,
-    $.variable,
-    $.string,
-    $.constant,
-  ),
+  _expr_data: ($) =>
+    choice(
+      $.boolean,
+      $.number,
+      $.variable,
+      $.string,
+      $.constant,
+    ),
 
   _expr_calc: ($) =>
     prec(
@@ -79,9 +80,6 @@ module.exports = {
 
   _comparator: ($) => choice($.ne, $.eq, $.gt, $.lt, $.ge, $.le),
 
-  _POSITIVE: (_) => kw("POSITIVE"),
-  _NEGATIVE: (_) => kw("NEGATIVE"),
-
   _expr_is: ($) =>
     prec(
       1,
@@ -95,7 +93,7 @@ module.exports = {
             $._ALPHABETIC,
             $._ALPHABETIC_LOWER,
             $._ALPHABETIC_UPPER,
-            $._CLASS_NAME,
+            // $._CLASS_NAME,
             $._POSITIVE,
             $._NEGATIVE,
             $._ZERO,
@@ -105,7 +103,7 @@ module.exports = {
             $._NOT_ALPHABETIC,
             $._NOT_ALPHABETIC_LOWER,
             $._NOT_ALPHABETIC_UPPER,
-            $._NOT_CLASS_NAME,
+            // $._NOT_CLASS_NAME,
             $._NOT_POSITIVE,
             $._NOT_NEGATIVE,
             $._NOT_ZERO,
@@ -115,16 +113,24 @@ module.exports = {
     ),
 
   _expr_bool: ($) =>
-    choice(
-      // $._expr_is,
-      $._expr_compare,
-      $._expr_calc,
-      // $.is_class,
-      // $.is_not_class,
+    prec(
+      3,
+      choice(
+        $._expr_is,
+        $._expr_compare,
+        $._expr_calc,
+        // $.is_class,
+        // $.is_not_class,
+      ),
     ),
 
   _exp: ($) =>
-    choice($._arith_x, $._binary_exp, $._unary_exp, seq("(", $._exp, ")")),
+    choice(
+      // $._arith_x,
+      $._binary_exp,
+      $._unary_exp,
+      seq("(", $._exp, ")"),
+    ),
 
   _binary_exp: ($) =>
     choice($.pow_exp, $.mul_exp, $.div_exp, $.add_exp, $.sub_exp),
@@ -151,21 +157,21 @@ module.exports = {
     prec.left(3, seq(field("left", $._exp), "^", field("right", $._exp))),
 
   //todo
-  _arith_x: ($) =>
-    choice(
-      // $._identifier,
-      // seq($._LENGTH, optional($._OF), $._identifier),
-      // seq($._LENGTH, optional($._OF), $._basic_literal),
-      // seq($._LENGTH, optional($._OF), $.function_),
-      // $._basic_literal,
-      // $.function_,
-      // $.linage_counter,
-    ),
+  // _arith_x: ($) =>
+  //   choice(
+  // $._identifier,
+  // seq($._LENGTH, optional($._OF), $._identifier),
+  // seq($._LENGTH, optional($._OF), $._basic_literal),
+  // seq($._LENGTH, optional($._OF), $.function_),
+  // $._basic_literal,
+  // $.function_,
+  // $.linage_counter,
+  // ),
 
   // is_class: ($) => prec(1, seq(field("x", $._x), field("class", $.WORD))),
 
   // is_not_class: ($) =>
-    // prec(1, seq(field("x", $._x), $._NOT, field("class", $.WORD))),
+  // prec(1, seq(field("x", $._x), $._NOT, field("class", $.WORD))),
 
   eq: ($) => seq(optional($._IS), choice($._EQUAL, "="), optional($._TO)),
 
@@ -245,24 +251,24 @@ module.exports = {
   _NOT_LESS: (_) => /([nN][oO][tT][ \t]+(<|[lL][eE][sS][sS]))/,
   _NOT_GREATER: (_) => /([nN][oO][tT][ \t]+(>|[gG][rR][eE][aA][tT][eE][rR]))/,
 
-  // _NOT_OMITTED: (_) => /[nN][oO][tT][ \t]+[oO][mM][iI][tT][tT][eE][dD]/,
-  _NOT_NUMERIC: (_) => /[nN][oO][tT][ \t]+[nN][uU][mM][eE][rR][iI][cC]/,
-  _NOT_ALPHABETIC: (_) =>
-    /[nN][oO][tT][ \t]+[aA][lL][pP][hH][aA][bB][eE][tT][iI][cC]/,
+  _NUMERIC: (_) => kw("NUMERIC"),
+  _NOT_NUMERIC: ($) => seq($._NOT, $._NUMERIC),
+
+  _ALPHABETIC: (_) => kw("ALPHABETIC"),
+  _NOT_ALPHABETIC: ($) => seq($._NOT, $._ALPHABETIC),
 
   _ALPHABETIC_LOWER: (_) => kw("ALPHABETIC-LOWER"),
-  _NOT_ALPHABETIC_LOWER: (_) =>
-    /[nN][oO][tT][ \t]+[aA][lL][pP][hH][aA][bB][eE][tT][iI][cC]-[lL][oO][wW][eE][rR]/,
+  _NOT_ALPHABETIC_LOWER: ($) => seq($._NOT, $._ALPHABETIC_LOWER),
 
   _ALPHABETIC_UPPER: (_) => kw("ALPHABETIC-UPPER"),
-  _NOT_ALPHABETIC_UPPER: (_) =>
-    /[nN][oO][tT][ \t]+[aA][lL][pP][hH][aA][bB][eE][tT][iI][cC]-[uU][pP][pP][eE][rR]/,
+  _NOT_ALPHABETIC_UPPER: ($) => seq($._NOT, $._ALPHABETIC_UPPER),
 
-  _CLASS_NAME: (_) => kw("CLASS-NAME"),
-  _NOT_CLASS_NAME: (_) =>
-    /[nN][oO][tT][ \t]+[cC][lL][aA][sS][sS]-[nN][aA][mM][eE]/,
+  _POSITIVE: (_) => kw("POSITIVE"),
+  _NOT_POSITIVE: ($) => seq($._NOT, $._POSITIVE),
 
-  _NOT_POSITIVE: (_) => /[nN][oO][tT][ \t]+[pP][oO][sS][iI][tT][iI][vV][eE]/,
-  _NOT_NEGATIVE: (_) => /[nN][oO][tT][ \t]+[nN][eE][gG][aA][tT][iI][vV][eE]/,
-  _NOT_ZERO: (_) => /[nN][oO][tT][ \t]+[zZ][eE][rR][oO]/,
+  _NEGATIVE: (_) => kw("NEGATIVE"),
+  _NOT_NEGATIVE: ($) => seq($._NOT, $._NEGATIVE),
+
+  _ZERO: (_) => kw("ZERO"),
+  _NOT_ZERO: ($) => seq($._NOT, $._ZERO),
 };

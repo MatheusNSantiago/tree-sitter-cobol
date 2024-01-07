@@ -2,6 +2,7 @@ module.exports = {
   identification_division: ($) =>
     seq(
       field("division_header", $.identification_division_header),
+      C($),
       $.program_id,
       optional($.author),
       C($),

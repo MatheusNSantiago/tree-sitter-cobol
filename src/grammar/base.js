@@ -31,13 +31,13 @@ module.exports = {
 
   // ╾───────────────────────────────────────────────────────────────────────────────────╼
 
-  _ALPHABETIC: (_) => kw("ALPHABETIC"),
   _AT: (_) => kw("AT"),
   _END: (_) => kw("END"),
   _PROCEDURE: (_) => kw("PROCEDURE"),
   _DIVISION: (_) => kw("DIVISION"),
   _SECTION: (_) => kw("SECTION"),
   _THRU: (_) => choice(kw("THRU"), kw("THROUGH")),
+  _UP: (_) => kw("UP"),
   _UNTIL: (_) => kw("UNTIL"),
   _TO: (_) => kw("TO"),
   _NOT: (_) => kw("NOT"),

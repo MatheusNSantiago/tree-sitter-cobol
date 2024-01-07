@@ -46,7 +46,12 @@ module.exports = {
   copy_statement: ($) => seq(kw("COPY"), field("copybook", $.WORD), "."),
   goto_statement: ($) => seq(kw("GO"), $._TO, field("to", $.WORD), op(".")),
   set_statement: ($) =>
-    seq(kw("SET"), $.variable, $._TO, $._expr_data, op(".")),
+    seq(
+      kw("SET"),
+      $.variable,
+      choice($._TO, seq($._UP, $._BY)),
+      seq($._expr_data, op(".")),
+    ),
   cancel_statement: ($) => seq(kw("CANCEL"), $.variable, op(".")),
   next_sentence: (_) => seq(kw("NEXT"), kw("SENTENCE"), op(".")),
   add_statement: ($) =>
