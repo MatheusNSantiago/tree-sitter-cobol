@@ -1,4 +1,6 @@
+o = (thing) => optional(thing);
 C = ($) => repeat(choice($.comment, $._WHITE_SPACES));
+kw = (keyword) => choice(keyword.toUpperCase(), keyword.toLowerCase());
 
 module.exports = grammar({
   name: "cobol",
@@ -20,33 +22,23 @@ module.exports = grammar({
     $._SUFFIX_COMMENT,
   ],
   rules: {
-    source_file: ($) => seq(
-      $.identification_division,
-      optional($.environment_division),
-      optional($.data_division),
-      optional($.procedure_division),
-      // $.procedure_division,
-    ),
-
+    source_file: ($) =>
+      seq(
+        $.identification_division,
+        optional($.environment_division),
+        optional($.data_division),
+        optional($.procedure_division),
+        // $.procedure_division,
+      ),
 
     ...require("./src/grammar/division/identification"),
     ...require("./src/grammar/division/environment"),
     ...require("./src/grammar/division/data"),
     ...require("./src/grammar/division/procedure"),
-// ╾───────────────────────────────────────────────────────────────────────────────────╼
+    // ╾───────────────────────────────────────────────────────────────────────────────────╼
     ...require("./src/grammar/keywords"),
     ...require("./src/grammar/base"),
     ...require("./src/grammar/expression"),
     ...require("./src/grammar/statement/"),
   },
 });
-
-
-
-
-
-
-
-
-
-

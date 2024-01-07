@@ -1,15 +1,3 @@
-kw = (keyword) => {
-  // const isAlpha = (c) => /[a-zA-Z]/.test(c);
-  // let newKeyword = "";
-  //
-  // for (let c of keyword) {
-  //   newKeyword += isAlpha(c) ? `[${c.toLowerCase()}${c.toUpperCase()}]` : c;
-  // }
-  // return RegExp(newKeyword);
-  // ╾───────────────────────────────────────────────────────────────────────────────────╼
-  return choice(keyword.toUpperCase(), keyword.toLowerCase());
-};
-
 module.exports = {
 
   // ╾───────────────────────────────────────────────────────────────────────────────────╼

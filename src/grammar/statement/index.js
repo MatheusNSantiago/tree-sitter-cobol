@@ -18,6 +18,8 @@ module.exports = {
         $.move_statement,
         $.goto_statement,
         $.write_statement,
+        $.set_statement,
+        $.search_statement,
       ),
       C($),
     ),
@@ -32,11 +34,12 @@ module.exports = {
   ...require("./add"),
   ...require("./move"),
   ...require("./write"),
+  ...require("./search"),
 
-  exit_statement: (_) => prec(2, seq(kw("EXIT"), ".")),
+  exit_statement: (_) => seq(kw("EXIT"), "."),
   stop_run_statement: (_) => seq(kw("STOP"), kw("RUN"), "."),
   close_statement: ($) => seq(kw("close"), repeat1($.file_name), "."),
   copy_statement: ($) => seq(kw("COPY"), field("copybook", $.WORD), "."),
-  goto_statement: ($) =>
-    seq(kw("GO"), $._TO, field("to", $.WORD), optional(".")),
+  goto_statement: ($) => seq(kw("GO"), $._TO, field("to", $.WORD), o(".")),
+  set_statement: ($) => seq(kw("SET"), $.variable, $._TO, $._value, o(".")),
 };
