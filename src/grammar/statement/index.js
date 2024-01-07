@@ -15,6 +15,7 @@ module.exports = {
         $.copy_statement,
         $.read_statement,
         $.add_statement,
+        $.move_statement,
       ),
       C($),
     ),
@@ -27,6 +28,7 @@ module.exports = {
   ...require("./open"),
   ...require("./read"),
   ...require("./add"),
+  ...require("./move"),
 
   exit_statement: (_) => prec(2, seq(kw("EXIT"), ".")),
   stop_run_statement: (_) => seq(kw("STOP"), kw("RUN"), "."),
