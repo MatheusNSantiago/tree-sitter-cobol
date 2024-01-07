@@ -3,7 +3,7 @@ module.exports = {
     seq(
       field("division_header", $.identification_division_header),
       $.program_id,
-      $.author,
+      optional($.author),
       C($),
     ),
 
