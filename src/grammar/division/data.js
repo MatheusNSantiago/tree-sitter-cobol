@@ -56,12 +56,15 @@ module.exports = {
     seq(
       $.level_number,
       $.data_name,
-      choice(
-        $.picture,
-        $.redefines, // 01 WS-RECORD-1 REDEFINES WS-RECORD-2
-        // $.usage_clause,
-        // $.occurs_clause,
-        $.pic_value, // 88 CND-STATUS-OK VALUE 0
+      optional(
+        // optional pq pode ser um lider de group
+        choice(
+          $.picture,
+          $.redefines, // 01 WS-RECORD-1 REDEFINES WS-RECORD-2
+          $.occurs, // 01 WS-RECORD OCCURS 10 TIMES
+          kw("INDEX"), // 77 IDX-601F-LIM     INDEX.
+          $.pic_value, // 88 CND-STATUS-OK VALUE 0
+        ),
       ),
     ),
   data_name: ($) => choice(kw("FILLER"), $.variable),
@@ -84,8 +87,8 @@ module.exports = {
       kw("COMP-4"),
       kw("COMP-5"),
     ),
-  pic_value: ($) => seq(kw("VALUE"), repeat1($._value)),
   // ╾───────────────────────────────────────────────────────────────────────────────────╼
-
   redefines: ($) => seq(kw("REDEFINES"), $.variable),
+  pic_value: ($) => seq(kw("VALUE"), repeat1($._value)),
+  occurs: ($) => seq(kw("OCCURS"), $.number, kw("TIMES"), $.picture),
 };
