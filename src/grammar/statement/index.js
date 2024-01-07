@@ -10,6 +10,8 @@ module.exports = {
         $.stop_run_statement,
         $.select_statement,
         $.call_statement,
+        $.open_statement,
+        $.close_statement,
       ),
       C($),
     ),
@@ -19,6 +21,8 @@ module.exports = {
   ...require("./display"),
   ...require("./select"),
   ...require("./call"),
+  ...require("./open"),
+  ...require("./close"),
 
   exit_statement: (_) => prec(2, seq(kw("EXIT"), ".")),
   stop_run_statement: (_) => seq(kw("STOP"), kw("RUN"), "."),
