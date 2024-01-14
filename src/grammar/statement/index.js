@@ -26,6 +26,7 @@ module.exports = {
       $.exec_sql_statement,
       $.compute_statement,
       $.string_statement,
+      $.initialize_statement,
     ),
 
   ...require("./perform"),
@@ -99,4 +100,6 @@ module.exports = {
       ),
       op("."),
     ),
+
+  initialize_statement: ($) => seq(kw("INITIALIZE"), $.variable, op(".")),
 };
