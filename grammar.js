@@ -1,12 +1,12 @@
 op = (thing) => optional(thing);
-C = ($) => repeat(choice($.comment, $.BLANK_LINE));
+C = ($) => repeat(choice($.comment, $._BLANK_LINE));
 kw = (keyword) => choice(keyword.toUpperCase(), keyword.toLowerCase());
 
 module.exports = grammar({
   name: "cobol",
   externals: ($) => [
-    $.BLANK_LINE,
-    $.WHITE_SPACES,
+    $._BLANK_LINE,
+    $._WHITE_SPACES,
     $._PREFIX,
     $.paragraph_header,
     $.section_header,
@@ -16,8 +16,8 @@ module.exports = grammar({
   extras: ($) => [
     /\s/,
     $.comment,
-    $.WHITE_SPACES,
-    $.BLANK_LINE,
+    $._WHITE_SPACES,
+    $._BLANK_LINE,
     $._PREFIX,
     $._INLINE_COMMENT,
     $._SUFFIX_COMMENT,

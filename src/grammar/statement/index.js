@@ -37,6 +37,7 @@ module.exports = {
   ...require("./read"),
   ...require("./write"),
   ...require("./search"),
+  ...require("./compute"),
 
   exit_statement: (_) => seq(kw("EXIT"), "."),
   stop_run_statement: (_) => seq(kw("STOP"), kw("RUN"), "."),
@@ -72,8 +73,6 @@ module.exports = {
     ),
   exec_sql_statement: ($) =>
     seq(kw("EXEC"), kw("SQL"), repeat($._statement), kw("END-EXEC"), op(".")),
-
-  compute_statement: ($) => seq(kw("COMPUTE"), $.expr, op(".")),
 
   string_statement: ($) =>
     seq(
