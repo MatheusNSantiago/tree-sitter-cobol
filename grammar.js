@@ -1,24 +1,24 @@
 op = (thing) => optional(thing);
-C = ($) => repeat(choice($.comment, $._WHITE_SPACES));
+C = ($) => repeat(choice($.comment, $.BLANK_LINE));
 kw = (keyword) => choice(keyword.toUpperCase(), keyword.toLowerCase());
 
 module.exports = grammar({
   name: "cobol",
   externals: ($) => [
-    $.comment,
-    $._WHITE_SPACES,
-    $._PREFIX_COMMENT,
+    $.BLANK_LINE,
+    $.WHITE_SPACES,
+    $._PREFIX,
     $.paragraph_header,
     $.section_header,
     $._INLINE_COMMENT,
     $._SUFFIX_COMMENT,
   ],
   extras: ($) => [
-    " ",
-    "\n",
+    /\s/,
     $.comment,
-    $._WHITE_SPACES,
-    $._PREFIX_COMMENT,
+    $.WHITE_SPACES,
+    $.BLANK_LINE,
+    $._PREFIX,
     $._INLINE_COMMENT,
     $._SUFFIX_COMMENT,
   ],
@@ -30,6 +30,9 @@ module.exports = grammar({
         optional($.data_division),
         optional($.procedure_division),
       ),
+
+    // http://stackoverflow.com/questions/13014947/regex-to-match-a-c-style-multiline-comment/36328890#36328890
+    comment: (_) => token(seq("*", /([^\n])*/)),
 
     ...require("./src/grammar/division/identification"),
     ...require("./src/grammar/division/environment"),

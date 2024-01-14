@@ -4,7 +4,6 @@ module.exports = {
       field("division_header", $.procedure_division_header),
       op($.procedure_using),
       ".",
-      C($),
       repeat($.paragraph),
       repeat($.section),
     ),
@@ -20,8 +19,13 @@ module.exports = {
   section: ($) =>
     seq(
       field("section_header", $.section_header),
+      C($),
       repeat(choice($._statement, $.paragraph)),
     ),
+
+  // section_header: ($) => seq(/[A-Z0-9-]+/, $._SECTION, "."),
+
+  // NOTE: Section comments seria bom pra fazer tipo um docstring, mas não sei se vale a pena
 
   // ╭──────────────────────────────────────────────────────────╮
   // │                        Paragraphs                        │
@@ -35,4 +39,5 @@ module.exports = {
         repeat($._statement),
       ),
     ),
+  // paragraph_header: ($) => seq(/[A-Z0-9]+/, "."),
 };

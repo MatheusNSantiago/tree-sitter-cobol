@@ -10,13 +10,7 @@ module.exports = {
     ),
 
   _expr_data: ($) =>
-    choice(
-      $.boolean,
-      $.number,
-      $.variable,
-      $.string,
-      $.constant,
-    ),
+    prec.left(choice($.boolean, $.number, $.variable, $.string, $.constant)),
 
   _expr_calc: ($) =>
     prec(
@@ -157,8 +151,9 @@ module.exports = {
     prec.left(3, seq(field("left", $._exp), "^", field("right", $._exp))),
 
   //todo
+  // _arith_x: ($) => $._expr_data,
   // _arith_x: ($) =>
-  //   choice(
+  // choice(
   // $._identifier,
   // seq($._LENGTH, optional($._OF), $._identifier),
   // seq($._LENGTH, optional($._OF), $._basic_literal),
@@ -247,7 +242,8 @@ module.exports = {
   _OR_NE: (_) =>
     /[oO][rR][ \t]+(!=|[nN][oO][tT][ \t]+[eE][qQ][uU][aA][lL]([ \t]+[tT][oO])?)/,
 
-  _NOT_EQUAL: (_) => /(!=)|([nN][oO][tT][ \t]+(([eE][qQ][uU][aA][lL])|=))/,
+  // _NOT_EQUAL: (_) => /(!=)|([nN][oO][tT][ \t]+(([eE][qQ][uU][aA][lL])|=))/,
+  _NOT_EQUAL: ($) => choice("!=", seq($._NOT, $._EQUAL)),
   _NOT_LESS: (_) => /([nN][oO][tT][ \t]+(<|[lL][eE][sS][sS]))/,
   _NOT_GREATER: (_) => /([nN][oO][tT][ \t]+(>|[gG][rR][eE][aA][tT][eE][rR]))/,
 

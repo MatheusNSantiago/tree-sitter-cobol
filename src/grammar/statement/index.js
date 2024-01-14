@@ -31,10 +31,8 @@ module.exports = {
   ...require("./perform"),
   ...require("./if"),
   ...require("./evaluate"),
-  ...require("./display"),
   ...require("./select"),
   ...require("./call"),
-  ...require("./open"),
   ...require("./read"),
   ...require("./write"),
   ...require("./search"),
@@ -64,14 +62,12 @@ module.exports = {
       op("."),
     ),
   move_statement: ($) =>
-    prec.right(
-      seq(
-        kw("MOVE"),
-        field("from", $._expr_data),
-        $._TO,
-        field("to", repeat1($.variable)),
-        op("."),
-      ),
+    seq(
+      kw("MOVE"),
+      field("from", seq(op(seq(kw("LENGTH"), $._OF)), $._expr_data)),
+      $._TO,
+      field("to", repeat1($.variable)),
+      op("."),
     ),
   exec_sql_statement: ($) =>
     seq(kw("EXEC"), kw("SQL"), repeat($._statement), kw("END-EXEC"), op(".")),
@@ -89,5 +85,18 @@ module.exports = {
     choice(
       choice($.string, $.variable),
       seq(kw("DELIMITED"), op($._BY), $._SIZE),
+    ),
+  display_statement: ($) => seq(kw("DISPLAY"), repeat1($._expr_data), op(".")),
+
+  open_statement: ($) =>
+    seq(
+      kw("OPEN"),
+      repeat1(
+        seq(
+          choice(kw("INPUT"), kw("OUTPUT")), //
+          repeat1($.file_name),
+        ),
+      ),
+      op("."),
     ),
 };

@@ -5,9 +5,10 @@
 #include <tree_sitter/parser.h>
 
 enum TokenType {
-  COMMENT,
+  // COMMENT,
+  BLANK_LINE,
   WHITE_SPACES,
-  PREFIX_COMMENT,
+  PREFIX,
   PARAGRAPH_HEADER,
   SECTION_HEADER,
   INLINE_COMMENT,
@@ -37,7 +38,8 @@ static inline bool end_token(TSLexer *lexer, enum TokenType token_type) {
   return true;
 }
 static inline bool is_next_char_terminal(TSLexer *lexer) {
-  return lexer->lookahead == '\n' || lexer->eof(lexer) || lexer->lookahead == 0;
+  return ((lexer->lookahead == '\n') || (lexer->lookahead == '\r') ||
+          (lexer->eof(lexer)) || (lexer->lookahead == 0));
 }
 static inline bool is_starting_inline_comment(TSLexer *lexer) {
   if (lexer->lookahead != '*')
@@ -73,83 +75,73 @@ bool tree_sitter_cobol_external_scanner_scan(void *payload, TSLexer *lexer,
      │                        Blank Line                        │
      ╰──────────────────────────────────────────────────────────╯ */
 
-  if (valid_symbols[WHITE_SPACES]) {
-    if (isspace(*next_char)) {
-      int lines = 0;
-      int char_count = 0;
-
-      // Pula todos os espaços em branco (\n, \t, \r, ' ')
-      while (isspace(*next_char)) {
-        if (*next_char == '\n')
-          lines++;
-
+  if (valid_symbols[BLANK_LINE]) {
+    if (get_column(lexer) == 0) {
+      if (*next_char == '\n') {
         advance(lexer);
+        return end_token(lexer, BLANK_LINE);
       }
-
-      if (lines > 1)
-        return end_token(lexer, WHITE_SPACES);
     }
   }
 
   /* ╭──────────────────────────────────────────────────────────╮
+     │                       WHITE SPACES                       │
+     ╰──────────────────────────────────────────────────────────╯
+  */
+
+  if (valid_symbols[WHITE_SPACES]) {
+    if (isspace(*next_char)) {
+      while (isspace(*next_char)) {
+        if (*next_char == '\n') {
+          advance(lexer);
+          return end_token(lexer, WHITE_SPACES);
+        }
+        advance(lexer);
+      }
+    }
+  }
+  /* ╭──────────────────────────────────────────────────────────╮
      │                      Prefix Comment                      │
      ╰──────────────────────────────────────────────────────────╯ */
 
-  if (valid_symbols[PREFIX_COMMENT]) {
-    while (get_column(lexer) <= 5) {
-      if (!isspace(*next_char))
+  if (valid_symbols[PREFIX]) {
+    if (get_column(lexer) == 0) {
+      while (get_column(lexer) <= 5)
         advance(lexer);
 
-      return end_token(lexer, PREFIX_COMMENT);
+      return end_token(lexer, PREFIX);
     }
   }
 
   /* ╭──────────────────────────────────────────────────────────╮
      │                      Normal Comment                      │
      ╰──────────────────────────────────────────────────────────╯ */
-  int col = get_column(lexer);
 
-  if (valid_symbols[COMMENT]) {
-    if (col == 6) {
-
-      bool is_starting_a_comment = *next_char == '*';
-      if (is_starting_a_comment) {
-        while (!is_next_char_terminal(lexer))
-          advance(lexer);
-
-        return end_token(lexer, COMMENT);
-      }
-    }
-  }
+  // if (valid_symbols[COMMENT]) {
+  //   if (get_column(lexer) == 6) {
+  //
+  //     bool is_starting_a_comment = *next_char == '*';
+  //     if (is_starting_a_comment) {
+  //       while (!is_next_char_terminal(lexer))
+  //         advance(lexer);
+  //
+  //       return end_token(lexer, COMMENT);
+  //     }
+  //   }
+  // }
 
   /* ╭──────────────────────────────────────────────────────────╮
-     │                        PARAGRAPH                         │
+     │                  Paragraph / Sections                    │
      ╰──────────────────────────────────────────────────────────╯
   */
 
-  if (valid_symbols[SECTION_HEADER]) {
-    if (col == 7) {
-
+  if (valid_symbols[SECTION_HEADER] && valid_symbols[PARAGRAPH_HEADER]) {
+    if (get_column(lexer) == 7) {
       // Passa pelas labels. Ex: 100000-SECTION-NAME
-      while (isalnum(*next_char) || *next_char == '-')
+      while (isalnum(*next_char) || *next_char == '-') {
         advance(lexer);
-
-      while (isspace(*next_char))
-        advance(lexer);
-
-      if (match_next(lexer, "SECTION.")) {
-        return end_token(lexer, SECTION_HEADER);
+        // printf("%c\n", *next_char);
       }
-    }
-  }
-
-
-  if (valid_symbols[PARAGRAPH_HEADER]) {
-    if (col == 7) {
-
-      // Passa pelas labels. Ex: 100000-SECTION-NAME
-      while (isalnum(*next_char) || *next_char == '-')
-        advance(lexer);
 
       while (isspace(*next_char))
         advance(lexer);
@@ -159,9 +151,12 @@ bool tree_sitter_cobol_external_scanner_scan(void *payload, TSLexer *lexer,
         advance(lexer);
         return end_token(lexer, PARAGRAPH_HEADER);
       }
+
+      bool is_section = match_next(lexer, "SECTION.");
+      if (is_section)
+        return end_token(lexer, SECTION_HEADER);
     }
   }
-
 
   /* ╭──────────────────────────────────────────────────────────╮
      │                      Inline comment                      │
@@ -169,6 +164,8 @@ bool tree_sitter_cobol_external_scanner_scan(void *payload, TSLexer *lexer,
   */
 
   if (valid_symbols[INLINE_COMMENT]) {
+    int col = get_column(lexer);
+
     if (col >= 7 && col <= 71) {
       if (is_starting_inline_comment(lexer)) {
         while (!is_next_char_terminal(lexer))

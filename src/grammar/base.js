@@ -1,7 +1,6 @@
 module.exports = {
   WORD: ($) => $._WORD,
   _WORD: (_) => /[a-zA-Z0-9-]+/,
-  // /([0-9][a-zA-Z0-9-]*[a-zA-Z][a-zA-Z0-9-]*)|([a-zA-Z][a-zA-Z0-9-]*)/,
 
   section_name: ($) => $._WORD,
   variable: ($) => $._WORD,
@@ -42,6 +41,7 @@ module.exports = {
   _NOT: (_) => kw("NOT"),
   _AND: (_) => kw("AND"),
   _OR: (_) => kw("OR"),
+  _OF: (_) => kw("OF"),
   _IS: (_) => kw("IS"),
   _INTO: (_) => kw("INTO"),
   _SIZE: (_) => kw("SIZE"),

@@ -8,6 +8,7 @@ module.exports = {
         $.variable,
         optional(
           seq(
+            C($),
             repeat(choice($.at_end, $.not_at_end, $._statement)),
             kw("END-READ"),
           ),
