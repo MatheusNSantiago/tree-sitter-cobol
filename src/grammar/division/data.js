@@ -91,8 +91,17 @@ module.exports = {
     ),
   // ╾───────────────────────────────────────────────────────────────────────────────────╼
   redefines: ($) => seq(kw("REDEFINES"), $.variable),
+
   pic_value: ($) => seq(kw("VALUE"), repeat1($._value)),
-  occurs: ($) => seq(kw("OCCURS"), $.number, kw("TIMES"), optional($.picture)),
+
+  occurs: ($) =>
+    seq(
+      kw("OCCURS"),
+      $.number,
+      kw("TIMES"),
+      optional(choice($.picture, $.indexed_by)),
+    ),
+  indexed_by: ($) => seq(kw("INDEXED"), kw("BY"), $.variable),
 
   // ╭──────────────────────────────────────────────────────────╮
   // │                  LOCAL STORAGE SECTION                   │
