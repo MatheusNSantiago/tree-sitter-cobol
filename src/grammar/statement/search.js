@@ -3,7 +3,7 @@ module.exports = {
     seq(
       kw("SEARCH"),
       optional(kw("ALL")),
-      field("table_name", $.WORD),
+      field("table_name", $.variable),
       optional(field("varying", seq(kw("VARING"), $.WORD))),
       repeat(
         seq(
