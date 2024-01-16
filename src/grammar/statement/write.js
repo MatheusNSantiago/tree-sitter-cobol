@@ -3,7 +3,7 @@ module.exports = {
     seq(
       kw("WRITE"),
       field("record_name", $.variable),
-      seq("FROM", field("from", $.variable)),
+      op(seq("FROM", field("from", $.variable))),
       op("."),
     ),
 };
