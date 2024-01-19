@@ -104,5 +104,10 @@ module.exports = {
       op("."),
     ),
 
-  initialize_statement: ($) => seq(kw("INITIALIZE"), $.variable, op(".")),
+  initialize_statement: ($) =>
+    seq(
+      kw("INITIALIZE"), //
+      repeat1($.variable),
+      op("."),
+    ),
 };
