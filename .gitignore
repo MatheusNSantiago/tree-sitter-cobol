@@ -2,4 +2,5 @@ src/tree_sitter
 src/grammar.json
 src/node-types.json
 src/parser.c
+node_modules
 examples

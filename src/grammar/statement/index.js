@@ -41,6 +41,7 @@ module.exports = {
 
   exit_statement: (_) => seq(kw("EXIT"), "."),
   stop_run_statement: (_) => seq(kw("STOP"), kw("RUN"), "."),
+  close_statement: ($) => seq(kw("close"), repeat1($.file_name), "."),
   copy_statement: ($) => seq(kw("COPY"), field("copybook", $.variable), "."),
   goto_statement: ($) => seq(kw("GO"), $._TO, field("to", $.WORD), op(".")),
   set_statement: ($) =>
@@ -71,11 +72,7 @@ module.exports = {
       op("."),
     ),
   exec_sql_statement: ($) =>
-    seq(
-      seq(kw("EXEC"), kw("SQL")),
-      repeat($._statement), //
-      seq(kw("END-EXEC"), op(".")),
-    ),
+    seq(kw("EXEC"), kw("SQL"), repeat($._statement), kw("END-EXEC"), op(".")),
 
   string_statement: ($) =>
     seq(
@@ -91,7 +88,6 @@ module.exports = {
     ),
   display_statement: ($) => seq(kw("DISPLAY"), repeat1($._expr_data), op(".")),
 
-  close_statement: ($) => seq(kw("close"), repeat1($.file_name), op(".")),
   open_statement: ($) =>
     seq(
       kw("OPEN"),
@@ -104,10 +100,5 @@ module.exports = {
       op("."),
     ),
 
-  initialize_statement: ($) =>
-    seq(
-      kw("INITIALIZE"), //
-      repeat1($.variable),
-      op("."),
-    ),
+  initialize_statement: ($) => seq(kw("INITIALIZE"), $.variable, op(".")),
 };
