@@ -23,7 +23,15 @@ module.exports = {
       seq(field("section_header", $.file_section_header), "."),
       C($),
       repeat(
-        seq(choice($.file_description, $.record_description), ".", C($)), //
+        seq(
+          choice(
+            $.file_description,
+            $.record_description,
+            $.copy_statement, //
+          ),
+          ".",
+          C($),
+        ),
       ),
     ),
   file_section_header: ($) => seq(kw("FILE"), $._SECTION),
