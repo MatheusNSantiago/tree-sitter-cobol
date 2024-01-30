@@ -106,7 +106,7 @@ bool tree_sitter_cobol_external_scanner_scan(void *payload, TSLexer *lexer,
 
   if (valid_symbols[PREFIX]) {
     if (get_column(lexer) == 0) {
-      while (get_column(lexer) <= 5)
+      while (get_column(lexer) <= 5 && !is_next_char_terminal(lexer))
         advance(lexer);
 
       return end_token(lexer, PREFIX);
@@ -138,10 +138,8 @@ bool tree_sitter_cobol_external_scanner_scan(void *payload, TSLexer *lexer,
   if (valid_symbols[SECTION_HEADER] && valid_symbols[PARAGRAPH_HEADER]) {
     if (get_column(lexer) == 7) {
       // Passa pelas labels. Ex: 100000-SECTION-NAME
-      while (isalnum(*next_char) || *next_char == '-') {
+      while (isalnum(*next_char) || *next_char == '-')
         advance(lexer);
-        // printf("%c\n", *next_char);
-      }
 
       while (isspace(*next_char))
         advance(lexer);
