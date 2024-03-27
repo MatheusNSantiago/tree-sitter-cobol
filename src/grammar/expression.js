@@ -148,7 +148,7 @@ module.exports = {
     prec.left(2, seq(field("left", $._exp), "/", field("right", $._exp))),
 
   pow_exp: ($) =>
-    prec.left(3, seq(field("left", $._exp), "^", field("right", $._exp))),
+    prec.left(3, seq(field("left", $._exp), "**", field("right", $._exp))),
 
   //todo
   // _arith_x: ($) => $._expr_data,
