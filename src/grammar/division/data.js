@@ -58,7 +58,7 @@ module.exports = {
     seq(
       seq(field("section_header", $.working_storage_section_header), "."),
       C($),
-      repeat(seq(choice($.data_description, $.copy_statement), ".", C($))),
+      repeat(seq(choice($.data_description, $.copy_statement), C($))),
     ),
   working_storage_section_header: ($) => seq(kw("WORKING-STORAGE"), $._SECTION),
 
