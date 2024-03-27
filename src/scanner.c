@@ -2,10 +2,10 @@
 #include <stdbool.h>
 #include <stdio.h>
 #include <string.h>
-#include <tree_sitter/parser.h>
+#include "tree_sitter/parser.h"
 
 enum TokenType {
-  // COMMENT,
+  COMMENT,
   BLANK_LINE,
   WHITE_SPACES,
   PREFIX,
@@ -117,18 +117,18 @@ bool tree_sitter_cobol_external_scanner_scan(void *payload, TSLexer *lexer,
      │                      Normal Comment                      │
      ╰──────────────────────────────────────────────────────────╯ */
 
-  // if (valid_symbols[COMMENT]) {
-  //   if (get_column(lexer) == 6) {
-  //
-  //     bool is_starting_a_comment = *next_char == '*';
-  //     if (is_starting_a_comment) {
-  //       while (!is_next_char_terminal(lexer))
-  //         advance(lexer);
-  //
-  //       return end_token(lexer, COMMENT);
-  //     }
-  //   }
-  // }
+  if (valid_symbols[COMMENT]) {
+    if (get_column(lexer) == 6) {
+
+      bool is_starting_a_comment = *next_char == '*';
+      if (is_starting_a_comment) {
+        while (!is_next_char_terminal(lexer))
+          advance(lexer);
+
+        return end_token(lexer, COMMENT);
+      }
+    }
+  }
 
   /* ╭──────────────────────────────────────────────────────────╮
      │                  Paragraph / Sections                    │
