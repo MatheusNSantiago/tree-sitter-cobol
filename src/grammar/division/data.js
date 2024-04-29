@@ -123,7 +123,8 @@ module.exports = {
         seq(
           choice(
             $.exec_sql_statement, //
-            seq($.data_description, "."),
+            $.data_description,
+            $.copy_statement,
           ),
           C($),
         ),
