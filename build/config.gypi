@@ -409,18 +409,18 @@
     "v8_trace_maps": 0,
     "v8_use_siphash": 1,
     "want_separate_host_toolset": 0,
-    "nodedir": "/root/.cache/node-gyp/21.7.0",
+    "nodedir": "/root/.cache/node-gyp/21.7.3",
     "python": "/usr/bin/python3",
     "standalone_static_library": 1,
     "userconfig": "/root/.npmrc",
     "cache": "/root/.npm",
-    "local_prefix": "/home/matheus/dev/cobol/plugins/lsp/cobol-lsp",
+    "local_prefix": "/home/matheus/dev/cobol/plugins/lsp/foo-lsp",
     "globalconfig": "/etc/npmrc",
     "init_module": "/root/.npm-init.js",
-    "npm_version": "10.5.0",
+    "npm_version": "10.7.0",
     "prefix": "/usr",
-    "user_agent": "npm/10.5.0 node/v21.7.0 linux x64 workspaces/false",
-    "node_gyp": "/usr/lib/node_modules/node-gyp/bin/node-gyp.js",
+    "user_agent": "npm/10.7.0 node/v21.7.3 linux x64 workspaces/false",
+    "node_gyp": "/usr/lib/node_modules/npm/node_modules/node-gyp/bin/node-gyp.js",
     "global_prefix": "/usr"
   }
 }
