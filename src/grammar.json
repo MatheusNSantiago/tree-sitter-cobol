@@ -1469,6 +1469,10 @@
                         "value": "."
                       }
                     ]
+                  },
+                  {
+                    "type": "SYMBOL",
+                    "name": "copy_statement"
                   }
                 ]
               },

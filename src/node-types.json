@@ -1315,6 +1315,10 @@
           "named": true
         },
         {
+          "type": "copy_statement",
+          "named": true
+        },
+        {
           "type": "data_description",
           "named": true
         },

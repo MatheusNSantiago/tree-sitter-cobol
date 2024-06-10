@@ -124,6 +124,7 @@ module.exports = {
           choice(
             $.exec_sql_statement, //
             seq($.data_description, "."),
+            $.copy_statement,
           ),
           C($),
         ),
