@@ -10,7 +10,17 @@ module.exports = {
     ),
 
   _expr_data: ($) =>
-    prec.left(choice($.boolean, $.number, $.variable, $.string, $.constant)),
+    prec.left(
+      choice(
+        $.boolean,
+        $.number,
+        $.variable,
+        $.string,
+        $.constant,
+        seq(":", $.variable),
+        $.tab_field,
+      ),
+    ),
 
   _expr_calc: ($) =>
     prec(

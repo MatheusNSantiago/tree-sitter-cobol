@@ -23,7 +23,7 @@ module.exports = {
       $.cancel_statement,
       $.next_sentence,
       $.multiply_statement,
-      $.exec_sql_statement,
+      $._exec_statement,
       $.compute_statement,
       $.string_statement,
       $.initialize_statement,
@@ -38,6 +38,7 @@ module.exports = {
   ...require("./write"),
   ...require("./search"),
   ...require("./compute"),
+  ...require("./exec"),
 
   exit_statement: (_) => seq(kw("EXIT"), "."),
   stop_run_statement: (_) => seq(kw("STOP"), kw("RUN"), "."),
@@ -71,14 +72,6 @@ module.exports = {
       field("to", repeat1($.variable)),
       op("."),
     ),
-  exec_sql_statement: ($) =>
-    seq(
-      seq(kw("EXEC"), kw("SQL")), //
-      repeat($._statement),
-      kw("END-EXEC"),
-      op("."),
-    ),
-
   string_statement: ($) =>
     seq(
       kw("STRING"),

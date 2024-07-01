@@ -407,6 +407,10 @@
           "named": true
         },
         {
+          "type": "tab_field",
+          "named": true
+        },
+        {
           "type": "variable",
           "named": true
         }
@@ -588,7 +592,11 @@
           "named": true
         },
         {
-          "type": "exec_sql_statement",
+          "type": "exec_cics",
+          "named": true
+        },
+        {
+          "type": "exec_sql",
           "named": true
         },
         {
@@ -663,7 +671,7 @@
     }
   },
   {
-    "type": "exec_sql_statement",
+    "type": "exec_cics",
     "named": true,
     "fields": {},
     "children": {
@@ -671,107 +679,115 @@
       "required": false,
       "types": [
         {
-          "type": "add_statement",
-          "named": true
-        },
-        {
-          "type": "call_statement",
-          "named": true
-        },
-        {
-          "type": "cancel_statement",
-          "named": true
-        },
-        {
-          "type": "close_statement",
-          "named": true
-        },
-        {
           "type": "comment",
           "named": true
         },
         {
-          "type": "compute_statement",
+          "type": "string",
           "named": true
         },
         {
-          "type": "copy_statement",
+          "type": "variable",
           "named": true
-        },
+        }
+      ]
+    }
+  },
+  {
+    "type": "exec_sql",
+    "named": true,
+    "fields": {
+      "from": {
+        "multiple": true,
+        "required": false,
+        "types": [
+          {
+            "type": "FROM",
+            "named": false
+          },
+          {
+            "type": "from",
+            "named": false
+          },
+          {
+            "type": "tab_name",
+            "named": true
+          }
+        ]
+      },
+      "into": {
+        "multiple": true,
+        "required": false,
+        "types": [
+          {
+            "type": ",",
+            "named": false
+          },
+          {
+            "type": ":",
+            "named": false
+          },
+          {
+            "type": "INTO",
+            "named": false
+          },
+          {
+            "type": "into",
+            "named": false
+          },
+          {
+            "type": "variable",
+            "named": true
+          }
+        ]
+      },
+      "select": {
+        "multiple": true,
+        "required": false,
+        "types": [
+          {
+            "type": ",",
+            "named": false
+          },
+          {
+            "type": "SELECT",
+            "named": false
+          },
+          {
+            "type": "select",
+            "named": false
+          },
+          {
+            "type": "tab_field",
+            "named": true
+          }
+        ]
+      },
+      "where": {
+        "multiple": true,
+        "required": false,
+        "types": [
+          {
+            "type": "WHERE",
+            "named": false
+          },
+          {
+            "type": "expr",
+            "named": true
+          },
+          {
+            "type": "where",
+            "named": false
+          }
+        ]
+      }
+    },
+    "children": {
+      "multiple": true,
+      "required": false,
+      "types": [
         {
-          "type": "display_statement",
-          "named": true
-        },
-        {
-          "type": "evaluate_statement",
-          "named": true
-        },
-        {
-          "type": "exec_sql_statement",
-          "named": true
-        },
-        {
-          "type": "exit_statement",
-          "named": true
-        },
-        {
-          "type": "goto_statement",
-          "named": true
-        },
-        {
-          "type": "if_statement",
-          "named": true
-        },
-        {
-          "type": "initialize_statement",
-          "named": true
-        },
-        {
-          "type": "move_statement",
-          "named": true
-        },
-        {
-          "type": "multiply_statement",
-          "named": true
-        },
-        {
-          "type": "next_sentence",
-          "named": true
-        },
-        {
-          "type": "open_statement",
-          "named": true
-        },
-        {
-          "type": "perform_statement",
-          "named": true
-        },
-        {
-          "type": "read_statement",
-          "named": true
-        },
-        {
-          "type": "search_statement",
-          "named": true
-        },
-        {
-          "type": "select_statement",
-          "named": true
-        },
-        {
-          "type": "set_statement",
-          "named": true
-        },
-        {
-          "type": "stop_run_statement",
-          "named": true
-        },
-        {
-          "type": "string_statement",
-          "named": true
-        },
-        {
-          "type": "write_statement",
+          "type": "comment",
           "named": true
         }
       ]
@@ -832,6 +848,10 @@
         },
         {
           "type": "string",
+          "named": true
+        },
+        {
+          "type": "tab_field",
           "named": true
         },
         {
@@ -1116,7 +1136,11 @@
           "named": true
         },
         {
-          "type": "exec_sql_statement",
+          "type": "exec_cics",
+          "named": true
+        },
+        {
+          "type": "exec_sql",
           "named": true
         },
         {
@@ -1323,7 +1347,11 @@
           "named": true
         },
         {
-          "type": "exec_sql_statement",
+          "type": "exec_cics",
+          "named": true
+        },
+        {
+          "type": "exec_sql",
           "named": true
         }
       ]
@@ -1347,6 +1375,10 @@
         "multiple": true,
         "required": true,
         "types": [
+          {
+            "type": ":",
+            "named": false
+          },
           {
             "type": "LENGTH",
             "named": false
@@ -1377,6 +1409,10 @@
           },
           {
             "type": "string",
+            "named": true
+          },
+          {
+            "type": "tab_field",
             "named": true
           },
           {
@@ -1687,7 +1723,11 @@
           "named": true
         },
         {
-          "type": "exec_sql_statement",
+          "type": "exec_cics",
+          "named": true
+        },
+        {
+          "type": "exec_sql",
           "named": true
         },
         {
@@ -1851,7 +1891,11 @@
           "named": true
         },
         {
-          "type": "exec_sql_statement",
+          "type": "exec_cics",
+          "named": true
+        },
+        {
+          "type": "exec_sql",
           "named": true
         },
         {
@@ -2271,7 +2315,11 @@
           "named": true
         },
         {
-          "type": "exec_sql_statement",
+          "type": "exec_cics",
+          "named": true
+        },
+        {
+          "type": "exec_sql",
           "named": true
         },
         {
@@ -2461,7 +2509,11 @@
           "named": true
         },
         {
-          "type": "exec_sql_statement",
+          "type": "exec_cics",
+          "named": true
+        },
+        {
+          "type": "exec_sql",
           "named": true
         },
         {
@@ -2607,7 +2659,11 @@
           "named": true
         },
         {
-          "type": "exec_sql_statement",
+          "type": "exec_cics",
+          "named": true
+        },
+        {
+          "type": "exec_sql",
           "named": true
         },
         {
@@ -2727,6 +2783,10 @@
         },
         {
           "type": "string",
+          "named": true
+        },
+        {
+          "type": "tab_field",
           "named": true
         },
         {
@@ -2959,6 +3019,16 @@
     }
   },
   {
+    "type": "tab_field",
+    "named": true,
+    "fields": {}
+  },
+  {
+    "type": "tab_name",
+    "named": true,
+    "fields": {}
+  },
+  {
     "type": "using",
     "named": true,
     "fields": {},
@@ -3068,6 +3138,10 @@
     "named": false
   },
   {
+    "type": ",",
+    "named": false
+  },
+  {
     "type": "-",
     "named": false
   },
@@ -3077,6 +3151,10 @@
   },
   {
     "type": "/",
+    "named": false
+  },
+  {
+    "type": ":",
     "named": false
   },
   {
@@ -3152,6 +3230,14 @@
     "named": false
   },
   {
+    "type": "CHANNEL",
+    "named": false
+  },
+  {
+    "type": "CICS",
+    "named": false
+  },
+  {
     "type": "CLOSE",
     "named": false
   },
@@ -3189,6 +3275,10 @@
   },
   {
     "type": "CONFIGURATION",
+    "named": false
+  },
+  {
+    "type": "CONTAINER",
     "named": false
   },
   {
@@ -3300,7 +3390,15 @@
     "named": false
   },
   {
+    "type": "FLENGTH",
+    "named": false
+  },
+  {
     "type": "FROM",
+    "named": false
+  },
+  {
+    "type": "GET",
     "named": false
   },
   {
@@ -3392,6 +3490,14 @@
     "named": false
   },
   {
+    "type": "NODATA",
+    "named": false
+  },
+  {
+    "type": "NOHANDLE",
+    "named": false
+  },
+  {
     "type": "NOT",
     "named": false
   },
@@ -3448,6 +3554,10 @@
     "named": false
   },
   {
+    "type": "PUT",
+    "named": false
+  },
+  {
     "type": "READ",
     "named": false
   },
@@ -3461,6 +3571,14 @@
   },
   {
     "type": "REDEFINES",
+    "named": false
+  },
+  {
+    "type": "RESP",
+    "named": false
+  },
+  {
+    "type": "RETURN",
     "named": false
   },
   {
@@ -3572,6 +3690,10 @@
     "named": false
   },
   {
+    "type": "WHERE",
+    "named": false
+  },
+  {
     "type": "WORKING-STORAGE",
     "named": false
   },
@@ -3644,6 +3766,14 @@
     "named": false
   },
   {
+    "type": "channel",
+    "named": false
+  },
+  {
+    "type": "cics",
+    "named": false
+  },
+  {
     "type": "close",
     "named": false
   },
@@ -3685,6 +3815,10 @@
   },
   {
     "type": "configuration",
+    "named": false
+  },
+  {
+    "type": "container",
     "named": false
   },
   {
@@ -3800,6 +3934,18 @@
     "named": false
   },
   {
+    "type": "flength",
+    "named": false
+  },
+  {
+    "type": "from",
+    "named": false
+  },
+  {
+    "type": "get",
+    "named": false
+  },
+  {
     "type": "go",
     "named": false
   },
@@ -3896,6 +4042,14 @@
     "named": false
   },
   {
+    "type": "nodata",
+    "named": false
+  },
+  {
+    "type": "nohandle",
+    "named": false
+  },
+  {
     "type": "not",
     "named": false
   },
@@ -3960,6 +4114,10 @@
     "named": false
   },
   {
+    "type": "put",
+    "named": false
+  },
+  {
     "type": "read",
     "named": false
   },
@@ -3973,6 +4131,14 @@
   },
   {
     "type": "redefines",
+    "named": false
+  },
+  {
+    "type": "resp",
+    "named": false
+  },
+  {
+    "type": "return",
     "named": false
   },
   {
@@ -4085,6 +4251,10 @@
   },
   {
     "type": "when",
+    "named": false
+  },
+  {
+    "type": "where",
     "named": false
   },
   {

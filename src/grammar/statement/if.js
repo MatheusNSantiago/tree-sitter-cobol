@@ -11,7 +11,10 @@ module.exports = {
   if_statement: ($) => choice($._if_inline, $._if_block),
 
   _if_inline: ($) =>
-    prec(2, seq($._IF, field("condition", $.expr), op($._THEN), $._statements)),
+    prec(
+      16,
+      seq($._IF, field("condition", $.expr), op($._THEN), $._statements),
+    ),
 
   _if_block: ($) =>
     seq(
