@@ -6,14 +6,8 @@ module.exports = {
         $.file_name,
         $._INTO,
         $.variable,
-        optional(
-          seq(
-            C($),
-            repeat(choice($.at_end, $.not_at_end, $._statement)),
-            kw("END-READ"),
-          ),
-        ),
-        op("."),
+        op(seq(C($), repeat(choice($.at_end, $.not_at_end, $._statement)))),
+        optional(kw("END-READ")),
       ),
     ),
 
