@@ -1,43 +1,16 @@
 {
   "name": "tree-sitter-cobol",
-  "version": "1.0.0",
-  "description": "",
+  "version": "0.0.1",
+  "description": "Cobol grammar for tree-sitter",
+  "repository": "github:tree-sitter/tree-sitter-cobol",
+  "license": "MIT",
   "main": "bindings/node",
   "types": "bindings/node",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "install": "node-gyp-build",
-    "prebuildify": "prebuildify --napi --strip"
-  },
-  "author": "",
-  "license": "ISC",
-  "dependencies": {
-    "node-addon-api": "^7.1.0",
-    "node-gyp-build": "^4.8.0"
-  },
-  "peerDependencies": {
-    "tree-sitter": "^0.21.0"
-  },
-  "peerDependenciesMeta": {
-    "tree_sitter": {
-      "optional": true
-    }
-  },
-  "devDependencies": {
-    "tree-sitter-cli": "^0.20.8",
-    "prebuildify": "^6.0.0"
-  },
-  "tree-sitter": [
-    {
-      "scope": "source.cobol",
-      "file-types": [
-        "cobol"
-      ],
-      "injection-regex": "cobol",
-      "highlights": [
-        "queries/highlights.scm"
-      ]
-    }
+  "keywords": [
+    "incremental",
+    "parsing",
+    "tree-sitter",
+    "cobol"
   ],
   "files": [
     "grammar.js",
@@ -46,5 +19,35 @@
     "bindings/node/*",
     "queries/*",
     "src/**"
+  ],
+  "dependencies": {
+    "node-addon-api": "^7.1.0",
+    "node-gyp-build": "^4.8.0"
+  },
+  "devDependencies": {
+    "prebuildify": "^6.0.0",
+    "tree-sitter-cli": "^0.22.6"
+  },
+  "peerDependencies": {
+    "tree-sitter": "^0.21.0"
+  },
+  "peerDependenciesMeta": {
+    "tree-sitter": {
+      "optional": true
+    }
+  },
+  "scripts": {
+    "install": "node-gyp-build",
+    "prebuildify": "prebuildify --napi --strip",
+    "build": "tree-sitter generate --no-bindings",
+    "build-wasm": "tree-sitter build --wasm",
+    "test": "tree-sitter test",
+    "parse": "tree-sitter parse"
+  },
+  "tree-sitter": [
+    {
+      "scope": "source.cobol",
+      "injection-regex": "^cobol$"
+    }
   ]
 }

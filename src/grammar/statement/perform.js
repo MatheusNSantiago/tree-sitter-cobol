@@ -1,13 +1,6 @@
 module.exports = {
   perform_statement: ($) =>
-    seq(
-      choice(
-        $.perform_simple, //
-        $.perform_until,
-        $.perform_x_until,
-      ),
-      op("."),
-    ),
+    choice($.perform_simple, $.perform_until, $.perform_x_until),
 
   _PERFORM: (_) => kw("PERFORM"),
   _END_PERFORM: (_) => kw("END-PERFORM"),

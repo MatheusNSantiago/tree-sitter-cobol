@@ -5,7 +5,7 @@ typedef struct TSLanguage TSLanguage;
 TSLanguage *tree_sitter_cobol(void);
 
 static PyObject* _binding_language(PyObject *self, PyObject *args) {
-    return PyLong_FromVoidPtr(tree_sitter_cobol());
+    return PyLong_FromVoidPtr((void *)tree_sitter_cobol());
 }
 
 static PyMethodDef methods[] = {

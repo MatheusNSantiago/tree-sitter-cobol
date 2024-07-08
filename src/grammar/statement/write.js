@@ -4,6 +4,5 @@ module.exports = {
       kw("WRITE"),
       field("record_name", $.variable),
       op(seq("FROM", field("from", $.variable))),
-      op("."),
     ),
 };

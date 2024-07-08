@@ -16,7 +16,6 @@ module.exports = {
       seq($._EXEC, kw("SQL")),
       repeat($._exec_sql_body),
       kw("END-EXEC"),
-      optional("."),
     ),
 
   _exec_sql_body: ($) => prec.right(15, seq($._exec_sql_statements, C($))),
@@ -45,7 +44,6 @@ module.exports = {
       ),
       repeat($._exec_cics_body),
       kw("END-EXEC"),
-      optional("."),
     ),
 
   _exec_cics_body: ($) => prec.right(15, seq($._exec_cics_statements, C($))),

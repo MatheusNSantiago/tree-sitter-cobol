@@ -17,12 +17,14 @@ module.exports = {
     ),
 
   _if_block: ($) =>
-    seq(
-      $._if,
-      // repeat($._else_if),
-      optional($._else),
-      $._END_IF,
-      op("."),
+    prec.right(
+      seq(
+        $._if,
+        // repeat($._else_if),
+        optional($._else),
+        $._END_IF,
+        op("."),
+      ),
     ),
 
   _if: ($) =>

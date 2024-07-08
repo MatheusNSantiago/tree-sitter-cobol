@@ -1,7 +1,7 @@
 module.exports = {
   compute_statement: ($) => choice($._compute_inline, $._compute_block),
 
-  _compute_inline: ($) => seq($._COMPUTE, $.expr, op(".")),
+  _compute_inline: ($) => seq($._COMPUTE, $.expr),
 
   _compute_block: ($) =>
     seq(
@@ -9,7 +9,6 @@ module.exports = {
       $.expr,
       op($.on_size_error), //
       kw("END-COMPUTE"),
-      op("."),
     ),
 
   on_size_error: ($) =>

@@ -18,7 +18,6 @@ module.exports = {
           ),
         ),
         kw("END-EVALUATE"), // END-EVALUATE
-        op("."),
     ),
 
 };
