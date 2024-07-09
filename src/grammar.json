@@ -1978,6 +1978,10 @@
                     {
                       "type": "SYMBOL",
                       "name": "_WORD"
+                    },
+                    {
+                      "type": "PATTERN",
+                      "value": "[0-9:]+"
                     }
                   ]
                 },

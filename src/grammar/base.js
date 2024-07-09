@@ -3,20 +3,7 @@ module.exports = {
   _WORD: (_) => /[a-zA-Z0-9-]+/,
 
   section_name: ($) => $._WORD,
-  variable: ($) =>
-    seq(
-      $._WORD,
-      op(
-        seq(
-          "(",
-          choice(
-            $._WORD,
-            // seq($.number, ":", $.number),
-          ),
-          ")",
-        ),
-      ),
-    ),
+  variable: ($) => seq($._WORD, op(seq("(", choice($._WORD, /[0-9:]+/), ")"))),
 
   file_name: ($) => $._WORD,
 
