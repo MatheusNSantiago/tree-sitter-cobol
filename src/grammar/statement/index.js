@@ -79,6 +79,7 @@ module.exports = {
       field("from", repeat1($.string_item)),
       $._INTO,
       field("into", $.variable),
+      kw("END-STRING"),
     ),
   string_item: ($) =>
     choice(

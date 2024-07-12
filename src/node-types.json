@@ -1086,7 +1086,7 @@
     "fields": {
       "condition": {
         "multiple": false,
-        "required": false,
+        "required": true,
         "types": [
           {
             "type": "expr",
@@ -3346,6 +3346,10 @@
     "named": false
   },
   {
+    "type": "END-STRING",
+    "named": false
+  },
+  {
     "type": "ENVIRONMENT",
     "named": false
   },
@@ -3887,6 +3891,10 @@
   },
   {
     "type": "end-search",
+    "named": false
+  },
+  {
+    "type": "end-string",
     "named": false
   },
   {

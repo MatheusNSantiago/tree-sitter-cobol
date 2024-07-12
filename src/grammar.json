@@ -1978,10 +1978,6 @@
                     {
                       "type": "SYMBOL",
                       "name": "_WORD"
-                    },
-                    {
-                      "type": "PATTERN",
-                      "value": "[0-9:]+"
                     }
                   ]
                 },
@@ -4235,97 +4231,6 @@
       ]
     },
     "if_statement": {
-      "type": "CHOICE",
-      "members": [
-        {
-          "type": "SYMBOL",
-          "name": "_if_inline"
-        },
-        {
-          "type": "SYMBOL",
-          "name": "_if_block"
-        }
-      ]
-    },
-    "_if_inline": {
-      "type": "PREC",
-      "value": 16,
-      "content": {
-        "type": "SEQ",
-        "members": [
-          {
-            "type": "SYMBOL",
-            "name": "_IF"
-          },
-          {
-            "type": "FIELD",
-            "name": "condition",
-            "content": {
-              "type": "SYMBOL",
-              "name": "expr"
-            }
-          },
-          {
-            "type": "CHOICE",
-            "members": [
-              {
-                "type": "SYMBOL",
-                "name": "_THEN"
-              },
-              {
-                "type": "BLANK"
-              }
-            ]
-          },
-          {
-            "type": "SYMBOL",
-            "name": "_statements"
-          }
-        ]
-      }
-    },
-    "_if_block": {
-      "type": "PREC_RIGHT",
-      "value": 0,
-      "content": {
-        "type": "SEQ",
-        "members": [
-          {
-            "type": "SYMBOL",
-            "name": "_if"
-          },
-          {
-            "type": "CHOICE",
-            "members": [
-              {
-                "type": "SYMBOL",
-                "name": "_else"
-              },
-              {
-                "type": "BLANK"
-              }
-            ]
-          },
-          {
-            "type": "SYMBOL",
-            "name": "_END_IF"
-          },
-          {
-            "type": "CHOICE",
-            "members": [
-              {
-                "type": "STRING",
-                "value": "."
-              },
-              {
-                "type": "BLANK"
-              }
-            ]
-          }
-        ]
-      }
-    },
-    "_if": {
       "type": "SEQ",
       "members": [
         {
@@ -4379,44 +4284,36 @@
             "type": "SYMBOL",
             "name": "_statement"
           }
-        }
-      ]
-    },
-    "_else": {
-      "type": "PREC_RIGHT",
-      "value": 15,
-      "content": {
-        "type": "SEQ",
-        "members": [
-          {
-            "type": "SYMBOL",
-            "name": "_ELSE"
-          },
-          {
-            "type": "REPEAT",
-            "content": {
-              "type": "CHOICE",
+        },
+        {
+          "type": "CHOICE",
+          "members": [
+            {
+              "type": "SEQ",
               "members": [
                 {
                   "type": "SYMBOL",
-                  "name": "comment"
+                  "name": "_ELSE"
                 },
                 {
-                  "type": "SYMBOL",
-                  "name": "_BLANK_LINE"
+                  "type": "REPEAT",
+                  "content": {
+                    "type": "SYMBOL",
+                    "name": "_statement"
+                  }
                 }
               ]
+            },
+            {
+              "type": "BLANK"
             }
-          },
-          {
-            "type": "REPEAT",
-            "content": {
-              "type": "SYMBOL",
-              "name": "_statement"
-            }
-          }
-        ]
-      }
+          ]
+        },
+        {
+          "type": "SYMBOL",
+          "name": "_END_IF"
+        }
+      ]
     },
     "_WHEN": {
       "type": "CHOICE",
@@ -6342,6 +6239,19 @@
             "type": "SYMBOL",
             "name": "variable"
           }
+        },
+        {
+          "type": "CHOICE",
+          "members": [
+            {
+              "type": "STRING",
+              "value": "END-STRING"
+            },
+            {
+              "type": "STRING",
+              "value": "end-string"
+            }
+          ]
         }
       ]
     },
