@@ -608,6 +608,10 @@
           "named": true
         },
         {
+          "type": "goback_statement",
+          "named": true
+        },
+        {
           "type": "goto_statement",
           "named": true
         },
@@ -1021,6 +1025,11 @@
     "fields": {}
   },
   {
+    "type": "goback_statement",
+    "named": true,
+    "fields": {}
+  },
+  {
     "type": "goto_statement",
     "named": true,
     "fields": {
@@ -1145,6 +1154,10 @@
         },
         {
           "type": "exit_statement",
+          "named": true
+        },
+        {
+          "type": "goback_statement",
           "named": true
         },
         {
@@ -1735,6 +1748,10 @@
           "named": true
         },
         {
+          "type": "goback_statement",
+          "named": true
+        },
+        {
           "type": "goto_statement",
           "named": true
         },
@@ -1904,6 +1921,10 @@
         },
         {
           "type": "expr",
+          "named": true
+        },
+        {
+          "type": "goback_statement",
           "named": true
         },
         {
@@ -2331,6 +2352,10 @@
           "named": true
         },
         {
+          "type": "goback_statement",
+          "named": true
+        },
+        {
           "type": "goto_statement",
           "named": true
         },
@@ -2521,6 +2546,10 @@
           "named": true
         },
         {
+          "type": "goback_statement",
+          "named": true
+        },
+        {
           "type": "goto_statement",
           "named": true
         },
@@ -2668,6 +2697,10 @@
         },
         {
           "type": "exit_statement",
+          "named": true
+        },
+        {
+          "type": "goback_statement",
           "named": true
         },
         {
@@ -3410,6 +3443,10 @@
     "named": false
   },
   {
+    "type": "GOBACK",
+    "named": false
+  },
+  {
     "type": "GREATER",
     "named": false
   },
@@ -3955,6 +3992,10 @@
   },
   {
     "type": "go",
+    "named": false
+  },
+  {
+    "type": "goback",
     "named": false
   },
   {

@@ -3921,6 +3921,10 @@
               },
               {
                 "type": "SYMBOL",
+                "name": "goback_statement"
+              },
+              {
+                "type": "SYMBOL",
                 "name": "stop_run_statement"
               },
               {
@@ -5800,6 +5804,19 @@
         {
           "type": "STRING",
           "value": "."
+        }
+      ]
+    },
+    "goback_statement": {
+      "type": "CHOICE",
+      "members": [
+        {
+          "type": "STRING",
+          "value": "GOBACK"
+        },
+        {
+          "type": "STRING",
+          "value": "goback"
         }
       ]
     },
