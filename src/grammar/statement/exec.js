@@ -12,25 +12,33 @@ module.exports = {
   // ╰──────────────────────────────────────────────────────────╯
 
   exec_sql: ($) =>
-    seq(
-      seq($._EXEC, kw("SQL")),
-      repeat($._exec_sql_body),
-      kw("END-EXEC"),
-    ),
+    prec.right(seq($._EXEC, kw("SQL"), repeat($._exec_sql_body), kw("END-EXEC"))),
 
   _exec_sql_body: ($) => prec.right(15, seq($._exec_sql_statements, C($))),
   _exec_sql_statements: ($) =>
     choice(
+      field(
+        "declare",
+        seq(kw("DECLARE"), $.cursor_name, kw("CURSOR"), kw("FOR")),
+      ),
       field("select", seq(kw("SELECT"), sep1($.tab_field, ","))),
       field("into", seq(kw("INTO"), sep1(seq(":", $.variable), ","))),
       field("from", seq(kw("FROM"), $.tab_name)),
       field("where", seq(kw("WHERE"), $.expr)),
+      field(
+        "order",
+        seq(
+          kw("ORDER"),
+          kw("BY"),
+          sep1(seq($.tab_field, op(choice(kw("ASC"), kw("DEC")))), ","),
+        ),
+      ),
     ),
 
-  _tab_name: (_) => /[a-zA-Z0-9_]+/,
-  tab_field: ($) => $._tab_name,
+  cursor_name: (_) => /[a-zA-Z0-9_]+/,
+  tab_field: (_) => /[a-zA-Z0-9_]+/,
   tab_name: ($) => seq($._tab_name, ".", $._tab_name),
-
+  _tab_name: (_) => /[a-zA-Z0-9_]+/,
 
   // ╭──────────────────────────────────────────────────────────╮
   // │                        EXEC CICS                         │

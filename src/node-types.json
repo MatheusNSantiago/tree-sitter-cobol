@@ -285,6 +285,11 @@
     }
   },
   {
+    "type": "cursor_name",
+    "named": true,
+    "fields": {}
+  },
+  {
     "type": "data_description",
     "named": true,
     "fields": {},
@@ -701,6 +706,40 @@
     "type": "exec_sql",
     "named": true,
     "fields": {
+      "declare": {
+        "multiple": true,
+        "required": false,
+        "types": [
+          {
+            "type": "CURSOR",
+            "named": false
+          },
+          {
+            "type": "DECLARE",
+            "named": false
+          },
+          {
+            "type": "FOR",
+            "named": false
+          },
+          {
+            "type": "cursor",
+            "named": false
+          },
+          {
+            "type": "cursor_name",
+            "named": true
+          },
+          {
+            "type": "declare",
+            "named": false
+          },
+          {
+            "type": "for",
+            "named": false
+          }
+        ]
+      },
       "from": {
         "multiple": true,
         "required": false,
@@ -741,6 +780,52 @@
           },
           {
             "type": "variable",
+            "named": true
+          }
+        ]
+      },
+      "order": {
+        "multiple": true,
+        "required": false,
+        "types": [
+          {
+            "type": ",",
+            "named": false
+          },
+          {
+            "type": "ASC",
+            "named": false
+          },
+          {
+            "type": "BY",
+            "named": false
+          },
+          {
+            "type": "DEC",
+            "named": false
+          },
+          {
+            "type": "ORDER",
+            "named": false
+          },
+          {
+            "type": "asc",
+            "named": false
+          },
+          {
+            "type": "by",
+            "named": false
+          },
+          {
+            "type": "dec",
+            "named": false
+          },
+          {
+            "type": "order",
+            "named": false
+          },
+          {
+            "type": "tab_field",
             "named": true
           }
         ]
@@ -3235,6 +3320,10 @@
     "named": false
   },
   {
+    "type": "ASC",
+    "named": false
+  },
+  {
     "type": "ASSIGN",
     "named": false
   },
@@ -3323,11 +3412,23 @@
     "named": false
   },
   {
+    "type": "CURSOR",
+    "named": false
+  },
+  {
     "type": "DATA",
     "named": false
   },
   {
+    "type": "DEC",
+    "named": false
+  },
+  {
     "type": "DECIMAL-POINT",
+    "named": false
+  },
+  {
+    "type": "DECLARE",
     "named": false
   },
   {
@@ -3428,6 +3529,10 @@
   },
   {
     "type": "FLENGTH",
+    "named": false
+  },
+  {
+    "type": "FOR",
     "named": false
   },
   {
@@ -3564,6 +3669,10 @@
   },
   {
     "type": "OR",
+    "named": false
+  },
+  {
+    "type": "ORDER",
     "named": false
   },
   {
@@ -3779,6 +3888,10 @@
     "named": false
   },
   {
+    "type": "asc",
+    "named": false
+  },
+  {
     "type": "assign",
     "named": false
   },
@@ -3871,7 +3984,15 @@
     "named": false
   },
   {
+    "type": "cursor",
+    "named": false
+  },
+  {
     "type": "data",
+    "named": false
+  },
+  {
+    "type": "dec",
     "named": false
   },
   {
@@ -3880,6 +4001,10 @@
   },
   {
     "type": "decimal-point",
+    "named": false
+  },
+  {
+    "type": "declare",
     "named": false
   },
   {
@@ -3980,6 +4105,10 @@
   },
   {
     "type": "flength",
+    "named": false
+  },
+  {
+    "type": "for",
     "named": false
   },
   {
@@ -4124,6 +4253,10 @@
   },
   {
     "type": "or",
+    "named": false
+  },
+  {
+    "type": "order",
     "named": false
   },
   {
