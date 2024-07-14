@@ -1,3 +1,4 @@
+bindings
 # Rust artifacts
 Cargo.lock
 target/

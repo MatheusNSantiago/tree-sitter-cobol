@@ -10,13 +10,13 @@ module.exports = {
 
   // if_statement: ($) => choice($._if_inline, $._if_block),
   if_statement: ($) =>
-    seq(
+    prec.right(seq(
       seq($._IF, field("condition", $.expr), op($._THEN)),
       C($),
       repeat($._statement),
       op(seq($._ELSE, repeat($._statement))),
-      $._END_IF,
-    ),
+      op($._END_IF),
+    )),
 
   // _if_inline: ($) =>
   //   prec(
