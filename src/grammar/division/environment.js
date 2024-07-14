@@ -2,8 +2,12 @@ module.exports = {
   environment_division: ($) =>
     seq(
       seq(field("division_header", $.environment_division_header), "."),
-      optional($.configuration_section),
-      optional($.input_output_section),
+      repeat(
+        choice(
+          $.configuration_section, //
+          $.input_output_section,
+        ),
+      ),
     ),
 
   environment_division_header: ($) => seq(kw("ENVIRONMENT"), $._DIVISION),
