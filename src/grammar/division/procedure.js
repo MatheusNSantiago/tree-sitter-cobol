@@ -4,6 +4,7 @@ module.exports = {
       field("division_header", $.procedure_division_header),
       op($.procedure_using),
       ".",
+      repeat($.copy_statement),
       repeat($.paragraph),
       repeat($.section),
     ),

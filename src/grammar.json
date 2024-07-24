@@ -1657,6 +1657,13 @@
           "type": "REPEAT",
           "content": {
             "type": "SYMBOL",
+            "name": "copy_statement"
+          }
+        },
+        {
+          "type": "REPEAT",
+          "content": {
+            "type": "SYMBOL",
             "name": "paragraph"
           }
         },

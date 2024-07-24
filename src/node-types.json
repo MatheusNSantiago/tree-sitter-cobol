@@ -2318,6 +2318,10 @@
       "required": false,
       "types": [
         {
+          "type": "copy_statement",
+          "named": true
+        },
+        {
           "type": "paragraph",
           "named": true
         },
