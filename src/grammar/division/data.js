@@ -64,8 +64,8 @@ module.exports = {
 
   data_description: ($) =>
     seq(
-      $.level_number,
-      $.data_name,
+      field("level", $.level_number),
+      field("name", $.data_name),
       optional(
         // optional pq pode ser um lider de group
         choice(
