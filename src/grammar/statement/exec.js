@@ -35,7 +35,7 @@ module.exports = {
       ),
     ),
 
-  cursor_name: (_) => /[a-zA-Z0-9_]+/,
+  cursor_name: (_) => /[a-zA-Z0-9_-]+/,
   tab_field: (_) => /[a-zA-Z0-9_]+/,
   tab_name: ($) => seq($._tab_name, ".", $._tab_name),
   _tab_name: (_) => /[a-zA-Z0-9_]+/,
