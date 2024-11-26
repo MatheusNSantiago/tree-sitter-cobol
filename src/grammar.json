@@ -1173,13 +1173,8 @@
       "value": "[xX]+(\\([0-9]+\\))?"
     },
     "pic_9": {
-      "type": "SEQ",
-      "members": [
-        {
-          "type": "PATTERN",
-          "value": "[sS]?9+(\\([0-9]+\\))?([vV]9+(\\([0-9]+\\))?)?"
-        }
-      ]
+      "type": "PATTERN",
+      "value": "[sS]?9+(\\([0-9]+\\))?([vV]9+(\\([0-9]+\\))?)?"
     },
     "comp": {
       "type": "CHOICE",
@@ -1958,7 +1953,7 @@
     },
     "_WORD": {
       "type": "PATTERN",
-      "value": "[a-zA-Z0-9-]+"
+      "value": "([0-9][a-zA-Z0-9-]*[a-zA-Z][a-zA-Z0-9-]*)|([a-zA-Z][a-zA-Z0-9-]*)"
     },
     "section_name": {
       "type": "SYMBOL",
@@ -6654,11 +6649,173 @@
           ]
         },
         {
-          "type": "REPEAT1",
+          "type": "FIELD",
+          "name": "variable",
+          "content": {
+            "type": "REPEAT1",
+            "content": {
+              "type": "SYMBOL",
+              "name": "variable"
+            }
+          }
+        },
+        {
+          "type": "FIELD",
+          "name": "replacing",
+          "content": {
+            "type": "CHOICE",
+            "members": [
+              {
+                "type": "SEQ",
+                "members": [
+                  {
+                    "type": "CHOICE",
+                    "members": [
+                      {
+                        "type": "STRING",
+                        "value": "REPLACING"
+                      },
+                      {
+                        "type": "STRING",
+                        "value": "replacing"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "REPEAT1",
+                    "content": {
+                      "type": "SYMBOL",
+                      "name": "initialize_replacing_item"
+                    }
+                  }
+                ]
+              },
+              {
+                "type": "BLANK"
+              }
+            ]
+          }
+        }
+      ]
+    },
+    "initialize_replacing_item": {
+      "type": "SEQ",
+      "members": [
+        {
+          "type": "FIELD",
+          "name": "category",
           "content": {
             "type": "SYMBOL",
-            "name": "variable"
+            "name": "_initialize_category"
           }
+        },
+        {
+          "type": "SYMBOL",
+          "name": "_BY"
+        },
+        {
+          "type": "FIELD",
+          "name": "by",
+          "content": {
+            "type": "SYMBOL",
+            "name": "_value"
+          }
+        }
+      ]
+    },
+    "_initialize_category": {
+      "type": "CHOICE",
+      "members": [
+        {
+          "type": "CHOICE",
+          "members": [
+            {
+              "type": "STRING",
+              "value": "ALPHABETIC"
+            },
+            {
+              "type": "STRING",
+              "value": "alphabetic"
+            }
+          ]
+        },
+        {
+          "type": "CHOICE",
+          "members": [
+            {
+              "type": "STRING",
+              "value": "ALPHANUMERIC"
+            },
+            {
+              "type": "STRING",
+              "value": "alphanumeric"
+            }
+          ]
+        },
+        {
+          "type": "CHOICE",
+          "members": [
+            {
+              "type": "STRING",
+              "value": "NUMERIC"
+            },
+            {
+              "type": "STRING",
+              "value": "numeric"
+            }
+          ]
+        },
+        {
+          "type": "CHOICE",
+          "members": [
+            {
+              "type": "STRING",
+              "value": "ALPHANUMERIC_EDITED"
+            },
+            {
+              "type": "STRING",
+              "value": "alphanumeric_edited"
+            }
+          ]
+        },
+        {
+          "type": "CHOICE",
+          "members": [
+            {
+              "type": "STRING",
+              "value": "NUMERIC_EDITED"
+            },
+            {
+              "type": "STRING",
+              "value": "numeric_edited"
+            }
+          ]
+        },
+        {
+          "type": "CHOICE",
+          "members": [
+            {
+              "type": "STRING",
+              "value": "NATIONAL"
+            },
+            {
+              "type": "STRING",
+              "value": "national"
+            }
+          ]
+        },
+        {
+          "type": "CHOICE",
+          "members": [
+            {
+              "type": "STRING",
+              "value": "NATIONAL_EDITED"
+            },
+            {
+              "type": "STRING",
+              "value": "national_edited"
+            }
+          ]
         }
       ]
     }

@@ -1,4 +1,7 @@
 bindings
+node-types.json
+parser.c
+
 # Rust artifacts
 Cargo.lock
 target/

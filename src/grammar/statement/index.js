@@ -100,7 +100,29 @@ module.exports = {
 
   initialize_statement: ($) =>
     seq(
-      kw("INITIALIZE"), //
-      repeat1($.variable),
+      kw("INITIALIZE"),
+      field("variable", repeat1($.variable)),
+      field(
+        "replacing",
+        op(seq(kw("REPLACING"), repeat1($.initialize_replacing_item))),
+      ),
+    ),
+
+  initialize_replacing_item: ($) =>
+    seq(
+      field("category", $._initialize_category),
+      $._BY,
+      field("by", $._value),
+    ),
+
+  _initialize_category: (_) =>
+    choice(
+      kw("ALPHABETIC"),
+      kw("ALPHANUMERIC"),
+      kw("NUMERIC"),
+      kw("ALPHANUMERIC_EDITED"),
+      kw("NUMERIC_EDITED"),
+      kw("NATIONAL"),
+      kw("NATIONAL_EDITED"),
     ),
 };

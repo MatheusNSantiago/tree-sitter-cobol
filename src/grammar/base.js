@@ -1,6 +1,8 @@
 module.exports = {
   WORD: ($) => $._WORD,
-  _WORD: (_) => /[a-zA-Z0-9-]+/,
+  // _WORD: (_) => /[a-zA-Z0-9-]+/,
+  _WORD: ($) =>
+    /([0-9][a-zA-Z0-9-]*[a-zA-Z][a-zA-Z0-9-]*)|([a-zA-Z][a-zA-Z0-9-]*)/,
 
   section_name: ($) => $._WORD,
   variable: ($) =>
