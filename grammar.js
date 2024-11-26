@@ -4,6 +4,7 @@ kw = (keyword) => choice(keyword.toUpperCase(), keyword.toLowerCase());
 
 module.exports = grammar({
   name: "cobol",
+  word: ($) => $._WORD,
   externals: ($) => [
     $._BLANK_LINE,
     $._WHITE_SPACES,

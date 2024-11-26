@@ -1,6 +1,7 @@
 {
   "$schema": "https://tree-sitter.github.io/tree-sitter/assets/schemas/grammar.schema.json",
   "name": "cobol",
+  "word": "_WORD",
   "rules": {
     "source_file": {
       "type": "SEQ",
@@ -978,6 +979,10 @@
                   {
                     "type": "SYMBOL",
                     "name": "copy_statement"
+                  },
+                  {
+                    "type": "SYMBOL",
+                    "name": "_exec_statement"
                   }
                 ]
               },
@@ -5116,19 +5121,24 @@
         "type": "SEQ",
         "members": [
           {
-            "type": "SYMBOL",
-            "name": "_EXEC"
-          },
-          {
-            "type": "CHOICE",
+            "type": "SEQ",
             "members": [
               {
-                "type": "STRING",
-                "value": "SQL"
+                "type": "SYMBOL",
+                "name": "_EXEC"
               },
               {
-                "type": "STRING",
-                "value": "sql"
+                "type": "CHOICE",
+                "members": [
+                  {
+                    "type": "STRING",
+                    "value": "SQL"
+                  },
+                  {
+                    "type": "STRING",
+                    "value": "sql"
+                  }
+                ]
               }
             ]
           },
@@ -5220,6 +5230,45 @@
                   {
                     "type": "STRING",
                     "value": "cursor"
+                  }
+                ]
+              },
+              {
+                "type": "CHOICE",
+                "members": [
+                  {
+                    "type": "SEQ",
+                    "members": [
+                      {
+                        "type": "CHOICE",
+                        "members": [
+                          {
+                            "type": "STRING",
+                            "value": "WITH"
+                          },
+                          {
+                            "type": "STRING",
+                            "value": "with"
+                          }
+                        ]
+                      },
+                      {
+                        "type": "CHOICE",
+                        "members": [
+                          {
+                            "type": "STRING",
+                            "value": "HOLD"
+                          },
+                          {
+                            "type": "STRING",
+                            "value": "hold"
+                          }
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "type": "BLANK"
                   }
                 ]
               },
@@ -5399,6 +5448,79 @@
               {
                 "type": "SYMBOL",
                 "name": "expr"
+              }
+            ]
+          }
+        },
+        {
+          "type": "FIELD",
+          "name": "limit",
+          "content": {
+            "type": "SEQ",
+            "members": [
+              {
+                "type": "CHOICE",
+                "members": [
+                  {
+                    "type": "STRING",
+                    "value": "FETCH"
+                  },
+                  {
+                    "type": "STRING",
+                    "value": "fetch"
+                  }
+                ]
+              },
+              {
+                "type": "CHOICE",
+                "members": [
+                  {
+                    "type": "STRING",
+                    "value": "FIRST"
+                  },
+                  {
+                    "type": "STRING",
+                    "value": "first"
+                  }
+                ]
+              },
+              {
+                "type": "SYMBOL",
+                "name": "number"
+              },
+              {
+                "type": "CHOICE",
+                "members": [
+                  {
+                    "type": "STRING",
+                    "value": "ROWS"
+                  },
+                  {
+                    "type": "STRING",
+                    "value": "rows"
+                  }
+                ]
+              },
+              {
+                "type": "CHOICE",
+                "members": [
+                  {
+                    "type": "CHOICE",
+                    "members": [
+                      {
+                        "type": "STRING",
+                        "value": "ONLY"
+                      },
+                      {
+                        "type": "STRING",
+                        "value": "only"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "BLANK"
+                  }
+                ]
               }
             ]
           }

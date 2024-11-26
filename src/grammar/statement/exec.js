@@ -1,4 +1,5 @@
 paren = (thing) => seq("(", thing, ")");
+opseq = (...things) => optional(seq(...things));
 function sep1(rule, separator) {
   return seq(rule, repeat(seq(separator, rule)));
 }
@@ -12,19 +13,36 @@ module.exports = {
   // ╰──────────────────────────────────────────────────────────╯
 
   exec_sql: ($) =>
-    prec.right(seq($._EXEC, kw("SQL"), repeat($._exec_sql_body), kw("END-EXEC"))),
+    prec.right(
+      seq(
+        seq($._EXEC, kw("SQL")),
+        repeat($._exec_sql_body), //
+        kw("END-EXEC"),
+      ),
+    ),
 
   _exec_sql_body: ($) => prec.right(15, seq($._exec_sql_statements, C($))),
+
   _exec_sql_statements: ($) =>
     choice(
       field(
         "declare",
-        seq(kw("DECLARE"), $.cursor_name, kw("CURSOR"), kw("FOR")),
+        seq(
+          kw("DECLARE"),
+          $.cursor_name,
+          kw("CURSOR"),
+          opseq(kw("WITH"), kw("HOLD")),
+          kw("FOR"),
+        ),
       ),
       field("select", seq(kw("SELECT"), sep1($.tab_field, ","))),
       field("into", seq(kw("INTO"), sep1(seq(":", $.variable), ","))),
       field("from", seq(kw("FROM"), $.tab_name)),
       field("where", seq(kw("WHERE"), $.expr)),
+      field(
+        "limit",
+        seq(kw("FETCH"), kw("FIRST"), $.number, kw("ROWS"), op(kw("ONLY"))),
+      ),
       field(
         "order",
         seq(

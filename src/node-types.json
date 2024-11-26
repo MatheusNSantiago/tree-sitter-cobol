@@ -538,6 +538,14 @@
             "named": false
           },
           {
+            "type": "HOLD",
+            "named": false
+          },
+          {
+            "type": "WITH",
+            "named": false
+          },
+          {
             "type": "cursor",
             "named": false
           },
@@ -551,6 +559,14 @@
           },
           {
             "type": "for",
+            "named": false
+          },
+          {
+            "type": "hold",
+            "named": false
+          },
+          {
+            "type": "with",
             "named": false
           }
         ]
@@ -596,6 +612,48 @@
           {
             "type": "variable",
             "named": true
+          }
+        ]
+      },
+      "limit": {
+        "multiple": true,
+        "required": false,
+        "types": [
+          {
+            "type": "FETCH",
+            "named": false
+          },
+          {
+            "type": "FIRST",
+            "named": false
+          },
+          {
+            "type": "ONLY",
+            "named": false
+          },
+          {
+            "type": "ROWS",
+            "named": false
+          },
+          {
+            "type": "fetch",
+            "named": false
+          },
+          {
+            "type": "first",
+            "named": false
+          },
+          {
+            "type": "number",
+            "named": true
+          },
+          {
+            "type": "only",
+            "named": false
+          },
+          {
+            "type": "rows",
+            "named": false
           }
         ]
       },
@@ -2754,6 +2812,14 @@
         {
           "type": "data_description",
           "named": true
+        },
+        {
+          "type": "exec_cics",
+          "named": true
+        },
+        {
+          "type": "exec_sql",
+          "named": true
         }
       ]
     }
@@ -3082,6 +3148,10 @@
     "named": false
   },
   {
+    "type": "FETCH",
+    "named": false
+  },
+  {
     "type": "FILE",
     "named": false
   },
@@ -3091,6 +3161,10 @@
   },
   {
     "type": "FILLER",
+    "named": false
+  },
+  {
+    "type": "FIRST",
     "named": false
   },
   {
@@ -3123,6 +3197,10 @@
   },
   {
     "type": "HIGH-VALUE",
+    "named": false
+  },
+  {
+    "type": "HOLD",
     "named": false
   },
   {
@@ -3242,6 +3320,10 @@
     "named": false
   },
   {
+    "type": "ONLY",
+    "named": false
+  },
+  {
     "type": "OPEN",
     "named": false
   },
@@ -3311,6 +3393,10 @@
   },
   {
     "type": "RETURN",
+    "named": false
+  },
+  {
+    "type": "ROWS",
     "named": false
   },
   {
@@ -3423,6 +3509,10 @@
   },
   {
     "type": "WHERE",
+    "named": false
+  },
+  {
+    "type": "WITH",
     "named": false
   },
   {
@@ -3686,6 +3776,10 @@
     "named": false
   },
   {
+    "type": "fetch",
+    "named": false
+  },
+  {
     "type": "file",
     "named": false
   },
@@ -3695,6 +3789,10 @@
   },
   {
     "type": "filler",
+    "named": false
+  },
+  {
+    "type": "first",
     "named": false
   },
   {
@@ -3727,6 +3825,10 @@
   },
   {
     "type": "high-value",
+    "named": false
+  },
+  {
+    "type": "hold",
     "named": false
   },
   {
@@ -3854,6 +3956,10 @@
     "named": false
   },
   {
+    "type": "only",
+    "named": false
+  },
+  {
     "type": "open",
     "named": false
   },
@@ -3935,6 +4041,10 @@
   },
   {
     "type": "return",
+    "named": false
+  },
+  {
+    "type": "rows",
     "named": false
   },
   {
@@ -4051,6 +4161,10 @@
   },
   {
     "type": "where",
+    "named": false
+  },
+  {
+    "type": "with",
     "named": false
   },
   {
