@@ -1,5 +1,4 @@
 {
-  "$schema": "https://tree-sitter.github.io/tree-sitter/assets/schemas/grammar.schema.json",
   "name": "cobol",
   "word": "_WORD",
   "rules": {
@@ -5215,139 +5214,75 @@
           "type": "FIELD",
           "name": "declare",
           "content": {
-            "type": "SEQ",
-            "members": [
-              {
-                "type": "CHOICE",
-                "members": [
-                  {
-                    "type": "STRING",
-                    "value": "DECLARE"
-                  },
-                  {
-                    "type": "STRING",
-                    "value": "declare"
-                  }
-                ]
-              },
-              {
-                "type": "SYMBOL",
-                "name": "cursor_name"
-              },
-              {
-                "type": "CHOICE",
-                "members": [
-                  {
-                    "type": "STRING",
-                    "value": "CURSOR"
-                  },
-                  {
-                    "type": "STRING",
-                    "value": "cursor"
-                  }
-                ]
-              },
-              {
-                "type": "CHOICE",
-                "members": [
-                  {
-                    "type": "SEQ",
-                    "members": [
-                      {
-                        "type": "CHOICE",
-                        "members": [
-                          {
-                            "type": "STRING",
-                            "value": "WITH"
-                          },
-                          {
-                            "type": "STRING",
-                            "value": "with"
-                          }
-                        ]
-                      },
-                      {
-                        "type": "CHOICE",
-                        "members": [
-                          {
-                            "type": "STRING",
-                            "value": "HOLD"
-                          },
-                          {
-                            "type": "STRING",
-                            "value": "hold"
-                          }
-                        ]
-                      }
-                    ]
-                  },
-                  {
-                    "type": "BLANK"
-                  }
-                ]
-              },
-              {
-                "type": "CHOICE",
-                "members": [
-                  {
-                    "type": "STRING",
-                    "value": "FOR"
-                  },
-                  {
-                    "type": "STRING",
-                    "value": "for"
-                  }
-                ]
-              }
-            ]
+            "type": "SYMBOL",
+            "name": "_sql_declare"
           }
         },
         {
-          "type": "FIELD",
-          "name": "select",
-          "content": {
-            "type": "SEQ",
-            "members": [
-              {
-                "type": "CHOICE",
-                "members": [
-                  {
-                    "type": "STRING",
-                    "value": "SELECT"
-                  },
-                  {
-                    "type": "STRING",
-                    "value": "select"
-                  }
-                ]
-              },
-              {
-                "type": "SEQ",
-                "members": [
-                  {
-                    "type": "SYMBOL",
-                    "name": "tab_field"
-                  },
-                  {
-                    "type": "REPEAT",
-                    "content": {
-                      "type": "SEQ",
-                      "members": [
-                        {
-                          "type": "STRING",
-                          "value": ","
-                        },
-                        {
-                          "type": "SYMBOL",
-                          "name": "tab_field"
-                        }
-                      ]
-                    }
-                  }
-                ]
+          "type": "SEQ",
+          "members": [
+            {
+              "type": "FIELD",
+              "name": "operation",
+              "content": {
+                "type": "SYMBOL",
+                "name": "sql_operation"
               }
-            ]
-          }
+            },
+            {
+              "type": "CHOICE",
+              "members": [
+                {
+                  "type": "SEQ",
+                  "members": [
+                    {
+                      "type": "SYMBOL",
+                      "name": "tab_field"
+                    },
+                    {
+                      "type": "REPEAT",
+                      "content": {
+                        "type": "SEQ",
+                        "members": [
+                          {
+                            "type": "STRING",
+                            "value": ","
+                          },
+                          {
+                            "type": "SYMBOL",
+                            "name": "tab_field"
+                          }
+                        ]
+                      }
+                    }
+                  ]
+                },
+                {
+                  "type": "BLANK"
+                }
+              ]
+            },
+            {
+              "type": "CHOICE",
+              "members": [
+                {
+                  "type": "SYMBOL",
+                  "name": "_FROM"
+                },
+                {
+                  "type": "BLANK"
+                }
+              ]
+            },
+            {
+              "type": "FIELD",
+              "name": "table",
+              "content": {
+                "type": "SYMBOL",
+                "name": "tab_name"
+              }
+            }
+          ]
         },
         {
           "type": "FIELD",
@@ -5405,6 +5340,53 @@
                               "name": "variable"
                             }
                           ]
+                        }
+                      ]
+                    }
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "type": "FIELD",
+          "name": "set",
+          "content": {
+            "type": "SEQ",
+            "members": [
+              {
+                "type": "CHOICE",
+                "members": [
+                  {
+                    "type": "STRING",
+                    "value": "SET"
+                  },
+                  {
+                    "type": "STRING",
+                    "value": "set"
+                  }
+                ]
+              },
+              {
+                "type": "SEQ",
+                "members": [
+                  {
+                    "type": "SYMBOL",
+                    "name": "expr"
+                  },
+                  {
+                    "type": "REPEAT",
+                    "content": {
+                      "type": "SEQ",
+                      "members": [
+                        {
+                          "type": "STRING",
+                          "value": ","
+                        },
+                        {
+                          "type": "SYMBOL",
+                          "name": "expr"
                         }
                       ]
                     }
@@ -5686,6 +5668,137 @@
               }
             ]
           }
+        }
+      ]
+    },
+    "_sql_declare": {
+      "type": "SEQ",
+      "members": [
+        {
+          "type": "CHOICE",
+          "members": [
+            {
+              "type": "STRING",
+              "value": "DECLARE"
+            },
+            {
+              "type": "STRING",
+              "value": "declare"
+            }
+          ]
+        },
+        {
+          "type": "SYMBOL",
+          "name": "cursor_name"
+        },
+        {
+          "type": "CHOICE",
+          "members": [
+            {
+              "type": "STRING",
+              "value": "CURSOR"
+            },
+            {
+              "type": "STRING",
+              "value": "cursor"
+            }
+          ]
+        },
+        {
+          "type": "CHOICE",
+          "members": [
+            {
+              "type": "SEQ",
+              "members": [
+                {
+                  "type": "CHOICE",
+                  "members": [
+                    {
+                      "type": "STRING",
+                      "value": "WITH"
+                    },
+                    {
+                      "type": "STRING",
+                      "value": "with"
+                    }
+                  ]
+                },
+                {
+                  "type": "CHOICE",
+                  "members": [
+                    {
+                      "type": "STRING",
+                      "value": "HOLD"
+                    },
+                    {
+                      "type": "STRING",
+                      "value": "hold"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "BLANK"
+            }
+          ]
+        },
+        {
+          "type": "CHOICE",
+          "members": [
+            {
+              "type": "STRING",
+              "value": "FOR"
+            },
+            {
+              "type": "STRING",
+              "value": "for"
+            }
+          ]
+        }
+      ]
+    },
+    "sql_operation": {
+      "type": "CHOICE",
+      "members": [
+        {
+          "type": "CHOICE",
+          "members": [
+            {
+              "type": "STRING",
+              "value": "SELECT"
+            },
+            {
+              "type": "STRING",
+              "value": "select"
+            }
+          ]
+        },
+        {
+          "type": "CHOICE",
+          "members": [
+            {
+              "type": "STRING",
+              "value": "UPDATE"
+            },
+            {
+              "type": "STRING",
+              "value": "update"
+            }
+          ]
+        },
+        {
+          "type": "CHOICE",
+          "members": [
+            {
+              "type": "STRING",
+              "value": "DELETE"
+            },
+            {
+              "type": "STRING",
+              "value": "delete"
+            }
+          ]
         }
       ]
     },
@@ -6330,6 +6443,19 @@
               "value": "nodata"
             }
           ]
+        }
+      ]
+    },
+    "_FROM": {
+      "type": "CHOICE",
+      "members": [
+        {
+          "type": "STRING",
+          "value": "FROM"
+        },
+        {
+          "type": "STRING",
+          "value": "from"
         }
       ]
     },

@@ -5,6 +5,96 @@
     "fields": {}
   },
   {
+    "type": "add_exp",
+    "named": true,
+    "fields": {
+      "left": {
+        "multiple": true,
+        "required": true,
+        "types": [
+          {
+            "type": "(",
+            "named": false
+          },
+          {
+            "type": ")",
+            "named": false
+          },
+          {
+            "type": "add_exp",
+            "named": true
+          },
+          {
+            "type": "div_exp",
+            "named": true
+          },
+          {
+            "type": "mul_exp",
+            "named": true
+          },
+          {
+            "type": "negative_exp",
+            "named": true
+          },
+          {
+            "type": "positive_exp",
+            "named": true
+          },
+          {
+            "type": "pow_exp",
+            "named": true
+          },
+          {
+            "type": "sub_exp",
+            "named": true
+          }
+        ]
+      },
+      "right": {
+        "multiple": true,
+        "required": true,
+        "types": [
+          {
+            "type": "(",
+            "named": false
+          },
+          {
+            "type": ")",
+            "named": false
+          },
+          {
+            "type": "add_exp",
+            "named": true
+          },
+          {
+            "type": "div_exp",
+            "named": true
+          },
+          {
+            "type": "mul_exp",
+            "named": true
+          },
+          {
+            "type": "negative_exp",
+            "named": true
+          },
+          {
+            "type": "positive_exp",
+            "named": true
+          },
+          {
+            "type": "pow_exp",
+            "named": true
+          },
+          {
+            "type": "sub_exp",
+            "named": true
+          }
+        ]
+      }
+    }
+  },
+  {
     "type": "add_statement",
     "named": true,
     "fields": {},
@@ -325,6 +415,96 @@
           "named": true
         }
       ]
+    }
+  },
+  {
+    "type": "div_exp",
+    "named": true,
+    "fields": {
+      "left": {
+        "multiple": true,
+        "required": true,
+        "types": [
+          {
+            "type": "(",
+            "named": false
+          },
+          {
+            "type": ")",
+            "named": false
+          },
+          {
+            "type": "add_exp",
+            "named": true
+          },
+          {
+            "type": "div_exp",
+            "named": true
+          },
+          {
+            "type": "mul_exp",
+            "named": true
+          },
+          {
+            "type": "negative_exp",
+            "named": true
+          },
+          {
+            "type": "positive_exp",
+            "named": true
+          },
+          {
+            "type": "pow_exp",
+            "named": true
+          },
+          {
+            "type": "sub_exp",
+            "named": true
+          }
+        ]
+      },
+      "right": {
+        "multiple": true,
+        "required": true,
+        "types": [
+          {
+            "type": "(",
+            "named": false
+          },
+          {
+            "type": ")",
+            "named": false
+          },
+          {
+            "type": "add_exp",
+            "named": true
+          },
+          {
+            "type": "div_exp",
+            "named": true
+          },
+          {
+            "type": "mul_exp",
+            "named": true
+          },
+          {
+            "type": "negative_exp",
+            "named": true
+          },
+          {
+            "type": "positive_exp",
+            "named": true
+          },
+          {
+            "type": "pow_exp",
+            "named": true
+          },
+          {
+            "type": "sub_exp",
+            "named": true
+          }
+        ]
+      }
     }
   },
   {
@@ -657,6 +837,16 @@
           }
         ]
       },
+      "operation": {
+        "multiple": true,
+        "required": false,
+        "types": [
+          {
+            "type": "sql_operation",
+            "named": true
+          }
+        ]
+      },
       "order": {
         "multiple": true,
         "required": false,
@@ -703,7 +893,7 @@
           }
         ]
       },
-      "select": {
+      "set": {
         "multiple": true,
         "required": false,
         "types": [
@@ -712,15 +902,25 @@
             "named": false
           },
           {
-            "type": "SELECT",
+            "type": "SET",
             "named": false
           },
           {
-            "type": "select",
-            "named": false
+            "type": "expr",
+            "named": true
           },
           {
-            "type": "tab_field",
+            "type": "set",
+            "named": false
+          }
+        ]
+      },
+      "table": {
+        "multiple": true,
+        "required": false,
+        "types": [
+          {
+            "type": "tab_name",
             "named": true
           }
         ]
@@ -750,6 +950,10 @@
       "types": [
         {
           "type": "comment",
+          "named": true
+        },
+        {
+          "type": "tab_field",
           "named": true
         }
       ]
@@ -1514,6 +1718,96 @@
     }
   },
   {
+    "type": "mul_exp",
+    "named": true,
+    "fields": {
+      "left": {
+        "multiple": true,
+        "required": true,
+        "types": [
+          {
+            "type": "(",
+            "named": false
+          },
+          {
+            "type": ")",
+            "named": false
+          },
+          {
+            "type": "add_exp",
+            "named": true
+          },
+          {
+            "type": "div_exp",
+            "named": true
+          },
+          {
+            "type": "mul_exp",
+            "named": true
+          },
+          {
+            "type": "negative_exp",
+            "named": true
+          },
+          {
+            "type": "positive_exp",
+            "named": true
+          },
+          {
+            "type": "pow_exp",
+            "named": true
+          },
+          {
+            "type": "sub_exp",
+            "named": true
+          }
+        ]
+      },
+      "right": {
+        "multiple": true,
+        "required": true,
+        "types": [
+          {
+            "type": "(",
+            "named": false
+          },
+          {
+            "type": ")",
+            "named": false
+          },
+          {
+            "type": "add_exp",
+            "named": true
+          },
+          {
+            "type": "div_exp",
+            "named": true
+          },
+          {
+            "type": "mul_exp",
+            "named": true
+          },
+          {
+            "type": "negative_exp",
+            "named": true
+          },
+          {
+            "type": "positive_exp",
+            "named": true
+          },
+          {
+            "type": "pow_exp",
+            "named": true
+          },
+          {
+            "type": "sub_exp",
+            "named": true
+          }
+        ]
+      }
+    }
+  },
+  {
     "type": "multiply_statement",
     "named": true,
     "fields": {},
@@ -1536,6 +1830,54 @@
     "type": "ne",
     "named": true,
     "fields": {}
+  },
+  {
+    "type": "negative_exp",
+    "named": true,
+    "fields": {
+      "value": {
+        "multiple": true,
+        "required": true,
+        "types": [
+          {
+            "type": "(",
+            "named": false
+          },
+          {
+            "type": ")",
+            "named": false
+          },
+          {
+            "type": "add_exp",
+            "named": true
+          },
+          {
+            "type": "div_exp",
+            "named": true
+          },
+          {
+            "type": "mul_exp",
+            "named": true
+          },
+          {
+            "type": "negative_exp",
+            "named": true
+          },
+          {
+            "type": "positive_exp",
+            "named": true
+          },
+          {
+            "type": "pow_exp",
+            "named": true
+          },
+          {
+            "type": "sub_exp",
+            "named": true
+          }
+        ]
+      }
+    }
   },
   {
     "type": "next_sentence",
@@ -1997,6 +2339,144 @@
           "named": true
         }
       ]
+    }
+  },
+  {
+    "type": "positive_exp",
+    "named": true,
+    "fields": {
+      "value": {
+        "multiple": true,
+        "required": true,
+        "types": [
+          {
+            "type": "(",
+            "named": false
+          },
+          {
+            "type": ")",
+            "named": false
+          },
+          {
+            "type": "add_exp",
+            "named": true
+          },
+          {
+            "type": "div_exp",
+            "named": true
+          },
+          {
+            "type": "mul_exp",
+            "named": true
+          },
+          {
+            "type": "negative_exp",
+            "named": true
+          },
+          {
+            "type": "positive_exp",
+            "named": true
+          },
+          {
+            "type": "pow_exp",
+            "named": true
+          },
+          {
+            "type": "sub_exp",
+            "named": true
+          }
+        ]
+      }
+    }
+  },
+  {
+    "type": "pow_exp",
+    "named": true,
+    "fields": {
+      "left": {
+        "multiple": true,
+        "required": true,
+        "types": [
+          {
+            "type": "(",
+            "named": false
+          },
+          {
+            "type": ")",
+            "named": false
+          },
+          {
+            "type": "add_exp",
+            "named": true
+          },
+          {
+            "type": "div_exp",
+            "named": true
+          },
+          {
+            "type": "mul_exp",
+            "named": true
+          },
+          {
+            "type": "negative_exp",
+            "named": true
+          },
+          {
+            "type": "positive_exp",
+            "named": true
+          },
+          {
+            "type": "pow_exp",
+            "named": true
+          },
+          {
+            "type": "sub_exp",
+            "named": true
+          }
+        ]
+      },
+      "right": {
+        "multiple": true,
+        "required": true,
+        "types": [
+          {
+            "type": "(",
+            "named": false
+          },
+          {
+            "type": ")",
+            "named": false
+          },
+          {
+            "type": "add_exp",
+            "named": true
+          },
+          {
+            "type": "div_exp",
+            "named": true
+          },
+          {
+            "type": "mul_exp",
+            "named": true
+          },
+          {
+            "type": "negative_exp",
+            "named": true
+          },
+          {
+            "type": "positive_exp",
+            "named": true
+          },
+          {
+            "type": "pow_exp",
+            "named": true
+          },
+          {
+            "type": "sub_exp",
+            "named": true
+          }
+        ]
+      }
     }
   },
   {
@@ -2622,7 +3102,6 @@
   {
     "type": "source_file",
     "named": true,
-    "root": true,
     "fields": {},
     "children": {
       "multiple": true,
@@ -2698,6 +3177,11 @@
     "fields": {}
   },
   {
+    "type": "sql_operation",
+    "named": true,
+    "fields": {}
+  },
+  {
     "type": "stop_run_statement",
     "named": true,
     "fields": {}
@@ -2746,6 +3230,96 @@
         "types": [
           {
             "type": "variable",
+            "named": true
+          }
+        ]
+      }
+    }
+  },
+  {
+    "type": "sub_exp",
+    "named": true,
+    "fields": {
+      "left": {
+        "multiple": true,
+        "required": true,
+        "types": [
+          {
+            "type": "(",
+            "named": false
+          },
+          {
+            "type": ")",
+            "named": false
+          },
+          {
+            "type": "add_exp",
+            "named": true
+          },
+          {
+            "type": "div_exp",
+            "named": true
+          },
+          {
+            "type": "mul_exp",
+            "named": true
+          },
+          {
+            "type": "negative_exp",
+            "named": true
+          },
+          {
+            "type": "positive_exp",
+            "named": true
+          },
+          {
+            "type": "pow_exp",
+            "named": true
+          },
+          {
+            "type": "sub_exp",
+            "named": true
+          }
+        ]
+      },
+      "right": {
+        "multiple": true,
+        "required": true,
+        "types": [
+          {
+            "type": "(",
+            "named": false
+          },
+          {
+            "type": ")",
+            "named": false
+          },
+          {
+            "type": "add_exp",
+            "named": true
+          },
+          {
+            "type": "div_exp",
+            "named": true
+          },
+          {
+            "type": "mul_exp",
+            "named": true
+          },
+          {
+            "type": "negative_exp",
+            "named": true
+          },
+          {
+            "type": "positive_exp",
+            "named": true
+          },
+          {
+            "type": "pow_exp",
+            "named": true
+          },
+          {
+            "type": "sub_exp",
             "named": true
           }
         ]
@@ -3065,6 +3639,10 @@
   },
   {
     "type": "DECLARE",
+    "named": false
+  },
+  {
+    "type": "DELETE",
     "named": false
   },
   {
@@ -3508,6 +4086,10 @@
     "named": false
   },
   {
+    "type": "UPDATE",
+    "named": false
+  },
+  {
     "type": "USING",
     "named": false
   },
@@ -3709,6 +4291,10 @@
   },
   {
     "type": "declare",
+    "named": false
+  },
+  {
+    "type": "delete",
     "named": false
   },
   {
@@ -4173,6 +4759,10 @@
   },
   {
     "type": "up",
+    "named": false
+  },
+  {
+    "type": "update",
     "named": false
   },
   {

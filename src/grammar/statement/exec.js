@@ -25,18 +25,15 @@ module.exports = {
 
   _exec_sql_statements: ($) =>
     choice(
-      field(
-        "declare",
-        seq(
-          kw("DECLARE"),
-          $.cursor_name,
-          kw("CURSOR"),
-          opseq(kw("WITH"), kw("HOLD")),
-          kw("FOR"),
-        ),
+      field("declare", $._sql_declare),
+      seq(
+        field("operation", $.sql_operation),
+        op(sep1($.tab_field, ",")), // insert
+        op($._FROM), // insert e delete
+        field("table", $.tab_name),
       ),
-      field("select", seq(kw("SELECT"), sep1($.tab_field, ","))),
       field("into", seq(kw("INTO"), sep1(seq(":", $.variable), ","))),
+      field("set", seq(kw("SET"), sep1($.expr, ","))),
       field("from", seq(kw("FROM"), $.tab_name)),
       field("where", seq(kw("WHERE"), $.expr)),
       field(
@@ -52,6 +49,17 @@ module.exports = {
         ),
       ),
     ),
+
+  _sql_declare: ($) =>
+    seq(
+      kw("DECLARE"),
+      $.cursor_name,
+      kw("CURSOR"),
+      opseq(kw("WITH"), kw("HOLD")),
+      kw("FOR"),
+    ),
+
+  sql_operation: () => choice(kw("SELECT"), kw("UPDATE"), kw("DELETE")),
 
   cursor_name: (_) => /[a-zA-Z0-9_-]+/,
   tab_field: (_) => /[a-zA-Z0-9_]+/,
@@ -95,4 +103,7 @@ module.exports = {
       kw("NOHANDLE"),
       kw("NODATA"),
     ),
+
+  // ╾───────────────────────────────────────────────────────────────────────────────────╼
+  _FROM: () => kw("FROM"),
 };
