@@ -78,12 +78,12 @@ module.exports = {
       field("from", repeat1($.string_item)),
       $._INTO,
       field("into", $.variable),
-      kw("END-STRING"),
+      op(kw("END-STRING")),
     ),
   string_item: ($) =>
-    choice(
+    seq(
       choice($.string, $.variable),
-      seq(kw("DELIMITED"), op($._BY), $._SIZE),
+      opseq(kw("DELIMITED"), op($._BY), $._SIZE),
     ),
   display_statement: ($) => seq(kw("DISPLAY"), repeat1($._expr_data)),
 

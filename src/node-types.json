@@ -2713,7 +2713,7 @@
     "fields": {},
     "children": {
       "multiple": false,
-      "required": false,
+      "required": true,
       "types": [
         {
           "type": "string",
@@ -3000,6 +3000,10 @@
     "named": false
   },
   {
+    "type": "COMMAREA",
+    "named": false
+  },
+  {
     "type": "COMP",
     "named": false
   },
@@ -3248,6 +3252,10 @@
     "named": false
   },
   {
+    "type": "LINK",
+    "named": false
+  },
+  {
     "type": "LINKAGE",
     "named": false
   },
@@ -3360,6 +3368,10 @@
     "named": false
   },
   {
+    "type": "PROGRAM",
+    "named": false
+  },
+  {
     "type": "PROGRAM-ID",
     "named": false
   },
@@ -3389,6 +3401,10 @@
   },
   {
     "type": "RESP",
+    "named": false
+  },
+  {
+    "type": "RESP2",
     "named": false
   },
   {
@@ -3613,6 +3629,10 @@
   },
   {
     "type": "comma",
+    "named": false
+  },
+  {
+    "type": "commarea",
     "named": false
   },
   {
@@ -3884,6 +3904,10 @@
     "named": true
   },
   {
+    "type": "link",
+    "named": false
+  },
+  {
     "type": "linkage",
     "named": false
   },
@@ -4008,6 +4032,10 @@
     "named": false
   },
   {
+    "type": "program",
+    "named": false
+  },
+  {
     "type": "program-id",
     "named": false
   },
@@ -4037,6 +4065,10 @@
   },
   {
     "type": "resp",
+    "named": false
+  },
+  {
+    "type": "resp2",
     "named": false
   },
   {

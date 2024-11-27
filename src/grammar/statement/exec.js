@@ -66,7 +66,7 @@ module.exports = {
       seq(
         $._EXEC,
         kw("CICS"),
-        optional(choice(kw("PUT"), kw("ASSIGN"), kw("GET"))),
+        optional(choice(kw("PUT"), kw("ASSIGN"), kw("GET"), kw("LINK"))),
       ),
       repeat($._exec_cics_body),
       kw("END-EXEC"),
@@ -75,13 +75,20 @@ module.exports = {
   _exec_cics_body: ($) => prec.right(15, seq($._exec_cics_statements, C($))),
   _exec_cics_statements: ($) =>
     choice(
+      seq(kw("PROGRAM"), paren($.variable)),
+      seq(kw("COMMAREA"), paren($.variable)),
       seq(kw("CONTAINER"), paren($.string)),
       seq(kw("INTO"), paren($.variable)),
       seq(kw("FROM"), paren($.variable)),
       seq(kw("CHANNEL"), paren($.variable)),
       seq(kw("RESP"), paren($.variable)),
+      seq(kw("RESP2"), paren($.variable)),
       seq(
         kw("FLENGTH"),
+        paren(choice(seq(kw("LENGTH"), kw("OF"), $.variable), $.variable)),
+      ),
+      seq(
+        kw("LENGTH"),
         paren(choice(seq(kw("LENGTH"), kw("OF"), $.variable), $.variable)),
       ),
       kw("RETURN"),
