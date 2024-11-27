@@ -210,7 +210,11 @@ module.exports = {
       seq(optional($._IS), $._NOT_GREATER, optional($._THAN)),
     ),
 
-  ne: ($) => seq(optional($._IS), $._NOT_EQUAL, optional($._TO)),
+  ne: ($) =>
+    choice(
+      seq(optional($._IS), $._NOT_EQUAL, optional($._TO)), //
+      "<>",
+    ),
 
   gt: ($) =>
     choice(

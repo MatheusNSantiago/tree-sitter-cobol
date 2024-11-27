@@ -1,4 +1,5 @@
 paren = (thing) => seq("(", thing, ")");
+parenOrNot = (thing) => choice(seq("(", thing, ")"), thing);
 opseq = (...things) => optional(seq(...things));
 function sep1(rule, separator) {
   return seq(rule, repeat(seq(separator, rule)));
@@ -26,20 +27,31 @@ module.exports = {
   _exec_sql_statements: ($) =>
     choice(
       field("declare", $._sql_declare),
-      seq(
-        field("operation", $.sql_operation),
-        op(sep1($.tab_field, ",")), // insert
-        op($._FROM), // insert e delete
-        field("table", $.tab_name),
+      choice(
+        seq(field("operation", $.SELECT), op($._sql_tab_fields)), // SELECT
+        seq(field("operation", $.UPDATE), field("table", $.tab_name)), // UPDATE
+        seq(field("operation", $.DELETE), $._FROM, field("table", $.tab_name)), // UPDATE
+        seq(
+          field("operation", $.INSERT),
+          $._INTO,
+          field("table", $.tab_name),
+          $._sql_tab_fields,
+        ), // INSERT
       ),
-      field("into", seq(kw("INTO"), sep1(seq(":", $.variable), ","))),
+      field("fetch", seq(kw("FETCH"), $.cursor_name)),
+      field("values", seq(kw("VALUES"), $._sql_values)),
+      field("into", seq($._INTO, $._sql_values)),
       field("set", seq(kw("SET"), sep1($.expr, ","))),
-      field("from", seq(kw("FROM"), $.tab_name)),
+      field("from", seq($._FROM, field("table", $.tab_name))),
       field("where", seq(kw("WHERE"), $.expr)),
       field(
-        "limit",
-        seq(kw("FETCH"), kw("FIRST"), $.number, kw("ROWS"), op(kw("ONLY"))),
+        "for_update",
+        seq($._FOR, kw("UPDATE"), opseq($._OF, $._sql_tab_fields)),
       ),
+      // field(
+      //   "limit",
+      //   seq(kw("FETCH"), kw("FIRST"), $.number, kw("ROWS"), op(kw("ONLY"))),
+      // ),
       field(
         "order",
         seq(
@@ -50,16 +62,17 @@ module.exports = {
       ),
     ),
 
+  _sql_tab_fields: ($) => parenOrNot(sep1($.tab_field, ",")),
+  _sql_values: ($) => parenOrNot(sep1(seq(":", $.variable), ",")),
+
   _sql_declare: ($) =>
     seq(
       kw("DECLARE"),
       $.cursor_name,
       kw("CURSOR"),
       opseq(kw("WITH"), kw("HOLD")),
-      kw("FOR"),
+      $._FOR,
     ),
-
-  sql_operation: () => choice(kw("SELECT"), kw("UPDATE"), kw("DELETE")),
 
   cursor_name: (_) => /[a-zA-Z0-9_-]+/,
   tab_field: (_) => /[a-zA-Z0-9_]+/,
@@ -86,18 +99,14 @@ module.exports = {
       seq(kw("PROGRAM"), paren($.variable)),
       seq(kw("COMMAREA"), paren($.variable)),
       seq(kw("CONTAINER"), paren($.string)),
-      seq(kw("INTO"), paren($.variable)),
-      seq(kw("FROM"), paren($.variable)),
+      seq($._INTO, paren($.variable)),
+      seq($._FROM, paren($.variable)),
       seq(kw("CHANNEL"), paren($.variable)),
       seq(kw("RESP"), paren($.variable)),
       seq(kw("RESP2"), paren($.variable)),
       seq(
-        kw("FLENGTH"),
-        paren(choice(seq(kw("LENGTH"), kw("OF"), $.variable), $.variable)),
-      ),
-      seq(
-        kw("LENGTH"),
-        paren(choice(seq(kw("LENGTH"), kw("OF"), $.variable), $.variable)),
+        $._LENGTH,
+        paren(choice(seq($._LENGTH, $._OF, $.variable), $.variable)),
       ),
       kw("RETURN"),
       kw("NOHANDLE"),
@@ -105,5 +114,13 @@ module.exports = {
     ),
 
   // ╾───────────────────────────────────────────────────────────────────────────────────╼
+  _OF: () => kw("OF"),
   _FROM: () => kw("FROM"),
+  _FOR: () => kw("FOR"),
+  _LENGTH: () => kw("LENGTH"),
+  _INTO: () => kw("INTO"),
+  SELECT: () => kw("SELECT"),
+  INSERT: () => kw("INSERT"),
+  UPDATE: () => kw("UPDATE"),
+  DELETE: () => kw("DELETE"),
 };
