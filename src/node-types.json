@@ -2140,16 +2140,43 @@
   {
     "type": "open_statement",
     "named": true,
-    "fields": {},
-    "children": {
-      "multiple": true,
-      "required": true,
-      "types": [
-        {
-          "type": "file_name",
-          "named": true
-        }
-      ]
+    "fields": {
+      "input": {
+        "multiple": true,
+        "required": false,
+        "types": [
+          {
+            "type": "INPUT",
+            "named": false
+          },
+          {
+            "type": "file_name",
+            "named": true
+          },
+          {
+            "type": "input",
+            "named": false
+          }
+        ]
+      },
+      "output": {
+        "multiple": true,
+        "required": false,
+        "types": [
+          {
+            "type": "OUTPUT",
+            "named": false
+          },
+          {
+            "type": "file_name",
+            "named": true
+          },
+          {
+            "type": "output",
+            "named": false
+          }
+        ]
+      }
     }
   },
   {

@@ -91,9 +91,9 @@ module.exports = {
     seq(
       kw("OPEN"),
       repeat1(
-        seq(
-          choice(kw("INPUT"), kw("OUTPUT")), //
-          repeat1($.file_name),
+        choice(
+          field("input", seq(kw("INPUT"), repeat1($.file_name))),
+          field("output", seq(kw("OUTPUT"), repeat1($.file_name))),
         ),
       ),
     ),

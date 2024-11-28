@@ -7243,44 +7243,64 @@
         {
           "type": "REPEAT1",
           "content": {
-            "type": "SEQ",
+            "type": "CHOICE",
             "members": [
               {
-                "type": "CHOICE",
-                "members": [
-                  {
-                    "type": "CHOICE",
-                    "members": [
-                      {
-                        "type": "STRING",
-                        "value": "INPUT"
-                      },
-                      {
-                        "type": "STRING",
-                        "value": "input"
+                "type": "FIELD",
+                "name": "input",
+                "content": {
+                  "type": "SEQ",
+                  "members": [
+                    {
+                      "type": "CHOICE",
+                      "members": [
+                        {
+                          "type": "STRING",
+                          "value": "INPUT"
+                        },
+                        {
+                          "type": "STRING",
+                          "value": "input"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "REPEAT1",
+                      "content": {
+                        "type": "SYMBOL",
+                        "name": "file_name"
                       }
-                    ]
-                  },
-                  {
-                    "type": "CHOICE",
-                    "members": [
-                      {
-                        "type": "STRING",
-                        "value": "OUTPUT"
-                      },
-                      {
-                        "type": "STRING",
-                        "value": "output"
-                      }
-                    ]
-                  }
-                ]
+                    }
+                  ]
+                }
               },
               {
-                "type": "REPEAT1",
+                "type": "FIELD",
+                "name": "output",
                 "content": {
-                  "type": "SYMBOL",
-                  "name": "file_name"
+                  "type": "SEQ",
+                  "members": [
+                    {
+                      "type": "CHOICE",
+                      "members": [
+                        {
+                          "type": "STRING",
+                          "value": "OUTPUT"
+                        },
+                        {
+                          "type": "STRING",
+                          "value": "output"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "REPEAT1",
+                      "content": {
+                        "type": "SYMBOL",
+                        "name": "file_name"
+                      }
+                    }
+                  ]
                 }
               }
             ]
