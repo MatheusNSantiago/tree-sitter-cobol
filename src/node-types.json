@@ -949,12 +949,20 @@
         "required": false,
         "types": [
           {
+            "type": ",",
+            "named": false
+          },
+          {
             "type": "FROM",
             "named": false
           },
           {
             "type": "from",
             "named": false
+          },
+          {
+            "type": "tab_name",
+            "named": true
           }
         ]
       },
@@ -1790,6 +1798,14 @@
         },
         {
           "type": "data_description",
+          "named": true
+        },
+        {
+          "type": "exec_cics",
+          "named": true
+        },
+        {
+          "type": "exec_sql",
           "named": true
         }
       ]

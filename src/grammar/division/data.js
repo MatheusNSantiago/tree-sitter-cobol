@@ -151,7 +151,11 @@ module.exports = {
       C($),
       repeat(
         seq(
-          choice(seq($.data_description, "."), $.copy_statement), //
+          choice(
+            seq($._exec_statement, "."),
+            seq($.data_description, "."),
+            $.copy_statement,
+          ),
           C($),
         ),
       ),

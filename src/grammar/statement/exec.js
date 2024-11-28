@@ -42,7 +42,16 @@ module.exports = {
       field("values", seq(kw("VALUES"), $._sql_values)),
       field("into", seq($._INTO, $._sql_values)),
       field("set", seq(kw("SET"), sep1($.expr, ","))),
-      field("from", seq($._FROM, field("table", $.tab_name))),
+      field(
+        "from",
+        seq(
+          $._FROM,
+          sep1(
+            seq(field("table", $.tab_name), optional($._WORD)), // alias
+            ",",
+          ),
+        ),
+      ),
       field("where", seq(kw("WHERE"), $.expr)),
       field(
         "for_update",
@@ -75,7 +84,14 @@ module.exports = {
     ),
 
   cursor_name: (_) => /[a-zA-Z0-9_-]+/,
-  tab_field: (_) => /[a-zA-Z0-9_]+/,
+  tab_field: (_) =>
+    prec.left(
+      seq(
+        opseq(/[a-zA-Z0-9]+/, "."), // Alias
+        /[a-zA-Z0-9_\*\(\)]+/, // Nome do campo
+        // op(paren(/[a-zA-Z0-9_\*]+/)),
+      ),
+    ),
   tab_name: ($) => seq($._tab_name, ".", $._tab_name),
   _tab_name: (_) => /[a-zA-Z0-9_]+/,
 

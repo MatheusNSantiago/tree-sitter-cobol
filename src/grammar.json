@@ -1583,6 +1583,19 @@
                     "members": [
                       {
                         "type": "SYMBOL",
+                        "name": "_exec_statement"
+                      },
+                      {
+                        "type": "STRING",
+                        "value": "."
+                      }
+                    ]
+                  },
+                  {
+                    "type": "SEQ",
+                    "members": [
+                      {
+                        "type": "SYMBOL",
                         "name": "data_description"
                       },
                       {
@@ -5530,12 +5543,71 @@
                 "name": "_FROM"
               },
               {
-                "type": "FIELD",
-                "name": "table",
-                "content": {
-                  "type": "SYMBOL",
-                  "name": "tab_name"
-                }
+                "type": "SEQ",
+                "members": [
+                  {
+                    "type": "SEQ",
+                    "members": [
+                      {
+                        "type": "FIELD",
+                        "name": "table",
+                        "content": {
+                          "type": "SYMBOL",
+                          "name": "tab_name"
+                        }
+                      },
+                      {
+                        "type": "CHOICE",
+                        "members": [
+                          {
+                            "type": "SYMBOL",
+                            "name": "_WORD"
+                          },
+                          {
+                            "type": "BLANK"
+                          }
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "type": "REPEAT",
+                    "content": {
+                      "type": "SEQ",
+                      "members": [
+                        {
+                          "type": "STRING",
+                          "value": ","
+                        },
+                        {
+                          "type": "SEQ",
+                          "members": [
+                            {
+                              "type": "FIELD",
+                              "name": "table",
+                              "content": {
+                                "type": "SYMBOL",
+                                "name": "tab_name"
+                              }
+                            },
+                            {
+                              "type": "CHOICE",
+                              "members": [
+                                {
+                                  "type": "SYMBOL",
+                                  "name": "_WORD"
+                                },
+                                {
+                                  "type": "BLANK"
+                                }
+                              ]
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  }
+                ]
               }
             ]
           }
@@ -6018,8 +6090,38 @@
       "value": "[a-zA-Z0-9_-]+"
     },
     "tab_field": {
-      "type": "PATTERN",
-      "value": "[a-zA-Z0-9_]+"
+      "type": "PREC_LEFT",
+      "value": 0,
+      "content": {
+        "type": "SEQ",
+        "members": [
+          {
+            "type": "CHOICE",
+            "members": [
+              {
+                "type": "SEQ",
+                "members": [
+                  {
+                    "type": "PATTERN",
+                    "value": "[a-zA-Z0-9]+"
+                  },
+                  {
+                    "type": "STRING",
+                    "value": "."
+                  }
+                ]
+              },
+              {
+                "type": "BLANK"
+              }
+            ]
+          },
+          {
+            "type": "PATTERN",
+            "value": "[a-zA-Z0-9_\\*\\(\\)]+"
+          }
+        ]
+      }
     },
     "tab_name": {
       "type": "SEQ",
