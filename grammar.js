@@ -1,6 +1,11 @@
 op = (thing) => optional(thing);
 C = ($) => repeat(choice($.comment, $._BLANK_LINE));
 kw = (keyword) => choice(keyword.toUpperCase(), keyword.toLowerCase());
+aspas = (thing) =>
+  choice(
+    seq(op("'"), thing, op("'")),
+    seq(op('"'), thing, op('"')), //
+  );
 
 module.exports = grammar({
   name: "cobol",

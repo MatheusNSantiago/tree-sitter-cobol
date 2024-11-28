@@ -1,6 +1,5 @@
 module.exports = {
   WORD: ($) => $._WORD,
-  // _WORD: (_) => /[a-zA-Z0-9-]+/,
   _WORD: ($) =>
     /([0-9][a-zA-Z0-9-]*[a-zA-Z][a-zA-Z0-9-]*)|([a-zA-Z][a-zA-Z0-9-]*)/,
 
@@ -30,6 +29,7 @@ module.exports = {
   number: ($) => choice($.integer, $.decimal),
   integer: (_) => /[+-]?[0-9,]+/,
   decimal: (_) => /[+-]?[0-9]*[\.,][0-9]+/,
+
   string: (_) => choice(/('[^'\n]*')+/, /("[^"\n]*")+/),
 
   constant: (_) =>

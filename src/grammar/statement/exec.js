@@ -96,10 +96,10 @@ module.exports = {
   _exec_cics_body: ($) => prec.right(15, seq($._exec_cics_statements, C($))),
   _exec_cics_statements: ($) =>
     choice(
-      seq(kw("PROGRAM"), paren($.variable)),
-      seq(kw("COMMAREA"), paren($.variable)),
-      seq(kw("CONTAINER"), paren($.string)),
-      seq($._INTO, paren($.variable)),
+      field("program", seq(kw("PROGRAM"), paren($.variable))),
+      field("commarea", seq(kw("COMMAREA"), paren($.variable))),
+      field("container", seq(kw("CONTAINER"), paren($.string))),
+      field("into", seq($._INTO, paren($.variable))),
       seq($._FROM, paren($.variable)),
       seq(kw("CHANNEL"), paren($.variable)),
       seq(kw("RESP"), paren($.variable)),
