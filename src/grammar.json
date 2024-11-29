@@ -1,4 +1,5 @@
 {
+  "$schema": "https://tree-sitter.github.io/tree-sitter/assets/schemas/grammar.schema.json",
   "name": "cobol",
   "word": "_WORD",
   "rules": {
@@ -4623,7 +4624,7 @@
                   },
                   {
                     "type": "SYMBOL",
-                    "name": "program"
+                    "name": "WORD"
                   },
                   {
                     "type": "CHOICE",
@@ -4656,7 +4657,7 @@
                   },
                   {
                     "type": "SYMBOL",
-                    "name": "program"
+                    "name": "WORD"
                   },
                   {
                     "type": "CHOICE",
@@ -4679,45 +4680,29 @@
           "type": "FIELD",
           "name": "using",
           "content": {
-            "type": "CHOICE",
+            "type": "SEQ",
             "members": [
               {
-                "type": "SYMBOL",
-                "name": "using"
+                "type": "CHOICE",
+                "members": [
+                  {
+                    "type": "STRING",
+                    "value": "USING"
+                  },
+                  {
+                    "type": "STRING",
+                    "value": "using"
+                  }
+                ]
               },
               {
-                "type": "BLANK"
+                "type": "REPEAT1",
+                "content": {
+                  "type": "SYMBOL",
+                  "name": "variable"
+                }
               }
             ]
-          }
-        }
-      ]
-    },
-    "program": {
-      "type": "SYMBOL",
-      "name": "_WORD"
-    },
-    "using": {
-      "type": "SEQ",
-      "members": [
-        {
-          "type": "CHOICE",
-          "members": [
-            {
-              "type": "STRING",
-              "value": "USING"
-            },
-            {
-              "type": "STRING",
-              "value": "using"
-            }
-          ]
-        },
-        {
-          "type": "REPEAT1",
-          "content": {
-            "type": "SYMBOL",
-            "name": "variable"
           }
         }
       ]

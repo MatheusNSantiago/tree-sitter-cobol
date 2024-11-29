@@ -25,96 +25,6 @@
     "fields": {}
   },
   {
-    "type": "add_exp",
-    "named": true,
-    "fields": {
-      "left": {
-        "multiple": true,
-        "required": true,
-        "types": [
-          {
-            "type": "(",
-            "named": false
-          },
-          {
-            "type": ")",
-            "named": false
-          },
-          {
-            "type": "add_exp",
-            "named": true
-          },
-          {
-            "type": "div_exp",
-            "named": true
-          },
-          {
-            "type": "mul_exp",
-            "named": true
-          },
-          {
-            "type": "negative_exp",
-            "named": true
-          },
-          {
-            "type": "positive_exp",
-            "named": true
-          },
-          {
-            "type": "pow_exp",
-            "named": true
-          },
-          {
-            "type": "sub_exp",
-            "named": true
-          }
-        ]
-      },
-      "right": {
-        "multiple": true,
-        "required": true,
-        "types": [
-          {
-            "type": "(",
-            "named": false
-          },
-          {
-            "type": ")",
-            "named": false
-          },
-          {
-            "type": "add_exp",
-            "named": true
-          },
-          {
-            "type": "div_exp",
-            "named": true
-          },
-          {
-            "type": "mul_exp",
-            "named": true
-          },
-          {
-            "type": "negative_exp",
-            "named": true
-          },
-          {
-            "type": "positive_exp",
-            "named": true
-          },
-          {
-            "type": "pow_exp",
-            "named": true
-          },
-          {
-            "type": "sub_exp",
-            "named": true
-          }
-        ]
-      }
-    }
-  },
-  {
     "type": "add_statement",
     "named": true,
     "fields": {},
@@ -185,17 +95,25 @@
             "named": false
           },
           {
-            "type": "program",
+            "type": "WORD",
             "named": true
           }
         ]
       },
       "using": {
-        "multiple": false,
-        "required": false,
+        "multiple": true,
+        "required": true,
         "types": [
           {
+            "type": "USING",
+            "named": false
+          },
+          {
             "type": "using",
+            "named": false
+          },
+          {
+            "type": "variable",
             "named": true
           }
         ]
@@ -443,96 +361,6 @@
           "named": true
         }
       ]
-    }
-  },
-  {
-    "type": "div_exp",
-    "named": true,
-    "fields": {
-      "left": {
-        "multiple": true,
-        "required": true,
-        "types": [
-          {
-            "type": "(",
-            "named": false
-          },
-          {
-            "type": ")",
-            "named": false
-          },
-          {
-            "type": "add_exp",
-            "named": true
-          },
-          {
-            "type": "div_exp",
-            "named": true
-          },
-          {
-            "type": "mul_exp",
-            "named": true
-          },
-          {
-            "type": "negative_exp",
-            "named": true
-          },
-          {
-            "type": "positive_exp",
-            "named": true
-          },
-          {
-            "type": "pow_exp",
-            "named": true
-          },
-          {
-            "type": "sub_exp",
-            "named": true
-          }
-        ]
-      },
-      "right": {
-        "multiple": true,
-        "required": true,
-        "types": [
-          {
-            "type": "(",
-            "named": false
-          },
-          {
-            "type": ")",
-            "named": false
-          },
-          {
-            "type": "add_exp",
-            "named": true
-          },
-          {
-            "type": "div_exp",
-            "named": true
-          },
-          {
-            "type": "mul_exp",
-            "named": true
-          },
-          {
-            "type": "negative_exp",
-            "named": true
-          },
-          {
-            "type": "positive_exp",
-            "named": true
-          },
-          {
-            "type": "pow_exp",
-            "named": true
-          },
-          {
-            "type": "sub_exp",
-            "named": true
-          }
-        ]
-      }
     }
   },
   {
@@ -1935,96 +1763,6 @@
     }
   },
   {
-    "type": "mul_exp",
-    "named": true,
-    "fields": {
-      "left": {
-        "multiple": true,
-        "required": true,
-        "types": [
-          {
-            "type": "(",
-            "named": false
-          },
-          {
-            "type": ")",
-            "named": false
-          },
-          {
-            "type": "add_exp",
-            "named": true
-          },
-          {
-            "type": "div_exp",
-            "named": true
-          },
-          {
-            "type": "mul_exp",
-            "named": true
-          },
-          {
-            "type": "negative_exp",
-            "named": true
-          },
-          {
-            "type": "positive_exp",
-            "named": true
-          },
-          {
-            "type": "pow_exp",
-            "named": true
-          },
-          {
-            "type": "sub_exp",
-            "named": true
-          }
-        ]
-      },
-      "right": {
-        "multiple": true,
-        "required": true,
-        "types": [
-          {
-            "type": "(",
-            "named": false
-          },
-          {
-            "type": ")",
-            "named": false
-          },
-          {
-            "type": "add_exp",
-            "named": true
-          },
-          {
-            "type": "div_exp",
-            "named": true
-          },
-          {
-            "type": "mul_exp",
-            "named": true
-          },
-          {
-            "type": "negative_exp",
-            "named": true
-          },
-          {
-            "type": "positive_exp",
-            "named": true
-          },
-          {
-            "type": "pow_exp",
-            "named": true
-          },
-          {
-            "type": "sub_exp",
-            "named": true
-          }
-        ]
-      }
-    }
-  },
-  {
     "type": "multiply_statement",
     "named": true,
     "fields": {},
@@ -2047,54 +1785,6 @@
     "type": "ne",
     "named": true,
     "fields": {}
-  },
-  {
-    "type": "negative_exp",
-    "named": true,
-    "fields": {
-      "value": {
-        "multiple": true,
-        "required": true,
-        "types": [
-          {
-            "type": "(",
-            "named": false
-          },
-          {
-            "type": ")",
-            "named": false
-          },
-          {
-            "type": "add_exp",
-            "named": true
-          },
-          {
-            "type": "div_exp",
-            "named": true
-          },
-          {
-            "type": "mul_exp",
-            "named": true
-          },
-          {
-            "type": "negative_exp",
-            "named": true
-          },
-          {
-            "type": "positive_exp",
-            "named": true
-          },
-          {
-            "type": "pow_exp",
-            "named": true
-          },
-          {
-            "type": "sub_exp",
-            "named": true
-          }
-        ]
-      }
-    }
   },
   {
     "type": "next_sentence",
@@ -2586,144 +2276,6 @@
     }
   },
   {
-    "type": "positive_exp",
-    "named": true,
-    "fields": {
-      "value": {
-        "multiple": true,
-        "required": true,
-        "types": [
-          {
-            "type": "(",
-            "named": false
-          },
-          {
-            "type": ")",
-            "named": false
-          },
-          {
-            "type": "add_exp",
-            "named": true
-          },
-          {
-            "type": "div_exp",
-            "named": true
-          },
-          {
-            "type": "mul_exp",
-            "named": true
-          },
-          {
-            "type": "negative_exp",
-            "named": true
-          },
-          {
-            "type": "positive_exp",
-            "named": true
-          },
-          {
-            "type": "pow_exp",
-            "named": true
-          },
-          {
-            "type": "sub_exp",
-            "named": true
-          }
-        ]
-      }
-    }
-  },
-  {
-    "type": "pow_exp",
-    "named": true,
-    "fields": {
-      "left": {
-        "multiple": true,
-        "required": true,
-        "types": [
-          {
-            "type": "(",
-            "named": false
-          },
-          {
-            "type": ")",
-            "named": false
-          },
-          {
-            "type": "add_exp",
-            "named": true
-          },
-          {
-            "type": "div_exp",
-            "named": true
-          },
-          {
-            "type": "mul_exp",
-            "named": true
-          },
-          {
-            "type": "negative_exp",
-            "named": true
-          },
-          {
-            "type": "positive_exp",
-            "named": true
-          },
-          {
-            "type": "pow_exp",
-            "named": true
-          },
-          {
-            "type": "sub_exp",
-            "named": true
-          }
-        ]
-      },
-      "right": {
-        "multiple": true,
-        "required": true,
-        "types": [
-          {
-            "type": "(",
-            "named": false
-          },
-          {
-            "type": ")",
-            "named": false
-          },
-          {
-            "type": "add_exp",
-            "named": true
-          },
-          {
-            "type": "div_exp",
-            "named": true
-          },
-          {
-            "type": "mul_exp",
-            "named": true
-          },
-          {
-            "type": "negative_exp",
-            "named": true
-          },
-          {
-            "type": "positive_exp",
-            "named": true
-          },
-          {
-            "type": "pow_exp",
-            "named": true
-          },
-          {
-            "type": "sub_exp",
-            "named": true
-          }
-        ]
-      }
-    }
-  },
-  {
     "type": "procedure_division",
     "named": true,
     "fields": {
@@ -2780,11 +2332,6 @@
         }
       ]
     }
-  },
-  {
-    "type": "program",
-    "named": true,
-    "fields": {}
   },
   {
     "type": "program_id",
@@ -3351,6 +2898,7 @@
   {
     "type": "source_file",
     "named": true,
+    "root": true,
     "fields": {},
     "children": {
       "multiple": true,
@@ -3481,96 +3029,6 @@
     }
   },
   {
-    "type": "sub_exp",
-    "named": true,
-    "fields": {
-      "left": {
-        "multiple": true,
-        "required": true,
-        "types": [
-          {
-            "type": "(",
-            "named": false
-          },
-          {
-            "type": ")",
-            "named": false
-          },
-          {
-            "type": "add_exp",
-            "named": true
-          },
-          {
-            "type": "div_exp",
-            "named": true
-          },
-          {
-            "type": "mul_exp",
-            "named": true
-          },
-          {
-            "type": "negative_exp",
-            "named": true
-          },
-          {
-            "type": "positive_exp",
-            "named": true
-          },
-          {
-            "type": "pow_exp",
-            "named": true
-          },
-          {
-            "type": "sub_exp",
-            "named": true
-          }
-        ]
-      },
-      "right": {
-        "multiple": true,
-        "required": true,
-        "types": [
-          {
-            "type": "(",
-            "named": false
-          },
-          {
-            "type": ")",
-            "named": false
-          },
-          {
-            "type": "add_exp",
-            "named": true
-          },
-          {
-            "type": "div_exp",
-            "named": true
-          },
-          {
-            "type": "mul_exp",
-            "named": true
-          },
-          {
-            "type": "negative_exp",
-            "named": true
-          },
-          {
-            "type": "positive_exp",
-            "named": true
-          },
-          {
-            "type": "pow_exp",
-            "named": true
-          },
-          {
-            "type": "sub_exp",
-            "named": true
-          }
-        ]
-      }
-    }
-  },
-  {
     "type": "tab_field",
     "named": true,
     "fields": {}
@@ -3579,21 +3037,6 @@
     "type": "tab_name",
     "named": true,
     "fields": {}
-  },
-  {
-    "type": "using",
-    "named": true,
-    "fields": {},
-    "children": {
-      "multiple": true,
-      "required": true,
-      "types": [
-        {
-          "type": "variable",
-          "named": true
-        }
-      ]
-    }
   },
   {
     "type": "variable",

@@ -2,9 +2,7 @@ module.exports = {
   call_statement: ($) =>
     seq(
       kw("CALL"),
-      field("program", aspas($.program)),
-      field("using", optional($.using)),
+      field("program", aspas($.WORD)),
+      field("using", seq(kw("USING"), repeat1($.variable))),
     ),
-  program: ($) => $._WORD,
-  using: ($) => seq(kw("USING"), repeat1($.variable)),
 };
