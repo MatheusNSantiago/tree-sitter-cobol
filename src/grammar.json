@@ -76,6 +76,22 @@
           }
         },
         {
+          "type": "REPEAT",
+          "content": {
+            "type": "CHOICE",
+            "members": [
+              {
+                "type": "SYMBOL",
+                "name": "comment"
+              },
+              {
+                "type": "SYMBOL",
+                "name": "_BLANK_LINE"
+              }
+            ]
+          }
+        },
+        {
           "type": "SYMBOL",
           "name": "program_id"
         },
@@ -181,6 +197,22 @@
     "author": {
       "type": "SEQ",
       "members": [
+        {
+          "type": "REPEAT",
+          "content": {
+            "type": "CHOICE",
+            "members": [
+              {
+                "type": "SYMBOL",
+                "name": "comment"
+              },
+              {
+                "type": "SYMBOL",
+                "name": "_BLANK_LINE"
+              }
+            ]
+          }
+        },
         {
           "type": "CHOICE",
           "members": [

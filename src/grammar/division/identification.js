@@ -2,6 +2,7 @@ module.exports = {
   identification_division: ($) =>
     seq(
       field("division_header", $.identification_division_header),
+      C($),
       $.program_id,
       optional($.author),
       C($),
@@ -13,6 +14,6 @@ module.exports = {
   program_id: ($) => seq(kw("PROGRAM-ID"), ".", $.program_name, "."),
   program_name: ($) => $._WORD,
 
-  author: ($) => seq(kw("AUTHOR"), ".", $.author_name, "."),
+  author: ($) => seq(C($), kw("AUTHOR"), ".", $.author_name, "."),
   author_name: ($) => $._WORD,
 };
