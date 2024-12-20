@@ -140,6 +140,11 @@
     }
   },
   {
+    "type": "cics_operation",
+    "named": true,
+    "fields": {}
+  },
+  {
     "type": "close_statement",
     "named": true,
     "fields": {},
@@ -587,6 +592,10 @@
           {
             "type": "string",
             "named": true
+          },
+          {
+            "type": "variable",
+            "named": true
           }
         ]
       },
@@ -612,6 +621,16 @@
           },
           {
             "type": "variable",
+            "named": true
+          }
+        ]
+      },
+      "operation": {
+        "multiple": false,
+        "required": false,
+        "types": [
+          {
+            "type": "cics_operation",
             "named": true
           }
         ]
@@ -3446,6 +3465,10 @@
   },
   {
     "type": "FILLER",
+    "named": false
+  },
+  {
+    "type": "FLENGTH",
     "named": false
   },
   {

@@ -6188,61 +6188,12 @@
               "type": "CHOICE",
               "members": [
                 {
-                  "type": "CHOICE",
-                  "members": [
-                    {
-                      "type": "CHOICE",
-                      "members": [
-                        {
-                          "type": "STRING",
-                          "value": "PUT"
-                        },
-                        {
-                          "type": "STRING",
-                          "value": "put"
-                        }
-                      ]
-                    },
-                    {
-                      "type": "CHOICE",
-                      "members": [
-                        {
-                          "type": "STRING",
-                          "value": "ASSIGN"
-                        },
-                        {
-                          "type": "STRING",
-                          "value": "assign"
-                        }
-                      ]
-                    },
-                    {
-                      "type": "CHOICE",
-                      "members": [
-                        {
-                          "type": "STRING",
-                          "value": "GET"
-                        },
-                        {
-                          "type": "STRING",
-                          "value": "get"
-                        }
-                      ]
-                    },
-                    {
-                      "type": "CHOICE",
-                      "members": [
-                        {
-                          "type": "STRING",
-                          "value": "LINK"
-                        },
-                        {
-                          "type": "STRING",
-                          "value": "link"
-                        }
-                      ]
-                    }
-                  ]
+                  "type": "FIELD",
+                  "name": "operation",
+                  "content": {
+                    "type": "SYMBOL",
+                    "name": "cics_operation"
+                  }
                 },
                 {
                   "type": "BLANK"
@@ -6268,6 +6219,76 @@
             {
               "type": "STRING",
               "value": "end-exec"
+            }
+          ]
+        }
+      ]
+    },
+    "cics_operation": {
+      "type": "CHOICE",
+      "members": [
+        {
+          "type": "CHOICE",
+          "members": [
+            {
+              "type": "STRING",
+              "value": "PUT"
+            },
+            {
+              "type": "STRING",
+              "value": "put"
+            }
+          ]
+        },
+        {
+          "type": "CHOICE",
+          "members": [
+            {
+              "type": "STRING",
+              "value": "ASSIGN"
+            },
+            {
+              "type": "STRING",
+              "value": "assign"
+            }
+          ]
+        },
+        {
+          "type": "CHOICE",
+          "members": [
+            {
+              "type": "STRING",
+              "value": "GET"
+            },
+            {
+              "type": "STRING",
+              "value": "get"
+            }
+          ]
+        },
+        {
+          "type": "CHOICE",
+          "members": [
+            {
+              "type": "STRING",
+              "value": "LINK"
+            },
+            {
+              "type": "STRING",
+              "value": "link"
+            }
+          ]
+        },
+        {
+          "type": "CHOICE",
+          "members": [
+            {
+              "type": "STRING",
+              "value": "DELETE"
+            },
+            {
+              "type": "STRING",
+              "value": "delete"
             }
           ]
         }
@@ -6410,8 +6431,17 @@
                     "value": "("
                   },
                   {
-                    "type": "SYMBOL",
-                    "name": "string"
+                    "type": "CHOICE",
+                    "members": [
+                      {
+                        "type": "SYMBOL",
+                        "name": "string"
+                      },
+                      {
+                        "type": "SYMBOL",
+                        "name": "variable"
+                      }
+                    ]
                   },
                   {
                     "type": "STRING",
@@ -6587,8 +6617,17 @@
           "type": "SEQ",
           "members": [
             {
-              "type": "SYMBOL",
-              "name": "_LENGTH"
+              "type": "CHOICE",
+              "members": [
+                {
+                  "type": "SYMBOL",
+                  "name": "_LENGTH"
+                },
+                {
+                  "type": "STRING",
+                  "value": "FLENGTH"
+                }
+              ]
             },
             {
               "type": "SEQ",
