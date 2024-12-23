@@ -1,6 +1,7 @@
 bindings
 node-types.json
 parser.c
+grammar.json
 
 # Rust artifacts
 Cargo.lock
