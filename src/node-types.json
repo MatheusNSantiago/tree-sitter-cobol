@@ -106,7 +106,7 @@
       },
       "using": {
         "multiple": true,
-        "required": true,
+        "required": false,
         "types": [
           {
             "type": "USING",
@@ -2318,7 +2318,83 @@
       "required": false,
       "types": [
         {
+          "type": "add_statement",
+          "named": true
+        },
+        {
+          "type": "call_statement",
+          "named": true
+        },
+        {
+          "type": "cancel_statement",
+          "named": true
+        },
+        {
+          "type": "close_statement",
+          "named": true
+        },
+        {
+          "type": "comment",
+          "named": true
+        },
+        {
+          "type": "compute_statement",
+          "named": true
+        },
+        {
           "type": "copy_statement",
+          "named": true
+        },
+        {
+          "type": "display_statement",
+          "named": true
+        },
+        {
+          "type": "evaluate_statement",
+          "named": true
+        },
+        {
+          "type": "exec_cics",
+          "named": true
+        },
+        {
+          "type": "exec_sql",
+          "named": true
+        },
+        {
+          "type": "exit_statement",
+          "named": true
+        },
+        {
+          "type": "goback_statement",
+          "named": true
+        },
+        {
+          "type": "goto_statement",
+          "named": true
+        },
+        {
+          "type": "if_statement",
+          "named": true
+        },
+        {
+          "type": "initialize_statement",
+          "named": true
+        },
+        {
+          "type": "move_statement",
+          "named": true
+        },
+        {
+          "type": "multiply_statement",
+          "named": true
+        },
+        {
+          "type": "next_sentence",
+          "named": true
+        },
+        {
+          "type": "open_statement",
           "named": true
         },
         {
@@ -2326,11 +2402,43 @@
           "named": true
         },
         {
+          "type": "perform_statement",
+          "named": true
+        },
+        {
           "type": "procedure_using",
           "named": true
         },
         {
+          "type": "read_statement",
+          "named": true
+        },
+        {
+          "type": "search_statement",
+          "named": true
+        },
+        {
           "type": "section",
+          "named": true
+        },
+        {
+          "type": "select_statement",
+          "named": true
+        },
+        {
+          "type": "set_statement",
+          "named": true
+        },
+        {
+          "type": "stop_run_statement",
+          "named": true
+        },
+        {
+          "type": "string_statement",
+          "named": true
+        },
+        {
+          "type": "write_statement",
           "named": true
         }
       ]

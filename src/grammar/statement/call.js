@@ -3,6 +3,6 @@ module.exports = {
     seq(
       kw("CALL"),
       field("program", aspas($.WORD)),
-      field("using", seq(kw("USING"), repeat1($.variable))),
+      field("using", opseq(kw("USING"), repeat1($.variable))),
     ),
 };

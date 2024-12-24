@@ -4,9 +4,12 @@ module.exports = {
       field("division_header", $.procedure_division_header),
       op($.procedure_using),
       ".",
-      repeat($.copy_statement),
-      repeat($.paragraph),
-      repeat($.section),
+      repeat(
+        prec(
+          20, // Mais precedencia que um statement ($._statements)
+          choice($.copy_statement, $._statement, $.paragraph, $.section),
+        ),
+      ),
     ),
 
   procedure_division_header: ($) => seq(kw("PROCEDURE"), $._DIVISION),
@@ -18,10 +21,12 @@ module.exports = {
   // ╰──────────────────────────────────────────────────────────╯
 
   section: ($) =>
-    seq(
-      field("section_header", $.section_header),
-      C($),
-      repeat(choice($._statement, $.paragraph)),
+    prec.right(
+      seq(
+        field("section_header", $.section_header),
+        C($),
+        repeat(choice($._statement, $.paragraph)),
+      ),
     ),
 
   // section_header: ($) => seq(/[A-Z0-9-]+/, $._SECTION, "."),
