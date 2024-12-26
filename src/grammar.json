@@ -4594,8 +4594,12 @@
           ]
         },
         {
-          "type": "SYMBOL",
-          "name": "file_name"
+          "type": "FIELD",
+          "name": "file",
+          "content": {
+            "type": "SYMBOL",
+            "name": "file_name"
+          }
         },
         {
           "type": "SEQ",
@@ -4617,11 +4621,11 @@
       "members": [
         {
           "type": "SYMBOL",
-          "name": "assign_clause"
+          "name": "_assign_clause"
         }
       ]
     },
-    "assign_clause": {
+    "_assign_clause": {
       "type": "SEQ",
       "members": [
         {
@@ -4642,8 +4646,12 @@
           "name": "_TO"
         },
         {
-          "type": "SYMBOL",
-          "name": "_WORD"
+          "type": "FIELD",
+          "name": "dd_name",
+          "content": {
+            "type": "SYMBOL",
+            "name": "WORD"
+          }
         }
       ]
     },

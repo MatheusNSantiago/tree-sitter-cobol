@@ -44,11 +44,6 @@
     }
   },
   {
-    "type": "assign_clause",
-    "named": true,
-    "fields": {}
-  },
-  {
     "type": "at_end",
     "named": true,
     "fields": {}
@@ -2975,20 +2970,27 @@
   {
     "type": "select_statement",
     "named": true,
-    "fields": {},
-    "children": {
-      "multiple": true,
-      "required": true,
-      "types": [
-        {
-          "type": "assign_clause",
-          "named": true
-        },
-        {
-          "type": "file_name",
-          "named": true
-        }
-      ]
+    "fields": {
+      "dd_name": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "WORD",
+            "named": true
+          }
+        ]
+      },
+      "file": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "file_name",
+            "named": true
+          }
+        ]
+      }
     }
   },
   {
