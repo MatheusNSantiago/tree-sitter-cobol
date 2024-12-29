@@ -26,6 +26,7 @@ module.exports = {
 
   _exec_sql_statements: ($) =>
     choice(
+      field("include", seq(kw("INCLUDE"), $.variable)),
       field("declare", $._sql_declare),
       choice(
         seq(field("operation", $.SELECT), op($._sql_tab_fields)), // SELECT
@@ -100,29 +101,23 @@ module.exports = {
   // ╰──────────────────────────────────────────────────────────╯
   exec_cics: ($) =>
     seq(
-      seq(
-        $._EXEC,
-        kw("CICS"),
-        op(field("operation", $.cics_operation)),
-      ),
+      seq($._EXEC, kw("CICS"), op(field("operation", $.cics_operation))),
       repeat($._exec_cics_body),
       kw("END-EXEC"),
     ),
 
-  cics_operation: (_) => choice(
-    kw("PUT"),
-    kw("ASSIGN"),
-    kw("GET"),
-    kw("LINK"),
-    kw("DELETE"),
-  ),
+  cics_operation: (_) =>
+    choice(kw("PUT"), kw("ASSIGN"), kw("GET"), kw("LINK"), kw("DELETE")),
 
   _exec_cics_body: ($) => prec.right(15, seq($._exec_cics_statements, C($))),
   _exec_cics_statements: ($) =>
     choice(
       field("program", seq(kw("PROGRAM"), paren($.variable))),
       field("commarea", seq(kw("COMMAREA"), paren($.variable))),
-      field("container", seq(kw("CONTAINER"), paren(choice($.string, $.variable)))),
+      field(
+        "container",
+        seq(kw("CONTAINER"), paren(choice($.string, $.variable))),
+      ),
       field("into", seq($._INTO, paren($.variable))),
       seq($._FROM, paren($.variable)),
       seq(kw("CHANNEL"), paren($.variable)),

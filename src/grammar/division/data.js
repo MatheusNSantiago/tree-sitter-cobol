@@ -8,10 +8,13 @@ module.exports = {
           $.working_storage_section,
           $.local_storage_section,
           $.linkage_section,
+          //
+          $._eject,
         ),
       ),
     ),
 
+  _eject: (_) => kw("EJECT"),
   data_division_header: ($) => seq(kw("DATA"), $._DIVISION),
 
   // ╭──────────────────────────────────────────────────────────╮
@@ -29,7 +32,7 @@ module.exports = {
             $.record_description,
             $.copy_statement, //
           ),
-          ".",
+          op("."),
           C($),
         ),
       ),
@@ -59,13 +62,10 @@ module.exports = {
       seq(field("section_header", $.working_storage_section_header), "."),
       C($),
       repeat(
-        seq(
-          choice(
-            seq($._exec_statement, "."),
-            seq($.data_description, "."),
-            $.copy_statement,
-          ),
-          C($),
+        choice(
+          seq($._exec_statement, op(".")),
+          seq($.data_description, op(".")),
+          $.copy_statement,
         ),
       ),
     ),
@@ -91,11 +91,14 @@ module.exports = {
 
   // ╾───────────────────────────────────────────────────────────────────────────────────╼
   picture: ($) =>
-    seq(kw("PIC"), $._pic_string, optional($.comp), optional($.pic_value)),
-  _pic_string: ($) => choice($.pic_x, $.pic_9),
+    seq(kw("PIC"), $._pic, optional($.comp), optional($.pic_value)),
+  _pic: ($) => choice($.pic_x, $.pic_9, $.pic_a, $.pic_edit),
 
   pic_x: (_) => /[xX]+(\([0-9]+\))?/,
   pic_9: (_) => /[sS]?9+(\([0-9]+\))?([vV]9+(\([0-9]+\))?)?/,
+  pic_a: (_) => /([aA](\([0-9]+\))?)+/,
+  pic_edit: (_) =>
+    /([aAxX9bBvVzZpPwW\(\)0-9$/,\.*+<>-]|[cC][rR]|[dD][bB])*([aAxX9bBvVzZpPwW\(\)0-9$/,*+<>-]|[cC][rR]|[dD][bB])/,
 
   comp: (_) =>
     choice(
@@ -109,7 +112,8 @@ module.exports = {
   // ╾───────────────────────────────────────────────────────────────────────────────────╼
   redefines: ($) => seq(kw("REDEFINES"), $.variable),
 
-  pic_value: ($) => seq(kw("VALUE"), repeat1($._value)),
+  pic_value: ($) => seq(kw("VALUE"), repeat1($.value_item)),
+  value_item: ($) => seq($._value, opseq($._THRU, $._value)),
 
   occurs: ($) =>
     seq(

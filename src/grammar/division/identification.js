@@ -4,8 +4,8 @@ module.exports = {
       field("division_header", $.identification_division_header),
       C($),
       $.program_id,
-      optional($.author),
-      C($),
+      opseq($.author, C($)),
+      opseq($.date_written, C($)),
     ),
 
   identification_division_header: (_) =>
@@ -16,4 +16,9 @@ module.exports = {
 
   author: ($) => seq(C($), kw("AUTHOR"), ".", $.author_name, op(".")),
   author_name: ($) => repeat1($._WORD),
+
+  date_written: ($) =>
+    seq(kw("DATE-WRITTEN"), ".", $.date_written_text, op(".")),
+
+  date_written_text: (_) => /[A-Z\/\d]+/,
 };

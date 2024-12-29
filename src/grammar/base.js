@@ -24,6 +24,7 @@ module.exports = {
   // ╭──────────────────────────────────────────────────────────╮
   // │                        Data types                        │
   // ╰──────────────────────────────────────────────────────────╯
+  value: ($) => $._value,
   _value: ($) => choice($.boolean, $.number, $.string, $.constant),
   boolean: ($) => choice($._TRUE, $._FALSE),
   number: ($) => choice($.integer, $.decimal),
@@ -39,6 +40,7 @@ module.exports = {
       kw("SPACES"),
       kw("ZERO"),
       kw("ZEROS"),
+      kw("ZEROES"),
       // kw("QUOTE"),
       kw("HIGH-VALUE"),
       kw("LOW-VALUE"),
@@ -62,4 +64,6 @@ module.exports = {
   _INTO: (_) => kw("INTO"),
   _SIZE: (_) => kw("SIZE"),
   _BY: (_) => kw("BY"),
+  _SEQUENTIAL: (_) => kw("SEQUENTIAL"),
+  _RELATIVE: (_) => kw("RELATIVE"),
 };
