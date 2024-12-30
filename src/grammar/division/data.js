@@ -47,9 +47,34 @@ module.exports = {
     ),
 
   file_type: (_) => choice(kw("FD"), kw("SD")),
-  fd_block: ($) => seq(kw("BLOCK"), $.number),
-  fd_record: ($) => seq(kw("RECORD"), $.number),
-  fd_recording_mode: (_) => seq(kw("RECORDING"), /[A-Z]/),
+  fd_block: ($) =>
+    seq(
+      kw("BLOCK"),
+      op($._CONTAINS),
+      field("num", $.number),
+      op(choice($._CHARACTERS, kw("RECORDS"))),
+    ),
+
+  fd_record: ($) =>
+    seq(
+      kw("RECORD"),
+      optional($._CONTAINS),
+      field("num", $.integer),
+      field("to", optional(seq($._TO, $.integer))),
+      optional($._CHARACTERS),
+    ),
+
+  // fd_recording_mode: (_) => seq(
+  //   kw("RECORDING"),
+  //   /[A-Z]/,
+  // ),
+  fd_recording_mode: ($) =>
+    seq(
+      kw("RECORDING"),
+      optional(kw("MODE")),
+      optional($._IS),
+      field("mode", $.WORD),
+    ),
 
   record_description: ($) => $.data_description,
 
@@ -63,8 +88,8 @@ module.exports = {
       C($),
       repeat(
         choice(
-          seq($._exec_statement, op(".")),
-          seq($.data_description, op(".")),
+          seq($._exec_statement, "."), //
+          seq($.data_description, "."),
           $.copy_statement,
         ),
       ),
@@ -108,12 +133,22 @@ module.exports = {
       kw("COMP-3"),
       kw("COMP-4"),
       kw("COMP-5"),
+      kw("COMPUTATIONAL"),
+      kw("COMPUTATIONAL-1"),
+      kw("COMPUTATIONAL-2"),
+      kw("COMPUTATIONAL-3"),
+      kw("COMPUTATIONAL-4"),
+      kw("COMPUTATIONAL-5"),
     ),
   // ╾───────────────────────────────────────────────────────────────────────────────────╼
   redefines: ($) => seq(kw("REDEFINES"), $.variable),
 
-  pic_value: ($) => seq(kw("VALUE"), repeat1($.value_item)),
-  value_item: ($) => seq($._value, opseq($._THRU, $._value)),
+  pic_value: ($) =>
+    seq(
+      choice($._VALUE, $._VALUES), //
+      repeat1($.value_item),
+    ),
+  value_item: ($) => choice(seq($._value, opseq($._THRU, $._value))),
 
   occurs: ($) =>
     seq(

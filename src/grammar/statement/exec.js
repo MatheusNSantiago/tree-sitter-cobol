@@ -40,7 +40,7 @@ module.exports = {
         ), // INSERT
       ),
       field("fetch", seq(kw("FETCH"), $.cursor_name)),
-      field("values", seq(kw("VALUES"), $._sql_values)),
+      field("values", seq($._VALUES, $._sql_values)),
       field("into", seq($._INTO, $._sql_values)),
       field("set", seq(kw("SET"), sep1($.expr, ","))),
       field(

@@ -48,17 +48,21 @@ module.exports = {
 
   exit_statement: (_) => seq(kw("EXIT"), "."),
   goback_statement: (_) => kw("GOBACK"),
-  stop_run_statement: (_) => seq(kw("STOP"), kw("RUN"), "."),
+  stop_run_statement: (_) => seq(kw("STOP"), kw("RUN")),
   close_statement: ($) => seq(kw("close"), repeat1($.file_name)),
   copy_statement: ($) => seq(kw("COPY"), field("copybook", $.variable), "."),
-  goto_statement: ($) => seq(kw("GO"), $._TO, field("to", $.WORD)),
+  goto_statement: ($) => seq(kw("GO"), optional($._TO), field("to", $.WORD)),
   set_statement: ($) =>
     seq(
       kw("SET"),
       $.variable,
-      choice($._TO, seq($._UP, $._BY)),
+      choice(
+        $._TO,
+        seq(choice($._UP, kw("DOWN")), $._BY), //
+      ),
       seq($._expr_data),
     ),
+
   cancel_statement: ($) => seq(kw("CANCEL"), $.variable),
   next_sentence: (_) => seq(kw("NEXT"), kw("SENTENCE")),
   add_statement: ($) =>

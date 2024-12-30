@@ -1,17 +1,4 @@
 module.exports = {
-  // select_statement: ($) =>
-  //   seq(
-  //     kw("SELECT"),
-  //     field("file", $.file_name),
-  //     seq($._select_clause, "."), //
-  //   ),
-
-  // SELECT DEB648  ASSIGN  TO  DEB648E
-  //        ORGANIZATION IS RELATIVE
-  //        ACCESS IS RANDOM
-  //        RELATIVE KEY IS DBK841-CH-ACESSO-648.
-
-  // ╾───────────────────────────────────────────────────────────────────────────────────╼
   select_statement: ($) =>
     seq(
       kw("SELECT"),
@@ -26,6 +13,8 @@ module.exports = {
       $.access_mode_clause,
       $.organization_clause,
       $.relative_key_clause,
+      $.file_status_clause,
+      $.record_key_clause,
     ),
 
   assign_clause: ($) => seq(kw("ASSIGN"), $._TO, field("dd_name", $.WORD)),
@@ -43,12 +32,28 @@ module.exports = {
       optional(seq(kw("ORGANIZATION"), optional($._IS))),
       choice(
         kw("INDEXED"),
-        seq(kw("RECORD"), optional(kw("BINARY")), $._SEQUENTIAL),
+        seq($._RECORD, optional(kw("BINARY")), $._SEQUENTIAL),
         $._SEQUENTIAL,
         $._RELATIVE,
       ),
     ),
 
   relative_key_clause: ($) =>
-    seq($._RELATIVE, op(kw("KEY")), op($._IS), field("relative_key", $.WORD)),
+    seq($._RELATIVE, op($._KEY), op($._IS), field("relative_key", $.WORD)),
+
+  file_status_clause: ($) =>
+    seq(
+      kw("FILE"),
+      kw("STATUS"),
+      optional($._IS), //
+      field("reference", $.WORD),
+    ),
+
+  record_key_clause: ($) =>
+    seq(
+      $._RECORD,
+      optional($._KEY),
+      optional($._IS),
+      field("reference", $.WORD),
+    ),
 };

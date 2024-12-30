@@ -29,16 +29,20 @@ module.exports = {
     prec.right(
       seq(
         seq(field("paragraph_header", $.special_names_paragraph_header), "."),
-        optional(seq($.special_name, ".")),
+        // optional(seq($.special_name, ".")),
+        repeat(seq($.special_name, optional("."))),
         C($),
       ),
     ),
   special_names_paragraph_header: (_) => kw("SPECIAL-NAMES"),
 
-  special_name: ($) => seq(choice($.decimal_point_clause)),
+  special_name: ($) => choice($.decimal_point_clause, $.mnemonic_name_clause),
 
   decimal_point_clause: ($) =>
     seq(kw("DECIMAL-POINT"), optional($._IS), kw("COMMA")),
+
+  mnemonic_name_clause: ($) =>
+    seq(field("word", $.WORD), optional($._IS), field("value", $.WORD)),
 
   // ╭──────────────────────────────────────────────────────────╮
   // │                   INPUT-OUTPUT SECTION                   │

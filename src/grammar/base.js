@@ -53,6 +53,8 @@ module.exports = {
   _DIVISION: (_) => kw("DIVISION"),
   _SECTION: (_) => kw("SECTION"),
   _THRU: (_) => choice(kw("THRU"), kw("THROUGH")),
+  _VALUES: (_) => kw("VALUES"),
+  _VALUE: (_) => kw("VALUE"),
   _UP: (_) => kw("UP"),
   _UNTIL: (_) => kw("UNTIL"),
   _TO: (_) => kw("TO"),
@@ -66,4 +68,8 @@ module.exports = {
   _BY: (_) => kw("BY"),
   _SEQUENTIAL: (_) => kw("SEQUENTIAL"),
   _RELATIVE: (_) => kw("RELATIVE"),
+  _RECORD: (_) => kw("RECORD"),
+  _KEY: (_) => kw("KEY"),
+  _CONTAINS: (_) => kw("CONTAINS"),
+  _CHARACTERS: (_) => kw("CHARACTERS"),
 };
