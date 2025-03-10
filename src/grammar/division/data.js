@@ -87,10 +87,13 @@ module.exports = {
       seq(field("section_header", $.working_storage_section_header), "."),
       C($),
       repeat(
-        choice(
-          seq($._exec_statement, "."), //
-          seq($.data_description, "."),
-          $.copy_statement,
+        seq(
+          choice(
+            seq($._exec_statement, op(".")), //
+            seq($.data_description, op(".")),
+            $.copy_statement,
+          ),
+          C($),
         ),
       ),
     ),
@@ -170,8 +173,8 @@ module.exports = {
       repeat(
         seq(
           choice(
-            seq($._exec_statement, "."),
-            seq($.data_description, "."),
+            seq($._exec_statement, op(".")),
+            seq($.data_description, op(".")),
             $.copy_statement,
           ),
           C($),
@@ -191,8 +194,8 @@ module.exports = {
       repeat(
         seq(
           choice(
-            seq($._exec_statement, "."),
-            seq($.data_description, "."),
+            seq($._exec_statement, op(".")),
+            seq($.data_description, op(".")),
             $.copy_statement,
           ),
           C($),
