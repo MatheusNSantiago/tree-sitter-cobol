@@ -1881,6 +1881,10 @@
             "named": false
           },
           {
+            "type": "FUNCTION",
+            "named": false
+          },
+          {
             "type": "LENGTH",
             "named": false
           },
@@ -1895,6 +1899,10 @@
           {
             "type": "constant",
             "named": true
+          },
+          {
+            "type": "function",
+            "named": false
           },
           {
             "type": "length",
@@ -3884,6 +3892,10 @@
     "named": false
   },
   {
+    "type": "FUNCTION",
+    "named": false
+  },
+  {
     "type": "GET",
     "named": false
   },
@@ -4389,7 +4401,8 @@
   },
   {
     "type": "comment",
-    "named": true
+    "named": true,
+    "extra": true
   },
   {
     "type": "comp",
@@ -4621,6 +4634,10 @@
   },
   {
     "type": "from",
+    "named": false
+  },
+  {
+    "type": "function",
     "named": false
   },
   {

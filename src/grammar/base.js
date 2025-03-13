@@ -6,18 +6,15 @@ module.exports = {
   section_name: ($) => $._WORD,
   variable: ($) =>
     seq(
-      $._WORD,
+      field("name", $._WORD),
       op(
-        seq(
-          "(",
-          choice(
-            $._WORD,
-            // /[0-9:]+/,
-          ),
-          ")",
+        choice(
+          seq("(", choice($._WORD), ")"), //
         ),
       ),
     ),
+  // subref: ($) => seq("(", $._exp_list, ")"),
+  // refmod: ($) => seq("(", $.exp, ":", optional($.exp), ")"),
 
   file_name: ($) => $._WORD,
 

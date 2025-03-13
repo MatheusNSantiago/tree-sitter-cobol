@@ -45,6 +45,7 @@ module.exports = {
   ...require("./search"),
   ...require("./compute"),
   ...require("./exec"),
+  ...require("./move"),
 
   exit_statement: (_) => seq(kw("EXIT"), "."),
   goback_statement: (_) => kw("GOBACK"),
@@ -69,13 +70,6 @@ module.exports = {
     seq(kw("ADD"), choice($.variable, $.number), kw("TO"), $.variable),
   multiply_statement: ($) =>
     seq(kw("MULTIPLY"), choice($.variable, $.number), kw("BY"), $.variable),
-  move_statement: ($) =>
-    seq(
-      kw("MOVE"),
-      field("from", seq(op(seq(kw("LENGTH"), $._OF)), $._expr_data)),
-      $._TO,
-      field("to", repeat1($.variable)),
-    ),
   string_statement: ($) =>
     seq(
       kw("STRING"),
