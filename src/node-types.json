@@ -568,6 +568,10 @@
             "named": true
           },
           {
+            "type": "subtract_statement",
+            "named": true
+          },
+          {
             "type": "when",
             "named": false
           },
@@ -1562,6 +1566,10 @@
           "named": true
         },
         {
+          "type": "subtract_statement",
+          "named": true
+        },
+        {
           "type": "write_statement",
           "named": true
         }
@@ -2198,6 +2206,10 @@
           "named": true
         },
         {
+          "type": "subtract_statement",
+          "named": true
+        },
+        {
           "type": "write_statement",
           "named": true
         }
@@ -2371,6 +2383,10 @@
         },
         {
           "type": "string_statement",
+          "named": true
+        },
+        {
+          "type": "subtract_statement",
           "named": true
         },
         {
@@ -2596,6 +2612,10 @@
           "named": true
         },
         {
+          "type": "subtract_statement",
+          "named": true
+        },
+        {
           "type": "write_statement",
           "named": true
         }
@@ -2768,6 +2788,10 @@
         },
         {
           "type": "string_statement",
+          "named": true
+        },
+        {
+          "type": "subtract_statement",
           "named": true
         },
         {
@@ -2997,6 +3021,10 @@
           "named": true
         },
         {
+          "type": "subtract_statement",
+          "named": true
+        },
+        {
           "type": "write_statement",
           "named": true
         }
@@ -3148,6 +3176,10 @@
         },
         {
           "type": "string_statement",
+          "named": true
+        },
+        {
+          "type": "subtract_statement",
           "named": true
         },
         {
@@ -3378,6 +3410,25 @@
           }
         ]
       }
+    }
+  },
+  {
+    "type": "subtract_statement",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "number",
+          "named": true
+        },
+        {
+          "type": "variable",
+          "named": true
+        }
+      ]
     }
   },
   {
@@ -4212,6 +4263,10 @@
     "named": false
   },
   {
+    "type": "SUBTRACT",
+    "named": false
+  },
+  {
     "type": "THAN",
     "named": false
   },
@@ -4401,8 +4456,7 @@
   },
   {
     "type": "comment",
-    "named": true,
-    "extra": true
+    "named": true
   },
   {
     "type": "comp",
@@ -4986,6 +5040,10 @@
   },
   {
     "type": "string",
+    "named": false
+  },
+  {
+    "type": "subtract",
     "named": false
   },
   {
