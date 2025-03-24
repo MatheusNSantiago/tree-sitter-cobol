@@ -22,12 +22,64 @@ module.exports = {
       ),
     ),
 
-  _exec_sql_body: ($) => prec.right(15, seq($._exec_sql_statements, C($))),
+  _exec_sql_body: ($) =>
+    seq(
+      choice(
+        $._exec_sql_declare,
+        $._exec_sql_statements, //
+      ),
+      C($),
+    ),
+
+  _exec_sql_declare: ($) =>
+    seq(
+      kw("DECLARE"),
+      prec.right(
+        15,
+        choice(
+          // field("declare_table", $._sql_declare_table),
+          field("declare_cursor", $._sql_declare_cursor),
+        ),
+      ),
+    ),
+
+  _sql_declare_table: ($) =>
+    seq(
+      field("table", $.tab_name),
+      kw("TABLE"),
+      parenOrNot(
+        sep1(
+          seq(
+            field("column_name", $.sql_identifier),
+            field("data_type", $.sql_data_type),
+            optional(field("constraint", $.sql_constraint)),
+          ),
+          ",",
+        ),
+      ),
+    ),
+
+  _sql_declare_cursor: ($) =>
+    seq(
+      $.cursor_name,
+      seq(kw("CURSOR"), opseq(kw("WITH"), kw("HOLD")), $._FOR),
+    ),
+
+  sql_data_type: ($) =>
+    choice(
+      kw("SMALLINT"),
+      kw("INTEGER"),
+      seq(kw("DECIMAL"), paren(seq($.number, opseq(",", $.number)))),
+      seq(kw("CHAR"), paren($.number)),
+      kw("DATE"),
+      kw("TIME"),
+    ),
+
+  sql_constraint: ($) => seq(op($._NOT), kw("NULL")),
 
   _exec_sql_statements: ($) =>
     choice(
       field("include", seq(kw("INCLUDE"), $.variable)),
-      field("declare", $._sql_declare),
       choice(
         seq(field("operation", $.SELECT), op($._sql_tab_fields)), // SELECT
         seq(field("operation", $.UPDATE), field("table", $.tab_name)), // UPDATE
@@ -75,15 +127,6 @@ module.exports = {
   _sql_tab_fields: ($) => parenOrNot(sep1($.tab_field, ",")),
   _sql_values: ($) => parenOrNot(sep1(seq(":", $.variable), ",")),
 
-  _sql_declare: ($) =>
-    seq(
-      kw("DECLARE"),
-      $.cursor_name,
-      kw("CURSOR"),
-      opseq(kw("WITH"), kw("HOLD")),
-      $._FOR,
-    ),
-
   cursor_name: (_) => /[a-zA-Z0-9_-]+/,
   tab_field: (_) =>
     prec.left(
@@ -93,8 +136,9 @@ module.exports = {
         // op(paren(/[a-zA-Z0-9_\*]+/)),
       ),
     ),
-  tab_name: ($) => seq($._tab_name, ".", $._tab_name),
-  _tab_name: (_) => /[a-zA-Z0-9_]+/,
+  tab_name: ($) => seq($._sql_identifier, ".", $._sql_identifier),
+  _sql_identifier: ($) => $.sql_identifier,
+  sql_identifier: (_) => /[a-zA-Z0-9_]+/,
 
   // ╭──────────────────────────────────────────────────────────╮
   // │                        EXEC CICS                         │
