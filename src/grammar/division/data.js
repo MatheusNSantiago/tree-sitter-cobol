@@ -101,16 +101,16 @@ module.exports = {
 
   data_description: ($) =>
     seq(
-      $.level_number,
-      $.data_name,
+      field("level", $.level_number),
+      field("name", $.data_name),
       optional(
         // optional pq pode ser um lider de group
         choice(
-          $.picture,
-          $.redefines, // 01 WS-RECORD-1 REDEFINES WS-RECORD-2
-          $.occurs, // 01 WS-RECORD OCCURS 10 TIMES
+          $._picture,
+          field("redefines", seq(kw("REDEFINES"), $.variable)), // 01 WS-RECORD-1 REDEFINES WS-RECORD-2
+          field("occurs", $.occurs), // 01 WS-RECORD OCCURS 10 TIMES
           kw("INDEX"), // 77 IDX-601F-LIM     INDEX.
-          $.pic_value, // 88 CND-STATUS-OK VALUE 0
+          $._pic_value, // 88 CND-STATUS-OK VALUE 0
         ),
       ),
     ),
@@ -118,9 +118,15 @@ module.exports = {
   level_number: (_) => /[0-9][0-9]?/,
 
   // ╾───────────────────────────────────────────────────────────────────────────────────╼
-  picture: ($) =>
-    seq(kw("PIC"), $._pic, optional($.comp), optional($.pic_value)),
-  _pic: ($) => choice($.pic_x, $.pic_9, $.pic_a, $.pic_edit),
+  _picture: ($) => seq(kw("PIC"), field("type", $.pic_type), op($._pic_value)),
+
+  pic_type: ($) =>
+    seq(
+      field("def", $._pic_def), //
+      op(field("comp", $.comp)),
+    ),
+
+  _pic_def: ($) => choice($.pic_x, $.pic_9, $.pic_a, $.pic_edit),
 
   pic_x: (_) => /[xX]+(\([0-9]+\))?/,
   pic_9: (_) => /[sS]?9+(\([0-9]+\))?([vV]9+(\([0-9]+\))?)?/,
@@ -144,21 +150,20 @@ module.exports = {
       kw("COMPUTATIONAL-5"),
     ),
   // ╾───────────────────────────────────────────────────────────────────────────────────╼
-  redefines: ($) => seq(kw("REDEFINES"), $.variable),
 
-  pic_value: ($) =>
+  _pic_value: ($) =>
     seq(
       choice($._VALUE, $._VALUES), //
-      repeat1($.value_item),
+      repeat1(field("value", $.value_item)),
     ),
-  value_item: ($) => choice(seq($._value, opseq($._THRU, $._value))),
+  value_item: ($) => seq($._value, opseq($._THRU, $._value)),
 
   occurs: ($) =>
     seq(
       kw("OCCURS"),
-      $.number,
+      field("times", $.number),
       kw("TIMES"),
-      optional(choice($.picture, $.indexed_by)),
+      optional(choice($._picture, $.indexed_by)),
     ),
   indexed_by: ($) => seq(kw("INDEXED"), kw("BY"), $.variable),
 
