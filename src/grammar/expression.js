@@ -15,10 +15,10 @@ module.exports = {
         $.boolean,
         $.number,
         $.variable,
+        // $.tab_field,
         $.string,
         $.constant,
         seq(":", $.variable),
-        $.tab_field,
       ),
     ),
 

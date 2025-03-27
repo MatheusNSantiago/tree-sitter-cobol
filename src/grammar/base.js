@@ -4,15 +4,7 @@ module.exports = {
     /([0-9][a-zA-Z0-9-]*[a-zA-Z][a-zA-Z0-9-]*)|([a-zA-Z][a-zA-Z0-9-]*)/,
 
   section_name: ($) => $._WORD,
-  variable: ($) =>
-    seq(
-      field("name", $._WORD),
-      op(
-        choice(
-          seq("(", choice($._WORD), ")"), //
-        ),
-      ),
-    ),
+  variable: ($) => seq(field("name", $._WORD), op(paren($._WORD))),
   // subref: ($) => seq("(", $._exp_list, ")"),
   // refmod: ($) => seq("(", $.exp, ":", optional($.exp), ")"),
 

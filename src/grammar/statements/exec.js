@@ -1,10 +1,3 @@
-paren = (thing) => seq("(", thing, ")");
-parenOrNot = (thing) => choice(seq("(", thing, ")"), thing);
-opseq = (...things) => optional(seq(...things));
-function sep1(rule, separator) {
-  return seq(rule, repeat(seq(separator, rule)));
-}
-
 module.exports = {
   _exec_statement: ($) => choice($.exec_cics, $.exec_sql),
   _EXEC: (_) => kw("EXEC"),

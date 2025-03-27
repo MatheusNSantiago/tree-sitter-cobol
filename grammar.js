@@ -6,6 +6,10 @@ aspas = (thing) =>
     seq(op("'"), thing, op("'")),
     seq(op('"'), thing, op('"')), //
   );
+paren = (thing) => seq("(", thing, ")");
+parenOrNot = (thing) => choice(seq("(", thing, ")"), thing);
+opseq = (...things) => optional(seq(...things));
+sep1 = (rule, separator) => seq(rule, repeat(seq(separator, rule)));
 
 module.exports = grammar({
   name: "cobol",
