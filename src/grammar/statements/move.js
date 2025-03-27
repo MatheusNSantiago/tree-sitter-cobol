@@ -1,10 +1,14 @@
 module.exports = {
   move_statement: ($) =>
-    seq(
-      kw("MOVE"),
-      field("from", $._move_from),
-      $._TO,
-      field("to", repeat1($.variable)),
+    prec.left(
+      seq(
+        kw("MOVE"),
+        field("from", $._move_from),
+        $._TO,
+        repeat1(
+          seq(C($), field("to", $.variable)), //
+        ),
+      ),
     ),
 
   _move_from: ($) =>
