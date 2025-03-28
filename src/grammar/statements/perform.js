@@ -1,6 +1,11 @@
 module.exports = {
   perform_statement: ($) =>
-    choice($.perform_simple, $.perform_until, $.perform_x_until),
+    choice(
+      $.perform_simple,
+      $.perform_times,
+      $.perform_until,
+      $.perform_x_until,
+    ),
 
   _PERFORM: (_) => kw("PERFORM"),
   _END_PERFORM: (_) => kw("END-PERFORM"),
@@ -16,6 +21,18 @@ module.exports = {
     ),
 
   // ╾───────────────────────────────────────────────────────────────────────────────────╼
+  //  PERFORM 100 TIMES
+  //      DISPLAY "FO"
+  //  END-PERFORM.
+  // ╾───────────────────────────────────────────────────────────────────────────────────╼
+  perform_times: ($) =>
+    seq(
+      seq($._PERFORM, field("times", $.integer), kw("TIMES")),
+      repeat($._statement),
+      $._END_PERFORM,
+    ),
+
+  // ╾───────────────────────────────────────────────────────────────────────────────────╼
   //  PERFORM UNTIL IND-FIM-610E = 1
   //       DISPLAY "FOO"
   //  END-PERFORM.
@@ -24,7 +41,7 @@ module.exports = {
     seq(
       seq($._PERFORM, kw("UNTIL"), $.expr),
       repeat($._statement),
-      seq($._END_PERFORM),
+      $._END_PERFORM,
     ),
 
   // ╾───────────────────────────────────────────────────────────────────────────────────╼
