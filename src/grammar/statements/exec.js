@@ -19,7 +19,9 @@ module.exports = {
     seq(
       choice(
         $._exec_sql_declare,
-        $._exec_sql_statements, //
+        $._exec_sql_statements,
+        seq(choice(kw("OPEN"), kw("CLOSE")), $.cursor_name), //
+        kw("ROLLBACK"),
       ),
       C($),
     ),
@@ -87,7 +89,7 @@ module.exports = {
       field("fetch", seq(kw("FETCH"), $.cursor_name)),
       field("values", seq($._VALUES, $._sql_values)),
       field("into", seq($._INTO, $._sql_values)),
-      field("set", seq(kw("SET"), sep1($.expr, ","))),
+      field("set", seq(kw("SET"), sep1($.tab_expr, ","))),
       field(
         "from",
         seq(
@@ -98,7 +100,7 @@ module.exports = {
           ),
         ),
       ),
-      field("where", seq(kw("WHERE"), $.expr)),
+      field("where", seq(kw("WHERE"), $.tab_expr)),
       field(
         "for_update",
         seq($._FOR, kw("UPDATE"), opseq($._OF, $._sql_tab_fields)),
@@ -121,17 +123,97 @@ module.exports = {
   _sql_values: ($) => parenOrNot(sep1(seq(":", $.variable), ",")),
 
   cursor_name: (_) => /[a-zA-Z0-9_-]+/,
-  tab_field: (_) =>
+
+  tab_expr: ($) =>
+    prec.left(
+      choice(
+        seq($._NOT, $.tab_expr),
+        seq($.tab_expr, choice($._AND, $._OR), $.tab_expr),
+        $._tab_expr_bool,
+        seq("(", $.tab_expr, ")"),
+      ),
+    ),
+
+  _tab_expr_bool: ($) =>
+    prec(
+      3,
+      choice(
+        $._tab_expr_compare,
+        $._tab_expr_data,
+        $._tab_expr_in, //
+      ),
+    ),
+
+  _tab_expr_in: ($) =>
+    seq($._tab_expr_calc, kw("IN"), paren(sep1($._tab_expr_data, ","))),
+
+  _tab_expr_data: ($) =>
+    prec.left(
+      choice(
+        $.boolean,
+        $.number,
+        // $.variable,
+        $.tab_field,
+        seq(":", $.variable),
+        $.string,
+        $.constant,
+      ),
+    ),
+
+  _tab_expr_calc: ($) =>
+    prec(
+      1,
+      choice(
+        $._tab_expr_calc_binary,
+        $._tab_expr_calc_unary,
+        $._tab_expr_data,
+        seq("(", $._tab_expr_data, ")"),
+      ),
+    ),
+
+  _tab_expr_calc_binary: ($) =>
+    choice(
+      prec.left(1, seq($._tab_expr_calc, "+", $._tab_expr_calc)),
+      prec.left(1, seq($._tab_expr_calc, "-", $._tab_expr_calc)),
+      prec.left(2, seq($._tab_expr_calc, "**", $._tab_expr_calc)),
+      prec.left(2, seq($._tab_expr_calc, "*", $._tab_expr_calc)),
+      prec.left(2, seq($._tab_expr_calc, "/", $._tab_expr_calc)),
+      prec.left(3, seq($._tab_expr_calc, "^", $._tab_expr_calc)),
+    ),
+
+  _tab_expr_calc_unary: ($) =>
+    prec(
+      4,
+      choice(
+        seq("+", $._tab_expr_calc),
+        seq("-", $._tab_expr_calc),
+        seq("^", $._tab_expr_calc),
+      ),
+    ),
+
+  _tab_expr_compare: ($) =>
+    prec.left(
+      -1,
+      seq(
+        $._tab_expr_calc,
+        $._comparator,
+        $._tab_expr_calc, //
+      ),
+    ),
+
+  tab_field: ($) =>
     prec.left(
       seq(
         opseq(/[a-zA-Z0-9]+/, "."), // Alias
-        /[a-zA-Z0-9_\*\(\)]+/, // Nome do campo
-        // op(paren(/[a-zA-Z0-9_\*]+/)),
+        $._sql_identifier,
+        // /[a-zA-Z0-9_\*\(\)]+/, // Nome do campo
+        // op(paren(/a-zA-Z0-9_\*]+/)),
       ),
     ),
+
   tab_name: ($) => seq($._sql_identifier, ".", $._sql_identifier),
-  _sql_identifier: ($) => $.sql_identifier,
-  sql_identifier: (_) => /[a-zA-Z0-9_]+/,
+  sql_identifier: ($) => $._sql_identifier,
+  _sql_identifier: (_) => /[a-zA-Z0-9_]+/,
 
   // ╭──────────────────────────────────────────────────────────╮
   // │                        EXEC CICS                         │

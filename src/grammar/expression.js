@@ -16,9 +16,9 @@ module.exports = {
         $.number,
         $.variable,
         // $.tab_field,
+        // seq(":", $.variable),
         $.string,
         $.constant,
-        seq(":", $.variable),
       ),
     ),
 
