@@ -1,5 +1,4 @@
 module.exports = {
-
   // ╾───────────────────────────────────────────────────────────────────────────────────╼
   // _ADVANCING: (_) => kw("ADVANCING"),
   // _AFTER: (_) => kw("AFTER"),
@@ -84,13 +83,15 @@ module.exports = {
   // _EXCEPTION: (_) => kw("EXCEPTION"),
   // _EXTEND: (_) => kw("EXTEND"),
   // _EXTERNAL: (_) => kw("EXTERNAL"),
+  _EXEC: (_) => kw("EXEC"),
+  _END_EXEC: (_) => kw("END-EXEC"),
   // _FD: (_) => kw("FD"),
   // // FILE_CONTROL: (_) => kw("FILE-CONTROL"),
   // _FILE_ID: (_) => kw("FILE-ID"),
   // _FILLER: (_) => kw("FILLER"),
   // _FINAL: (_) => kw("FINAL"),
   // _FOOTING: (_) => kw("FOOTING"),
-  // _FOR: (_) => kw("FOR"),
+  _FOR: (_) => kw("FOR"),
   // _FOREGROUND_COLOR: (_) => kw("FOREGROUND-COLOR"),
   // _FORMS_OVERLAY: (_) => kw("FORMS-OVERLAY"),
   // _FREE: (_) => kw("FREE"),

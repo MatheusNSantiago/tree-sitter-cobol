@@ -17,7 +17,7 @@ module.exports = {
   _value: ($) => choice($.boolean, $.number, $.string, $.constant),
   boolean: ($) => choice($._TRUE, $._FALSE),
   number: ($) => choice($.integer, $.decimal),
-  integer: (_) => /[+-]?[0-9,]+/,
+  integer: (_) => /[+-]?[0-9]+/,
   decimal: (_) => /[+-]?[0-9]*[\.,][0-9]+/,
 
   string: (_) => choice(/('[^'\n]*')+/, /("[^"\n]*")+/),

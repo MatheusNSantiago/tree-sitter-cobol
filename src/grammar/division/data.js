@@ -89,7 +89,7 @@ module.exports = {
       repeat(
         seq(
           choice(
-            seq($._exec_statement, op(".")), //
+            seq($.exec_sql, op(".")), //
             seq($.data_description, op(".")),
             $.copy_statement,
           ),
@@ -178,7 +178,7 @@ module.exports = {
       repeat(
         seq(
           choice(
-            seq($._exec_statement, op(".")),
+            seq($.exec_sql, op(".")),
             seq($.data_description, op(".")),
             $.copy_statement,
           ),
@@ -199,7 +199,7 @@ module.exports = {
       repeat(
         seq(
           choice(
-            seq($._exec_statement, op(".")),
+            seq($.exec_sql, op(".")),
             seq($.data_description, op(".")),
             $.copy_statement,
           ),

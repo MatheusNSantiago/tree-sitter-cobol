@@ -18,6 +18,7 @@ module.exports = grammar({
     $._BLANK_LINE,
     $._WHITE_SPACES,
     $._PREFIX,
+    $.comment,
     $.paragraph_header,
     $.section_header,
     $._INLINE_COMMENT,
@@ -27,14 +28,21 @@ module.exports = grammar({
     /\s/,
     $.comment,
     $._WHITE_SPACES,
+    $.sql_line_comment,
+    $.sql_block_comment,
     $._BLANK_LINE,
     $._PREFIX,
     $._INLINE_COMMENT,
     $._SUFFIX_COMMENT,
   ],
+  conflicts: ($) => [
+    [$.sql_between_expression, $.sql_binary_expression, $.sql_like_expression],
+    [$.sql_object_reference],
+  ],
   rules: {
     source_file: ($) =>
       seq(
+        repeat($.directive),
         $.identification_division,
         optional($.environment_division),
         optional($.data_division),
@@ -42,7 +50,17 @@ module.exports = grammar({
       ),
 
     // http://stackoverflow.com/questions/13014947/regex-to-match-a-c-style-multiline-comment/36328890#36328890
-    comment: (_) => token(prec(2, seq("*", /([^\n])*/))),
+    // comment: ($) =>
+    //   choice(
+    //     token(seq("*>", /([^\n])*/)), // inline
+    //     $._COMMENT,
+    //   ),
+    // foo: ($) => $._COMMENT,
+
+    directive: (_) =>
+      choice(
+        seq(kw("CBL"), "ARITH(EXTEND)"), //
+      ),
 
     ...require("./src/grammar/division/identification"),
     ...require("./src/grammar/division/environment"),
