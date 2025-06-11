@@ -1,6 +1,6 @@
 module.exports = {
   WORD: ($) => $._WORD,
-  _WORD: ($) =>
+  _WORD: (_) =>
     /([0-9][a-zA-Z0-9-]*[a-zA-Z][a-zA-Z0-9-]*)|([a-zA-Z][a-zA-Z0-9-]*)/,
 
   section_name: ($) => $._WORD,
@@ -20,7 +20,11 @@ module.exports = {
   integer: (_) => /[+-]?[0-9]+/,
   decimal: (_) => /[+-]?[0-9]*[\.,][0-9]+/,
 
-  string: (_) => choice(/('[^'\n]*')+/, /("[^"\n]*")+/),
+  string: (_) =>
+    choice(
+      /('[^'\n]*')+/, //
+      /("[^"\n]*")+/,
+    ),
 
   constant: (_) =>
     choice(

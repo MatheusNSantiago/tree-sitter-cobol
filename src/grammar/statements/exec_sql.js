@@ -34,6 +34,7 @@ module.exports = {
       $.sql_whenever_statement,
       $.sql_include_statement,
       $.sql_fetch_statement,
+      $.sql_declare_table_statement,
       $.sql_open_statement,
       $.sql_close_statement,
     ),
@@ -60,38 +61,22 @@ module.exports = {
   sql_select_clause: ($) =>
     seq(kw("SELECT"), op($._DISTINCT), $.sql_select_expression_list),
 
-  sql_into_clause: ($) =>
-    seq(
-      $._INTO,
-      sep1($.sql_variable, ","), // Using your sep1 helper
-    ),
+  sql_into_clause: ($) => seq($._INTO, sep1($.sql_variable, ",")),
 
   sql_from_clause: ($) =>
-    seq(
-      $._FROM,
-      sep1($.sql_relation, ","), // Using your sep1 helper
-      repeat($.sql_join_clause),
-    ),
+    seq($._FROM, sep1($.sql_relation, ","), repeat($.sql_join_clause)),
 
   sql_where_clause: ($) =>
     seq(kw("WHERE"), field("predicate", $.sql_expression)),
 
   sql_group_by_clause: ($) =>
-    seq(
-      kw("GROUP"),
-      $._BY,
-      sep1($.sql_expression, ","), // Using your sep1 helper
-    ),
+    seq(kw("GROUP"), $._BY, sep1($.sql_expression, ",")),
 
   sql_having_clause: ($) =>
     seq(kw("HAVING"), field("predicate", $.sql_expression)),
 
   sql_order_by_clause: ($) =>
-    seq(
-      kw("ORDER"),
-      $._BY,
-      sep1($.sql_order_target, ","), // Using your sep1 helper
-    ),
+    seq(kw("ORDER"), $._BY, sep1($.sql_order_target, ",")),
 
   sql_fetch_first_clause: ($) =>
     seq(
@@ -111,7 +96,7 @@ module.exports = {
   sql_optimize_for_clause: ($) =>
     seq(kw("optimize"), $._FOR, field("count", $.integer), $._ROWS),
 
-  sql_select_expression_list: ($) => sep1($.sql_term, ","), // Using your sep1 helper
+  sql_select_expression_list: ($) => sep1($.sql_term, ","),
 
   sql_term: ($) =>
     seq(
@@ -274,6 +259,40 @@ module.exports = {
   sql_close_statement: ($) =>
     seq(kw("CLOSE"), field("cursor_name", $.cursor_identifier)),
 
+  // === NEW STATEMENT: DECLARE TABLE ===
+  sql_declare_table_statement: ($) =>
+    seq(
+      kw("DECLARE"),
+      field("table_name", $.sql_object_reference), // e.g., DB2DEB.TDEB1120
+      kw("TABLE"),
+      paren(
+        sep1($.sql_column_definition, ","), // Comma-separated column definitions
+      ),
+    ),
+
+  sql_column_definition: ($) =>
+    seq(
+      field("column_name", $.sql_identifier),
+      field("data_type", $.sql_data_type),
+      op(repeat1($.sql_column_constraint)), // Optional constraints like NOT NULL
+    ),
+
+  sql_data_type: ($) =>
+    choice(
+      kw("SMALLINT"),
+      kw("INTEGER"),
+      seq(kw("DECIMAL"), op(paren(sep1($.integer, ",")))), // DECIMAL(p, s)
+      seq(kw("NUMERIC"), op(paren(sep1($.integer, ",")))), // NUMERIC(p, s)
+      seq(kw("CHARACTER"), op(paren($.integer))),
+      seq(kw("CHAR"), op(paren($.integer))),
+      seq(kw("VARCHAR"), paren($.integer)),
+      kw("DATE"),
+      kw("TIME"),
+      kw("TIMESTAMP"),
+    ),
+
+  sql_column_constraint: ($) => choice(seq($._NOT, kw("NULL"))),
+
   sql_expression: ($) =>
     prec(
       1,
@@ -294,7 +313,7 @@ module.exports = {
       ),
     ),
 
-  sql_parenthesized_expression: ($) => prec(2, paren($.sql_expression)), // Using your paren helper
+  sql_parenthesized_expression: ($) => prec(2, paren($.sql_expression)),
 
   sql_unary_expression: ($) =>
     choice(
@@ -417,7 +436,6 @@ module.exports = {
 
   sql_list: ($) => paren(sep1($.sql_expression, ",")), // Using your paren and sep1
 
-  // --- SQL Literals and Identifiers ---
   sql_literal: ($) => choice($.sql_string_literal, $.number, kw("NULL")),
 
   sql_string_literal: (_) => seq(/'([^']|'')*'/, repeat(/'([^']|'')*'/)),

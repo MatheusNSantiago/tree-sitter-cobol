@@ -123,6 +123,7 @@ module.exports = {
   pic_type: ($) =>
     seq(
       field("def", $._pic_def), //
+      opseq(kw("USAGE"), optional($._IS)),
       op(field("comp", $.comp)),
     ),
 
@@ -163,8 +164,27 @@ module.exports = {
       kw("OCCURS"),
       field("times", $.number),
       kw("TIMES"),
-      optional(choice($._picture, $.indexed_by)),
+      op($.occurs_key_spec),
+      op(choice($._picture, $.indexed_by)),
     ),
+
+  occurs_key_spec: ($) =>
+    prec.left(
+      2,
+      choice(
+        seq(repeat1($.occurs_key), optional($.indexed_by)),
+        seq($.indexed_by, repeat($.occurs_key)),
+      ),
+    ),
+
+  occurs_key: ($) =>
+    seq(
+      choice(kw("ASCENDING"), kw("DESCENDING")),
+      op($._KEY),
+      op($._IS),
+      field("keys", repeat1($.variable)),
+    ),
+
   indexed_by: ($) => seq(kw("INDEXED"), kw("BY"), $.variable),
 
   // ╭──────────────────────────────────────────────────────────╮
