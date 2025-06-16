@@ -17,7 +17,7 @@ module.exports = {
       $.record_key_clause,
     ),
 
-  assign_clause: ($) => seq(kw("ASSIGN"), $._TO, field("dd_name", $.WORD)),
+  assign_clause: ($) => seq($._ASSIGN, op($._TO), field("dd_name", $.WORD)),
 
   access_mode_clause: ($) =>
     seq(

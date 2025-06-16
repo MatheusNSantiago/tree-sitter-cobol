@@ -9,8 +9,8 @@ module.exports = {
       $._END_EXEC,
     ),
 
-  cics_operation: (_) =>
-    choice(kw("PUT"), kw("ASSIGN"), kw("GET"), kw("LINK"), kw("DELETE")),
+  cics_operation: ($) =>
+    choice(kw("PUT"), $._ASSIGN, kw("GET"), kw("LINK"), kw("DELETE")),
 
   _exec_cics_body: ($) => prec.right(15, seq($._exec_cics_statements, C($))),
   _exec_cics_statements: ($) =>
