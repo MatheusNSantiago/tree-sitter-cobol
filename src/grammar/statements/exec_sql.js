@@ -30,19 +30,19 @@ module.exports = {
       $.sql_insert_statement,
       $.sql_update_statement,
       $.sql_delete_statement,
-      $.sql_declare_cursor_statement,
       $.sql_whenever_statement,
       $.sql_include_statement,
       $.sql_fetch_statement,
-      $.sql_declare_table_statement,
+      $.sql_declare_statement,
       $.sql_open_statement,
       $.sql_close_statement,
     ),
 
   sql_line_comment: (_) => token(prec(1, /--[^\n]*/)),
   sql_block_comment: (_) => token(prec(1, /\/\*[^*]*\*+(?:[^/*][^*]*\*+)*\//)),
-  sql_identifier: (_) => token(/[a-zA-Z][0-9a-zA-Z_]*/),
-  cursor_identifier: (_) => token(/[a-zA-Z][0-9a-zA-Z_-]*/),
+  sql_identifier: (_) => token(/[a-zA-Z][0-9a-zA-Z_-]*/),
+  cursor_identifier: ($) => $.sql_identifier,
+
 
   // --- SQL Statements ---
   sql_select_statement: ($) =>
@@ -82,13 +82,7 @@ module.exports = {
     seq(
       $._FETCH,
       kw("FIRST"),
-      field(
-        "count",
-        choice(
-          $.integer,
-          $.sql_variable, //
-        ),
-      ),
+      field("count", choice($.integer, $.sql_variable)),
       $._ROWS,
       $._ONLY,
     ),
@@ -112,12 +106,7 @@ module.exports = {
 
   sql_all_fields: ($) =>
     seq(
-      op(
-        seq(
-          choice($.sql_identifier, $.sql_object_reference),
-          ".", //
-        ),
-      ),
+      opseq(choice($.sql_identifier, $.sql_object_reference), "."), //
       "*",
     ),
 
@@ -193,10 +182,9 @@ module.exports = {
       op($.sql_where_clause),
     ),
 
-  sql_declare_cursor_statement: ($) =>
+  _sql_declare_cursor_body: ($) =>
     seq(
-      kw("DECLARE"),
-      field("cursor_name", $.cursor_identifier),
+      field("cursor_name", $.sql_identifier),
       kw("CURSOR"),
       opseq(
         $._WITH,
@@ -259,15 +247,20 @@ module.exports = {
   sql_close_statement: ($) =>
     seq(kw("CLOSE"), field("cursor_name", $.cursor_identifier)),
 
-  // === NEW STATEMENT: DECLARE TABLE ===
-  sql_declare_table_statement: ($) =>
+  sql_declare_statement: ($) =>
     seq(
-      kw("DECLARE"),
+      $._DECLARE,
+      choice(
+        alias($._sql_declare_cursor_body, $.sql_declare_cursor_statement),
+        alias($._sql_declare_table_body, $.sql_declare_table_statement),
+      ),
+    ),
+
+  _sql_declare_table_body: ($) =>
+    seq(
       field("table_name", $.sql_object_reference), // e.g., DB2DEB.TDEB1120
       kw("TABLE"),
-      paren(
-        sep1($.sql_column_definition, ","), // Comma-separated column definitions
-      ),
+      paren(sep1($.sql_column_definition, ",")),
     ),
 
   sql_column_definition: ($) =>
@@ -466,4 +459,5 @@ module.exports = {
   _ONLY: (_) => kw("ONLY"),
   _ROWSET: (_) => kw("ROWSET"),
   _FETCH: (_) => kw("FETCH"),
+  _DECLARE: (_) => kw("DECLARE"),
 };
