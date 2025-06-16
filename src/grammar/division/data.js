@@ -103,12 +103,16 @@ module.exports = {
     seq(
       field("level", $.level_number),
       field("name", $.data_name),
+
+      // optional pq pode ser um lider de group
       optional(
-        // optional pq pode ser um lider de group
         choice(
           $._picture,
-          field("redefines", seq(kw("REDEFINES"), $.variable)), // 01 WS-RECORD-1 REDEFINES WS-RECORD-2
-          field("occurs", $.occurs), // 01 WS-RECORD OCCURS 10 TIMES
+          field(
+            "redefines",
+            seq(kw("REDEFINES"), $.variable, op($._picture)), // 01 WS-RECORD-1 REDEFINES WS-RECORD-2 <<PIC X(10)>>
+          ),
+          seq(op($._picture), field("occurs", $.occurs)), // 01 WS-RECORD <<PIC X(10)>> OCCURS 10 TIMES
           kw("INDEX"), // 77 IDX-601F-LIM     INDEX.
           $._pic_value, // 88 CND-STATUS-OK VALUE 0
         ),
@@ -130,7 +134,9 @@ module.exports = {
   _pic_def: ($) => choice($.pic_x, $.pic_9, $.pic_a, $.pic_edit),
 
   pic_x: (_) => /[xX]+(\([0-9]+\))?/,
-  pic_9: (_) => /[sS]?9+(\([0-9]+\))?([vV]9+(\([0-9]+\))?)?/,
+  // pic_9: (_) => /[sS]?9+(\([0-9]+\))?([vV]9+(\([0-9]+\))?)?/,
+  pic_9: (_) => /[sS]?9+(\([0-9]+\))?([vV](9(\([0-9]+\))?)*)?/,
+
   pic_a: (_) => /([aA](\([0-9]+\))?)+/,
   pic_edit: (_) =>
     /([aAxX9bBvVzZpPwW\(\)0-9$/,\.*+<>-]|[cC][rR]|[dD][bB])*([aAxX9bBvVzZpPwW\(\)0-9$/,*+<>-]|[cC][rR]|[dD][bB])/,
