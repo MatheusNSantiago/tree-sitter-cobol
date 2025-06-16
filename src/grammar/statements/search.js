@@ -6,17 +6,19 @@ module.exports = {
         optional(kw("ALL")),
         field("table_name", $.variable),
         optional(field("varying", seq(kw("VARING"), $.WORD))),
-        repeat(
-          prec.right(
-            seq(
-              repeat1(choice($.search_when, $.at_end)), //
-              repeat($._statement),
-            ),
-          ),
+        repeat1(
+          choice($.search_when, $.at_end), //
         ),
         op(kw("END-SEARCH")),
       ),
     ),
 
-  search_when: ($) => seq(kw("WHEN"), field("condition", $.expr)),
+  search_when: ($) =>
+    prec.right(
+      seq(
+        kw("WHEN"),
+        field("condition", $.expr),
+        repeat($._statement),
+      ),
+    ),
 };

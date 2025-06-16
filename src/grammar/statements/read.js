@@ -3,14 +3,15 @@ module.exports = {
     prec.right(
       seq(
         kw("READ"),
-        $.file_name,
+        field("file", $.file_name),
         $._INTO,
-        $.variable,
-        op(seq(C($), repeat(choice($.at_end, $.not_at_end, $._statement)))),
+        field("record", $.variable),
+        op(seq(C($), repeat(choice($.at_end, $.not_at_end)))),
         optional(kw("END-READ")),
       ),
     ),
 
-  at_end: ($) => seq($._AT, $._END),
-  not_at_end: ($) => seq($._NOT, $._AT, $._END),
+  at_end: ($) => prec.right(seq($._AT, $._END, repeat1($._statement))),
+  not_at_end: ($) =>
+    prec.right(seq($._NOT, $._AT, $._END, repeat1($._statement))),
 };
