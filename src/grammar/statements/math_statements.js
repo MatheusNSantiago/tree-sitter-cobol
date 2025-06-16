@@ -1,6 +1,6 @@
 module.exports = {
   add_statement: ($) =>
-    seq(kw("ADD"), choice($.variable, $.number), kw("TO"), $.variable),
+    seq(kw("ADD"), choice($.variable, $.number), kw("TO"), repeat1($.variable)),
 
   subtract_statement: ($) =>
     seq(kw("SUBTRACT"), choice($.variable, $.number), kw("FROM"), $.variable),

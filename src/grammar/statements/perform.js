@@ -1,10 +1,14 @@
 module.exports = {
   perform_statement: ($) =>
-    choice(
-      $.perform_simple,
-      $.perform_times,
-      $.perform_until,
-      $.perform_x_until,
+    seq(
+      $._PERFORM,
+      choice(
+        $.perform_simple,
+        $.perform_times,
+        $.perform_until,
+        $.perform_x_until,
+        $.perform_varying,
+      ),
     ),
 
   _PERFORM: (_) => kw("PERFORM"),
@@ -15,8 +19,7 @@ module.exports = {
   // ╾───────────────────────────────────────────────────────────────────────────────────╼
   perform_simple: ($) =>
     seq(
-      $._PERFORM,
-      field("label", $.section_name),
+      field("label", $.section_name), //
       optional(seq($._THRU, $.section_name)),
     ),
 
@@ -27,7 +30,7 @@ module.exports = {
   // ╾───────────────────────────────────────────────────────────────────────────────────╼
   perform_times: ($) =>
     seq(
-      seq($._PERFORM, field("times", $.integer), kw("TIMES")),
+      seq(field("times", $.integer), kw("TIMES")),
       repeat($._statement),
       $._END_PERFORM,
     ),
@@ -39,7 +42,7 @@ module.exports = {
   // ╾───────────────────────────────────────────────────────────────────────────────────╼
   perform_until: ($) =>
     seq(
-      seq($._PERFORM, kw("UNTIL"), $.expr),
+      seq(kw("UNTIL"), $.expr), //
       repeat($._statement),
       $._END_PERFORM,
     ),
@@ -49,11 +52,28 @@ module.exports = {
   // ╾───────────────────────────────────────────────────────────────────────────────────╼
   perform_x_until: ($) =>
     seq(
+      field("label", $.section_name), //
+      $._UNTIL,
+      field("condition", $.expr),
+    ),
+
+  // ╾───────────────────────────────────────────────────────────────────────────────────╼
+  //  PERFORM VARYING I FROM 1 BY 1 UNTIL I > 10
+  // ╾───────────────────────────────────────────────────────────────────────────────────╼
+
+  perform_varying: ($) =>
+    prec.right(
       seq(
-        $._PERFORM,
-        field("label", $.section_name),
+        $._VARYING,
+        $.variable,
+        $._FROM,
+        field("from", $._expr_data),
+        $._BY,
+        field("by", $._expr_data),
         $._UNTIL,
-        field("condition", $.expr),
+        field("until", $.expr),
+        repeat($._statement),
+        $._END_PERFORM,
       ),
     ),
 };
