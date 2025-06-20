@@ -53,8 +53,19 @@ module.exports = {
   perform_x_until: ($) =>
     seq(
       field("label", $.section_name), //
+      op($.varying),
       $._UNTIL,
       field("condition", $.expr),
+    ),
+
+  varying: ($) =>
+    seq(
+      $._VARYING,
+      $.variable,
+      $._FROM,
+      field("from", $._expr_data),
+      $._BY,
+      field("by", $._expr_data),
     ),
 
   // ╾───────────────────────────────────────────────────────────────────────────────────╼
@@ -64,12 +75,7 @@ module.exports = {
   perform_varying: ($) =>
     prec.right(
       seq(
-        $._VARYING,
-        $.variable,
-        $._FROM,
-        field("from", $._expr_data),
-        $._BY,
-        field("by", $._expr_data),
+        $.varying,
         $._UNTIL,
         field("until", $.expr),
         repeat($._statement),

@@ -43,7 +43,6 @@ module.exports = {
   sql_identifier: (_) => token(/[a-zA-Z][0-9a-zA-Z_-]*/),
   cursor_identifier: ($) => $.sql_identifier,
 
-
   // --- SQL Statements ---
   sql_select_statement: ($) =>
     seq(
@@ -279,8 +278,8 @@ module.exports = {
       seq(kw("CHARACTER"), op(paren($.integer))),
       seq(kw("CHAR"), op(paren($.integer))),
       seq(kw("VARCHAR"), paren($.integer)),
-      kw("DATE"),
-      kw("TIME"),
+      $._DATE,
+      $._TIME,
       kw("TIMESTAMP"),
     ),
 
@@ -429,9 +428,17 @@ module.exports = {
 
   sql_list: ($) => paren(sep1($.sql_expression, ",")), // Using your paren and sep1
 
-  sql_literal: ($) => choice($.sql_string_literal, $.number, kw("NULL")),
+  sql_literal: ($) =>
+    choice($.sql_string_literal, $.sql_constant, $.number, kw("NULL")),
 
   sql_string_literal: (_) => seq(/'([^']|'')*'/, repeat(/'([^']|'')*'/)),
+
+  sql_constant: ($) =>
+    choice(
+      kw("CURRENT_TIME"),
+      kw("CURRENT_DATE"),
+      seq(kw("CURRENT"), choice($._TIME, $._DATE)), //
+    ),
 
   sql_variable: ($) =>
     seq(

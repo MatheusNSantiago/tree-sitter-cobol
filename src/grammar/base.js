@@ -39,6 +39,7 @@ module.exports = {
       kw("HIGH-VALUES"),
       kw("LOW-VALUE"),
       kw("LOW-VALUES"),
+      kw("LOW-VALUES"),
     ),
 
   // ╾───────────────────────────────────────────────────────────────────────────────────╼
