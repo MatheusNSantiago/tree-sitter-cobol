@@ -3,11 +3,11 @@ module.exports = {
     seq(
       $._PERFORM,
       choice(
-        $.perform_simple,
-        $.perform_times,
-        $.perform_until,
-        $.perform_x_until,
-        $.perform_varying,
+        $._perform_simple,
+        $._perform_times,
+        $._perform_until,
+        $._perform_x_until,
+        $._perform_varying,
       ),
     ),
 
@@ -17,7 +17,8 @@ module.exports = {
   // ╾───────────────────────────────────────────────────────────────────────────────────╼
   //  PERFORM 100000-FOO.
   // ╾───────────────────────────────────────────────────────────────────────────────────╼
-  perform_simple: ($) =>
+
+  _perform_simple: ($) =>
     seq(
       field("label", $.section_name), //
       optional(seq($._THRU, $.section_name)),
@@ -28,7 +29,7 @@ module.exports = {
   //      DISPLAY "FO"
   //  END-PERFORM.
   // ╾───────────────────────────────────────────────────────────────────────────────────╼
-  perform_times: ($) =>
+  _perform_times: ($) =>
     seq(
       seq(field("times", $.integer), kw("TIMES")),
       repeat($._statement),
@@ -40,7 +41,7 @@ module.exports = {
   //       DISPLAY "FOO"
   //  END-PERFORM.
   // ╾───────────────────────────────────────────────────────────────────────────────────╼
-  perform_until: ($) =>
+  _perform_until: ($) =>
     seq(
       seq(kw("UNTIL"), $.expr), //
       repeat($._statement),
@@ -50,7 +51,7 @@ module.exports = {
   // ╾───────────────────────────────────────────────────────────────────────────────────╼
   //  PERFORM 200000-PROCESSA UNTIL CND-ARQUIVO-FIM.
   // ╾───────────────────────────────────────────────────────────────────────────────────╼
-  perform_x_until: ($) =>
+  _perform_x_until: ($) =>
     seq(
       field("label", $.section_name), //
       op($.varying),
@@ -72,7 +73,7 @@ module.exports = {
   //  PERFORM VARYING I FROM 1 BY 1 UNTIL I > 10
   // ╾───────────────────────────────────────────────────────────────────────────────────╼
 
-  perform_varying: ($) =>
+  _perform_varying: ($) =>
     prec.right(
       seq(
         $.varying,
