@@ -233,7 +233,7 @@ module.exports = {
   sql_fetch_statement: ($) =>
     seq(
       $._FETCH,
-      opseq(kw("NEXT"), $._ROWSET),
+      opseq(kw("NEXT"), $._ROWSET, $._FROM),
       field("cursor_name", $.cursor_identifier),
       opseq($._FOR, field("count", $.integer), $._ROWS),
       $._INTO,
