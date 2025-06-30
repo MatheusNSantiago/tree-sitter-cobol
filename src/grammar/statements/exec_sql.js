@@ -43,7 +43,6 @@ module.exports = {
   sql_identifier: (_) => token(/[a-zA-Z][0-9a-zA-Z_-]*/),
   cursor_identifier: ($) => $.sql_identifier,
 
-  // --- SQL Statements ---
   sql_select_statement: ($) =>
     seq(
       $.sql_select_clause,
@@ -53,6 +52,7 @@ module.exports = {
       op($.sql_group_by_clause),
       op($.sql_having_clause),
       op($.sql_order_by_clause),
+      op($.sql_limit_clause),
       op($.sql_fetch_first_clause),
       op($.sql_optimize_for_clause),
     ),
@@ -76,6 +76,8 @@ module.exports = {
 
   sql_order_by_clause: ($) =>
     seq(kw("ORDER"), $._BY, sep1($.sql_order_target, ",")),
+
+  sql_limit_clause: ($) => seq(kw("LIMIT"), field("limit", $.integer)),
 
   sql_fetch_first_clause: ($) =>
     seq(
@@ -150,8 +152,8 @@ module.exports = {
       ),
     ),
 
-  sql_column_list_for_insert: ($) => paren(sep1($.sql_identifier, ",")), // Using your paren and sep1
-  sql_value_list_for_insert: ($) => paren(sep1($.sql_expression, ",")), // Using your paren and sep1
+  sql_column_list_for_insert: ($) => paren(sep1($.sql_identifier, ",")),
+  sql_value_list_for_insert: ($) => paren(sep1($.sql_expression, ",")),
 
   sql_update_statement: ($) =>
     seq(
@@ -266,7 +268,7 @@ module.exports = {
     seq(
       field("column_name", $.sql_identifier),
       field("data_type", $.sql_data_type),
-      op(repeat1($.sql_column_constraint)), // Optional constraints like NOT NULL
+      op(repeat1($.sql_column_constraint)),
     ),
 
   sql_data_type: ($) =>
@@ -416,17 +418,17 @@ module.exports = {
         op(
           sep1(
             seq(op($._DISTINCT), $.sql_expression),
-            ",", // Separator for sep1
+            ",",
           ),
         ),
-      ), // Using op and sep1
+      ),
     ),
 
   sql_exists_expression: ($) => seq(kw("EXISTS"), $.sql_subquery),
 
-  sql_subquery: ($) => paren($.sql_select_statement), // Using your paren helper
+  sql_subquery: ($) => paren($.sql_select_statement),
 
-  sql_list: ($) => paren(sep1($.sql_expression, ",")), // Using your paren and sep1
+  sql_list: ($) => paren(sep1($.sql_expression, ",")),
 
   sql_literal: ($) =>
     choice($.sql_string_literal, $.sql_constant, $.number, kw("NULL")),
