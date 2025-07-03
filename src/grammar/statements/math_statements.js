@@ -1,9 +1,19 @@
 module.exports = {
   add_statement: ($) =>
-    seq(kw("ADD"), choice($.variable, $.number), kw("TO"), repeat1($.variable)),
+    seq(
+      kw("ADD"),
+      repeat1(field("right", choice($.variable, $.number))),
+      kw("TO"),
+      repeat1(field("left", $.variable)),
+    ),
 
   subtract_statement: ($) =>
-    seq(kw("SUBTRACT"), choice($.variable, $.number), kw("FROM"), $.variable),
+    seq(
+      kw("SUBTRACT"),
+      repeat1(field("right", choice($.variable, $.number))),
+      kw("FROM"),
+      repeat1(field("left", $.variable)),
+    ),
 
   multiply_statement: ($) =>
     seq(kw("MULTIPLY"), choice($.variable, $.number), kw("BY"), $.variable),
