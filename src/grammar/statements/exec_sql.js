@@ -36,6 +36,8 @@ module.exports = {
       $.sql_declare_statement,
       $.sql_open_statement,
       $.sql_close_statement,
+      $.sql_commit_statement,
+      $.sql_rollback_statement,
     ),
 
   sql_line_comment: (_) => token(prec(1, /--[^\n]*/)),
@@ -248,6 +250,10 @@ module.exports = {
   sql_close_statement: ($) =>
     seq(kw("CLOSE"), field("cursor_name", $.cursor_identifier)),
 
+  sql_commit_statement: (_) => kw("COMMIT"),
+
+  sql_rollback_statement: (_) => kw("ROLLBACK"),
+
   sql_declare_statement: ($) =>
     seq(
       $._DECLARE,
@@ -414,14 +420,7 @@ module.exports = {
   sql_invocation: ($) =>
     seq(
       field("function_name", $.sql_identifier),
-      paren(
-        op(
-          sep1(
-            seq(op($._DISTINCT), $.sql_expression),
-            ",",
-          ),
-        ),
-      ),
+      paren(op(sep1(seq(op($._DISTINCT), $.sql_expression), ","))),
     ),
 
   sql_exists_expression: ($) => seq(kw("EXISTS"), $.sql_subquery),
