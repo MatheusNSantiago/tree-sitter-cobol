@@ -4,9 +4,17 @@ module.exports = {
       field("division_header", $.identification_division_header),
       C($),
       $.program_id,
-      C($),
-      opseq($.author, C($)),
-      opseq($.date_written, C($)),
+      repeat(
+        seq(
+          choice(
+            $.author,
+            $.remarks, //
+            $.date_written, //
+            $.date_compiled, //
+          ),
+          C($),
+        ),
+      ),
     ),
 
   identification_division_header: (_) =>
@@ -19,7 +27,12 @@ module.exports = {
   author_name: ($) => repeat1($._WORD),
 
   date_written: ($) =>
-    seq(kw("DATE-WRITTEN"), ".", $.date_written_text, op(".")),
+    seq(kw("DATE-WRITTEN"), ".", opseq(field("date", $.date_text), ".")),
 
-  date_written_text: (_) => /[A-Z\/\d]+/,
+  date_compiled: ($) =>
+    seq(kw("DATE-COMPILED"), ".", opseq(field("date", $.date_text), ".")),
+
+  remarks: (_) => seq(kw("REMARKS"), "."),
+
+  date_text: (_) => /[A-Z\/\d]+/,
 };
