@@ -10,7 +10,14 @@ module.exports = {
     ),
 
   cics_operation: ($) =>
-    choice(kw("PUT"), $._ASSIGN, kw("GET"), kw("LINK"), kw("DELETE")),
+    choice(
+      kw("PUT"),
+      $._ASSIGN,
+      kw("GET"),
+      kw("LINK"),
+      kw("DELETE"),
+      kw("SYNCPOINT"),
+    ),
 
   _exec_cics_body: ($) => prec.right(15, seq($._exec_cics_statements, C($))),
   _exec_cics_statements: ($) =>
@@ -33,6 +40,7 @@ module.exports = {
       kw("RETURN"),
       kw("NOHANDLE"),
       kw("NODATA"),
+      kw("ROLLBACK"),
     ),
 
   // ╾───────────────────────────────────────────────────────────────────────────────────╼
