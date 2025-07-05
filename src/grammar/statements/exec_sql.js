@@ -57,6 +57,7 @@ module.exports = {
       op($.sql_limit_clause),
       op($.sql_fetch_first_clause),
       op($.sql_optimize_for_clause),
+      op($.sql_for_update_of_clause),
     ),
 
   sql_select_clause: ($) =>
@@ -92,6 +93,9 @@ module.exports = {
 
   sql_optimize_for_clause: ($) =>
     seq(kw("optimize"), $._FOR, field("count", $.integer), $._ROWS),
+
+  sql_for_update_of_clause: ($) =>
+    seq($._FOR, $._UPDATE, op($._OF), sep1($.sql_identifier, ",")),
 
   sql_select_expression_list: ($) => sep1($.sql_term, ","),
 
@@ -159,7 +163,7 @@ module.exports = {
 
   sql_update_statement: ($) =>
     seq(
-      kw("UPDATE"),
+      $._UPDATE,
       op($._ONLY),
       $.sql_object_reference,
       kw("SET"),
@@ -253,6 +257,7 @@ module.exports = {
   sql_commit_statement: (_) => kw("COMMIT"),
 
   sql_rollback_statement: (_) => kw("ROLLBACK"),
+
 
   sql_declare_statement: ($) =>
     seq(

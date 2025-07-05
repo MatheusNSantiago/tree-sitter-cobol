@@ -248,6 +248,7 @@ module.exports = {
   // _UP: (_) => kw("UP"),
   // _UPON: (_) => kw("UPON"),
   // _USING: (_) => kw("USING"),
+  _UPDATE: (_) => kw("UPDATE"),
   // _VALUE: (_) => kw("VALUE"),
   _VARYING: (_) => kw("VARYING"),
   // _WHEN: (_) => kw("WHEN"),
