@@ -18,7 +18,7 @@ module.exports = {
     ),
 
   identification_division_header: (_) =>
-    seq(kw("IDENTIFICATION"), kw("DIVISION"), "."),
+    seq(choice(kw("IDENTIFICATION"), kw("ID")), kw("DIVISION"), "."),
 
   program_id: ($) => seq(kw("PROGRAM-ID"), ".", $.program_name, op(".")),
   program_name: ($) => $._WORD,
