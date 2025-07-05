@@ -3,7 +3,7 @@ module.exports = {
     seq(
       kw("ADD"),
       repeat1(field("right", choice($.variable, $.number))),
-      kw("TO"),
+      choice($._TO, $._GIVING),
       repeat1(field("left", $.variable)),
     ),
 
@@ -16,7 +16,7 @@ module.exports = {
     ),
 
   multiply_statement: ($) =>
-    seq(kw("MULTIPLY"), choice($.variable, $.number), kw("BY"), $.variable),
+    seq(kw("MULTIPLY"), choice($.variable, $.number), kw("BY"), $.variable, opseq($._GIVING, $.variable)),
 
   // ╭──────────────────────────────────────────────────────────╮
   // │                         COMPUTE                          │

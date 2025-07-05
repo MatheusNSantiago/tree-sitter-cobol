@@ -5,7 +5,7 @@ module.exports = {
         seq($._NOT, $.expr),
         seq($.expr, choice($._AND, $._OR), $.expr),
         $._expr_bool,
-        seq("(", $.expr, ")"),
+        // paren($.expr),
       ),
     ),
 
@@ -23,14 +23,11 @@ module.exports = {
     ),
 
   _expr_calc: ($) =>
-    prec(
-      1,
-      choice(
-        $._expr_calc_binary,
-        $._expr_calc_unary,
-        $._expr_data,
-        seq("(", $._expr_calc, ")"),
-      ),
+    choice(
+      $._expr_calc_binary,
+      $._expr_calc_unary,
+      $._expr_data,
+      paren($.expr),
     ),
 
   _expr_calc_binary: ($) =>
@@ -133,7 +130,7 @@ module.exports = {
       // $._arith_x,
       $._binary_exp,
       $._unary_exp,
-      seq("(", $._exp, ")"),
+      paren($._exp),
     ),
 
   _binary_exp: ($) =>
