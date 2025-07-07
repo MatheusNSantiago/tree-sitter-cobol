@@ -34,7 +34,7 @@ module.exports = {
       kw("ZERO"),
       kw("ZEROS"),
       kw("ZEROES"),
-      // kw("QUOTE"),
+      kw("QUOTE"),
       kw("HIGH-VALUE"),
       kw("HIGH-VALUES"),
       kw("LOW-VALUE"),

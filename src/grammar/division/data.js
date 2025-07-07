@@ -161,7 +161,7 @@ module.exports = {
   _pic_value: ($) =>
     seq(
       choice($._VALUE, $._VALUES),
-      op(kw("ALL")),
+      op($._ALL),
       repeat1(field("value", $.value_item)),
     ),
   value_item: ($) => seq($._value, opseq($._THRU, $._value)),

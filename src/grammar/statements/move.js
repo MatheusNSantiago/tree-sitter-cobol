@@ -3,6 +3,7 @@ module.exports = {
     prec.left(
       seq(
         kw("MOVE"),
+        op($._ALL),
         field("from", $._move_from),
         $._TO,
         repeat1(
