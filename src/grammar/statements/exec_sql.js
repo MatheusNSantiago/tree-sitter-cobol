@@ -242,7 +242,20 @@ module.exports = {
   sql_fetch_statement: ($) =>
     seq(
       $._FETCH,
-      opseq(kw("NEXT"), $._ROWSET, $._FROM),
+      optional(
+        choice(
+          seq(kw("NEXT"), $._ROWSET, $._FROM),
+
+          //FETCH ROWSET STARTING AT ABSOLUTE :DEBSBS05-PSC
+          seq(
+            $._ROWSET,
+            kw("STARTING"),
+            $._AT,
+            kw("ABSOLUTE"),
+            field("start", $.sql_variable),
+          ),
+        ),
+      ),
       field("cursor_name", $.cursor_identifier),
       opseq($._FOR, field("count", $.integer), $._ROWS),
       $._INTO,
