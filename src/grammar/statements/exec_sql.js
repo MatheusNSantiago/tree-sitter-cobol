@@ -192,6 +192,7 @@ module.exports = {
   _sql_declare_cursor_body: ($) =>
     seq(
       field("cursor_name", $.sql_identifier),
+      op(kw("SCROLL")),
       kw("CURSOR"),
       opseq(
         $._WITH,
@@ -257,7 +258,6 @@ module.exports = {
   sql_commit_statement: (_) => kw("COMMIT"),
 
   sql_rollback_statement: (_) => kw("ROLLBACK"),
-
 
   sql_declare_statement: ($) =>
     seq(
