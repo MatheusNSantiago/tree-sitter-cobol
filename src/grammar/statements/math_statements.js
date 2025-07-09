@@ -16,20 +16,28 @@ module.exports = {
     ),
 
   multiply_statement: ($) =>
-    seq(kw("MULTIPLY"), choice($.variable, $.number), kw("BY"), $.variable, opseq($._GIVING, $.variable)),
+    seq(
+      kw("MULTIPLY"),
+      choice($.variable, $.number),
+      kw("BY"),
+      $.variable,
+      opseq($._GIVING, $.variable),
+    ),
 
   // ╭──────────────────────────────────────────────────────────╮
   // │                         COMPUTE                          │
   // ╰──────────────────────────────────────────────────────────╯
   compute_statement: ($) =>
-    choice(
-      $._compute_inline, //
-      // $._compute_block,
+    seq(
+      $._COMPUTE,
+      choice(
+        $._compute_inline, //
+        $._compute_block,
+      ),
     ),
 
   _compute_inline: ($) =>
     seq(
-      $._COMPUTE,
       field("left", $.variable),
       choice("=", $._EQUAL),
       field("right", $.expr),
@@ -37,7 +45,6 @@ module.exports = {
 
   _compute_block: ($) =>
     seq(
-      $._COMPUTE,
       $.expr,
       op($.on_size_error), //
       kw("END-COMPUTE"),
@@ -48,8 +55,6 @@ module.exports = {
       kw("ON"),
       kw("SIZE"),
       kw("ERROR"),
-      choice(kw("CONTINUE", repeat1($._statement))),
+      choice($._CONTINUE, repeat1($._statement)),
     ),
-  // ╾───────────────────────────────────────────────────────────────────────────────────╼
-  _COMPUTE: (_) => kw("COMPUTE"),
 };

@@ -220,7 +220,7 @@ module.exports = {
             $._TO,
             field("paragraph_name", $.WORD),
           ),
-          kw("CONTINUE"),
+          $._CONTINUE,
           kw("STOP"),
         ),
       ),
