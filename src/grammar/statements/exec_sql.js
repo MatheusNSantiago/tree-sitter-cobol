@@ -244,7 +244,7 @@ module.exports = {
       $._FETCH,
       optional(
         choice(
-          seq(kw("NEXT"), $._ROWSET, $._FROM),
+          seq(kw("NEXT"), $._ROWSET, op($._FROM)),
 
           //FETCH ROWSET STARTING AT ABSOLUTE :DEBSBS05-PSC
           seq(
@@ -306,7 +306,7 @@ module.exports = {
       seq(kw("VARCHAR"), paren($.integer)),
       $._DATE,
       $._TIME,
-      kw("TIMESTAMP"),
+      $._TIMESTAMP,
     ),
 
   sql_column_constraint: ($) => choice(seq($._NOT, kw("NULL"))),
@@ -456,7 +456,7 @@ module.exports = {
     choice(
       kw("CURRENT_TIME"),
       kw("CURRENT_DATE"),
-      seq(kw("CURRENT"), choice($._TIME, $._DATE)), //
+      seq(kw("CURRENT"), choice($._TIME, $._DATE, $._TIMESTAMP)), //
     ),
 
   sql_variable: ($) =>
