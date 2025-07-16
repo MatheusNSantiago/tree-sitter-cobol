@@ -239,6 +239,7 @@ module.exports = {
   _THAN: (_) => kw("THAN"),
   _TIME: (_) => kw("TIME"),
   // _TIMES: (_) => kw("TIMES"),
+  _TIMESTAMP: (_) => kw("TIMESTAMP"),
   _TO: (_) => kw("TO"),
   _FALSE: (_) => kw("FALSE"),
   // _FILE: (_) => kw("FILE"),
