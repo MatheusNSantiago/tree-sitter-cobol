@@ -1,7 +1,11 @@
 module.exports = {
-  WORD: ($) => $._WORD,
-  _WORD: (_) =>
+  _PLAIN_WORD: (_) =>
     /([0-9][a-zA-Z0-9-]*[a-zA-Z][a-zA-Z0-9-]*)|([a-zA-Z][a-zA-Z0-9-]*)/,
+
+  _WORD: ($) =>
+    seq($._PLAIN_WORD, repeat(seq($._CONTINUATION_HYPHEN, $._PLAIN_WORD))),
+
+  WORD: ($) => $._WORD,
 
   section_name: ($) => $._WORD,
   variable: ($) => seq(field("name", $._WORD), op(paren($._WORD))),
@@ -20,10 +24,19 @@ module.exports = {
   integer: (_) => /[+-]?[0-9]+/,
   decimal: (_) => /[+-]?[0-9]*[\.,][0-9]+/,
 
-  string: (_) =>
-    choice(
-      /('[^'\n]*')+/, //
-      /("[^"\n]*")+/,
+  // string: (_) =>
+  //   choice(
+  //     /('[^'\n]*')+/, //
+  //     /("[^"\n]*")+/,
+  //   ),
+
+  string: ($) =>
+    prec.right(
+      seq(
+        $._STRING_START,
+        repeat(choice($._STRING_CONTENT, $._STRING_CONTINUATION)),
+        $._STRING_END,
+      ),
     ),
 
   constant: (_) =>

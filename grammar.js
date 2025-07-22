@@ -13,10 +13,13 @@ sep1 = (rule, separator) => seq(rule, repeat(seq(separator, rule)));
 
 module.exports = grammar({
   name: "cobol",
-  word: ($) => $._WORD,
   externals: ($) => [
+    $._STRING_CONTINUATION,
+    $._CONTINUATION_HYPHEN,
+    $._STRING_START,
+    $._STRING_CONTENT,
+    $._STRING_END,
     $._BLANK_LINE,
-    $._WHITE_SPACES,
     $._PREFIX,
     $.comment,
     $.paragraph_header,
@@ -25,15 +28,13 @@ module.exports = grammar({
     $._SUFFIX_COMMENT,
   ],
   extras: ($) => [
-    /\s/,
-    $.comment,
-    $._WHITE_SPACES,
-    $.sql_line_comment,
-    $.sql_block_comment,
+    /\s/, // Espaços em branco padrão
+    $.comment, // Comentários de linha inteira '*' na col 7
+    $._INLINE_COMMENT, // Comentários '*>'
+    $._SUFFIX_COMMENT, // Comentários na área de sufixo
     $._BLANK_LINE,
-    $._PREFIX,
-    $._INLINE_COMMENT,
-    $._SUFFIX_COMMENT,
+    $.sql_line_comment, // Comentários de SQL
+    $.sql_block_comment, // Comentários de SQL
   ],
   conflicts: ($) => [
     [$.sql_between_expression, $.sql_binary_expression, $.sql_like_expression],

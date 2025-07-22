@@ -64,10 +64,10 @@ static inline bool is_starting_inline_comment(TSLexer *lexer) {
 static inline int get_column(TSLexer *lexer) {
   return lexer->get_column(lexer);
 }
-
 static inline bool is_inline_space(char c) {
   return isspace(c) && c != '\n' && c != '\r';
 }
+
 /* ╾───────────────────────────────────────────────────────────────────────────────────╼*/
 
 void *tree_sitter_cobol_external_scanner_create() {
@@ -86,7 +86,6 @@ bool tree_sitter_cobol_external_scanner_scan(void *payload, TSLexer *lexer,
 
   int *next_char = &(lexer->lookahead);
 
-  // Primeiro, lide com o estado "dentro da string", que é o mais complexo.
   bool is_inside_string = scanner->open_quote_char != 0;
   if (is_inside_string) {
     bool has_content = false;
@@ -105,6 +104,8 @@ bool tree_sitter_cobol_external_scanner_scan(void *payload, TSLexer *lexer,
       return end_token(lexer, STRING_CONTENT);
     }
 
+    // Ainda não encontrou conteúdo
+
     bool has_found_end_quote = *next_char == scanner->open_quote_char;
     if (has_found_end_quote) {
       advance(lexer);
@@ -116,11 +117,9 @@ bool tree_sitter_cobol_external_scanner_scan(void *payload, TSLexer *lexer,
     // Se chegou aqui, só pode ser uma quebra de linha ou EOF.
     bool is_line_break_or_eof = *next_char == '\n' || *next_char == '\r';
     if (is_line_break_or_eof) {
-      // Se a gramática espera uma continuação, vamos verificar.
       if (valid_symbols[STRING_CONTINUATION]) {
-        skip(lexer); // Pula o \n
+        skip(lexer); // Pula o line break
 
-        // Pula espaços em branco iniciais na nova linha
         while (is_inline_space(*next_char)) {
           skip(lexer);
         }
@@ -128,6 +127,7 @@ bool tree_sitter_cobol_external_scanner_scan(void *payload, TSLexer *lexer,
         // Agora verifica o indicador de continuação
         bool is_continuation_indicator =
             get_column(lexer) == 6 && *next_char == '-';
+
         if (is_continuation_indicator) {
           skip(lexer); // Pula o hífen
 
@@ -135,7 +135,6 @@ bool tree_sitter_cobol_external_scanner_scan(void *payload, TSLexer *lexer,
             skip(lexer); // Pula espaços depois do hífen
           }
 
-          bool has_found_end_quote = *next_char == scanner->open_quote_char;
           if (has_found_end_quote) {
             skip(lexer); // Pula a aspa de abertura da nova linha
 
@@ -221,8 +220,9 @@ bool tree_sitter_cobol_external_scanner_scan(void *payload, TSLexer *lexer,
       while (isalnum(*next_char) || *next_char == '-')
         advance(lexer);
 
-      while (is_inline_space(*next_char))
+      while (is_inline_space(*next_char)) {
         advance(lexer);
+      }
 
       bool is_paragraph = *next_char == '.';
       if (is_paragraph) {
