@@ -11,17 +11,27 @@ module.exports = {
     seq(
       kw("SUBTRACT"),
       repeat1(field("right", choice($.variable, $.number))),
-      kw("FROM"),
+      $._FROM,
       repeat1(field("left", $.variable)),
     ),
 
   multiply_statement: ($) =>
     seq(
-      kw("MULTIPLY"),
-      choice($.variable, $.number),
-      kw("BY"),
-      $.variable,
-      opseq($._GIVING, $.variable),
+      seq(kw("MULTIPLY"), choice($.variable, $.number)),
+      seq($._BY, $.variable),
+      field("giving", opseq($._GIVING, $.variable)), //
+    ),
+
+  divide_statement: ($) =>
+    seq(
+      seq(kw("DIVIDE"), choice($.variable, $.number)),
+      seq($._INTO, $.variable),
+      repeat(
+        choice(
+          field("giving", seq($._GIVING, $.variable)), //
+          field("remainder", seq(kw("REMAINDER"), $.variable)),
+        ),
+      ),
     ),
 
   // ╭──────────────────────────────────────────────────────────╮
