@@ -27,6 +27,7 @@ module.exports = {
           $.cancel_statement,
           $.next_sentence,
           $.multiply_statement,
+          $.divide_statement,
           $.exec_cics,
           $.exec_sql,
           $.compute_statement,
