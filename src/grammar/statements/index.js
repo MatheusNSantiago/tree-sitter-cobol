@@ -33,6 +33,7 @@ module.exports = {
           $.compute_statement,
           $.string_statement,
           $.initialize_statement,
+          $.sort_statement,
         ),
         op("."),
       ),
@@ -50,6 +51,7 @@ module.exports = {
   ...require("./exec_sql"),
   ...require("./exec_cics"),
   ...require("./move"),
+  ...require("./sort"),
 
   exit_statement: (_) => seq(kw("EXIT"), "."),
   goback_statement: (_) => kw("GOBACK"),

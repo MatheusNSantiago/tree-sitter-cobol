@@ -14,7 +14,7 @@ module.exports = {
 
   procedure_division_header: ($) => seq(kw("PROCEDURE"), $._DIVISION),
 
-  procedure_using: ($) => seq(kw("USING"), repeat1($.variable)),
+  procedure_using: ($) => seq($._USING, repeat1($.variable)),
 
   // ╭──────────────────────────────────────────────────────────╮
   // │                        Sections                          │

@@ -179,14 +179,14 @@ module.exports = {
     prec.left(
       2,
       choice(
-        seq(repeat1($.occurs_key), optional($.indexed_by)),
-        seq($.indexed_by, repeat($.occurs_key)),
+        seq(repeat1($.sort_key), optional($.indexed_by)),
+        seq($.indexed_by, repeat($.sort_key)),
       ),
     ),
 
-  occurs_key: ($) =>
+  sort_key: ($) =>
     seq(
-      choice(kw("ASCENDING"), kw("DESCENDING")),
+      field("order", choice($._ASCENDING, $._DESCENDING)),
       op($._KEY),
       op($._IS),
       field("keys", repeat1($.variable)),
