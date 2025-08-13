@@ -8,7 +8,11 @@ module.exports = {
   WORD: ($) => $._WORD,
 
   section_name: ($) => $._WORD,
-  variable: ($) => seq(field("name", $._WORD), op(paren($._WORD))),
+  variable: ($) =>
+    seq(
+      field("name", $._WORD), //
+      field("index", op(paren(repeat1($._WORD)))),
+    ),
   // subref: ($) => seq("(", $._exp_list, ")"),
   // refmod: ($) => seq("(", $.exp, ":", optional($.exp), ")"),
 
