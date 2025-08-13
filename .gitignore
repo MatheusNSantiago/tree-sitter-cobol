@@ -1,3 +1,4 @@
+examples/
 bindings
 node-types.json
 parser.c

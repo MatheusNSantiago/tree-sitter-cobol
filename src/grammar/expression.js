@@ -28,6 +28,7 @@ module.exports = {
       $._expr_calc_unary,
       $._expr_data,
       paren($.expr),
+      seq($._LENGTH, optional($._OF), $.variable),
     ),
 
   _expr_calc_binary: ($) =>

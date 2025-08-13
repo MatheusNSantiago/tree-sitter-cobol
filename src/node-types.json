@@ -96,6 +96,10 @@
           "named": true
         },
         {
+          "type": "divide_statement",
+          "named": true
+        },
+        {
           "type": "evaluate_statement",
           "named": true
         },
@@ -161,6 +165,10 @@
         },
         {
           "type": "set_statement",
+          "named": true
+        },
+        {
+          "type": "sort_statement",
           "named": true
         },
         {
@@ -309,6 +317,16 @@
           }
         ]
       }
+    },
+    "children": {
+      "multiple": false,
+      "required": false,
+      "types": [
+        {
+          "type": "on_size_error",
+          "named": true
+        }
+      ]
     }
   },
   {
@@ -628,6 +646,62 @@
     }
   },
   {
+    "type": "divide_statement",
+    "named": true,
+    "fields": {
+      "giving": {
+        "multiple": true,
+        "required": false,
+        "types": [
+          {
+            "type": "GIVING",
+            "named": false
+          },
+          {
+            "type": "giving",
+            "named": false
+          },
+          {
+            "type": "variable",
+            "named": true
+          }
+        ]
+      },
+      "remainder": {
+        "multiple": true,
+        "required": false,
+        "types": [
+          {
+            "type": "REMAINDER",
+            "named": false
+          },
+          {
+            "type": "remainder",
+            "named": false
+          },
+          {
+            "type": "variable",
+            "named": true
+          }
+        ]
+      }
+    },
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "number",
+          "named": true
+        },
+        {
+          "type": "variable",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
     "type": "environment_division",
     "named": true,
     "fields": {
@@ -724,6 +798,10 @@
             "named": true
           },
           {
+            "type": "divide_statement",
+            "named": true
+          },
+          {
             "type": "evaluate_statement",
             "named": true
           },
@@ -793,6 +871,10 @@
           },
           {
             "type": "set_statement",
+            "named": true
+          },
+          {
+            "type": "sort_statement",
             "named": true
           },
           {
@@ -1441,6 +1523,10 @@
           "named": true
         },
         {
+          "type": "divide_statement",
+          "named": true
+        },
+        {
           "type": "evaluate_statement",
           "named": true
         },
@@ -1506,6 +1592,10 @@
         },
         {
           "type": "set_statement",
+          "named": true
+        },
+        {
+          "type": "sort_statement",
           "named": true
         },
         {
@@ -1898,7 +1988,26 @@
   {
     "type": "multiply_statement",
     "named": true,
-    "fields": {},
+    "fields": {
+      "giving": {
+        "multiple": true,
+        "required": false,
+        "types": [
+          {
+            "type": "GIVING",
+            "named": false
+          },
+          {
+            "type": "giving",
+            "named": false
+          },
+          {
+            "type": "variable",
+            "named": true
+          }
+        ]
+      }
+    },
     "children": {
       "multiple": true,
       "required": true,
@@ -1962,6 +2071,10 @@
         },
         {
           "type": "display_statement",
+          "named": true
+        },
+        {
+          "type": "divide_statement",
           "named": true
         },
         {
@@ -2030,6 +2143,10 @@
         },
         {
           "type": "set_statement",
+          "named": true
+        },
+        {
+          "type": "sort_statement",
           "named": true
         },
         {
@@ -2121,22 +2238,6 @@
     }
   },
   {
-    "type": "occurs_key",
-    "named": true,
-    "fields": {
-      "keys": {
-        "multiple": true,
-        "required": true,
-        "types": [
-          {
-            "type": "variable",
-            "named": true
-          }
-        ]
-      }
-    }
-  },
-  {
     "type": "occurs_key_spec",
     "named": true,
     "fields": {},
@@ -2149,7 +2250,142 @@
           "named": true
         },
         {
-          "type": "occurs_key",
+          "type": "sort_key",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "on_size_error",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": false,
+      "types": [
+        {
+          "type": "add_statement",
+          "named": true
+        },
+        {
+          "type": "call_statement",
+          "named": true
+        },
+        {
+          "type": "cancel_statement",
+          "named": true
+        },
+        {
+          "type": "close_statement",
+          "named": true
+        },
+        {
+          "type": "comment",
+          "named": true
+        },
+        {
+          "type": "compute_statement",
+          "named": true
+        },
+        {
+          "type": "copy_statement",
+          "named": true
+        },
+        {
+          "type": "display_statement",
+          "named": true
+        },
+        {
+          "type": "divide_statement",
+          "named": true
+        },
+        {
+          "type": "evaluate_statement",
+          "named": true
+        },
+        {
+          "type": "exec_cics",
+          "named": true
+        },
+        {
+          "type": "exec_sql",
+          "named": true
+        },
+        {
+          "type": "exit_statement",
+          "named": true
+        },
+        {
+          "type": "goback_statement",
+          "named": true
+        },
+        {
+          "type": "goto_statement",
+          "named": true
+        },
+        {
+          "type": "if_statement",
+          "named": true
+        },
+        {
+          "type": "initialize_statement",
+          "named": true
+        },
+        {
+          "type": "move_statement",
+          "named": true
+        },
+        {
+          "type": "multiply_statement",
+          "named": true
+        },
+        {
+          "type": "next_sentence",
+          "named": true
+        },
+        {
+          "type": "open_statement",
+          "named": true
+        },
+        {
+          "type": "perform_statement",
+          "named": true
+        },
+        {
+          "type": "read_statement",
+          "named": true
+        },
+        {
+          "type": "search_statement",
+          "named": true
+        },
+        {
+          "type": "select_statement",
+          "named": true
+        },
+        {
+          "type": "set_statement",
+          "named": true
+        },
+        {
+          "type": "sort_statement",
+          "named": true
+        },
+        {
+          "type": "stop_run_statement",
+          "named": true
+        },
+        {
+          "type": "string_statement",
+          "named": true
+        },
+        {
+          "type": "subtract_statement",
+          "named": true
+        },
+        {
+          "type": "write_statement",
           "named": true
         }
       ]
@@ -2254,6 +2490,10 @@
           "named": true
         },
         {
+          "type": "divide_statement",
+          "named": true
+        },
+        {
           "type": "evaluate_statement",
           "named": true
         },
@@ -2319,6 +2559,10 @@
         },
         {
           "type": "set_statement",
+          "named": true
+        },
+        {
+          "type": "sort_statement",
           "named": true
         },
         {
@@ -2422,6 +2666,10 @@
           "named": true
         },
         {
+          "type": "divide_statement",
+          "named": true
+        },
+        {
           "type": "evaluate_statement",
           "named": true
         },
@@ -2495,6 +2743,10 @@
         },
         {
           "type": "set_statement",
+          "named": true
+        },
+        {
+          "type": "sort_statement",
           "named": true
         },
         {
@@ -2610,6 +2862,10 @@
           "named": true
         },
         {
+          "type": "divide_statement",
+          "named": true
+        },
+        {
           "type": "evaluate_statement",
           "named": true
         },
@@ -2687,6 +2943,10 @@
         },
         {
           "type": "set_statement",
+          "named": true
+        },
+        {
+          "type": "sort_statement",
           "named": true
         },
         {
@@ -2944,6 +3204,10 @@
           "named": true
         },
         {
+          "type": "divide_statement",
+          "named": true
+        },
+        {
           "type": "evaluate_statement",
           "named": true
         },
@@ -3009,6 +3273,10 @@
         },
         {
           "type": "set_statement",
+          "named": true
+        },
+        {
+          "type": "sort_statement",
           "named": true
         },
         {
@@ -3082,6 +3350,10 @@
           "named": true
         },
         {
+          "type": "divide_statement",
+          "named": true
+        },
+        {
           "type": "evaluate_statement",
           "named": true
         },
@@ -3151,6 +3423,10 @@
         },
         {
           "type": "set_statement",
+          "named": true
+        },
+        {
+          "type": "sort_statement",
           "named": true
         },
         {
@@ -3249,6 +3525,120 @@
         },
         {
           "type": "variable",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "sort_giving",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "file_name",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "sort_key",
+    "named": true,
+    "fields": {
+      "keys": {
+        "multiple": true,
+        "required": true,
+        "types": [
+          {
+            "type": "variable",
+            "named": true
+          }
+        ]
+      },
+      "order": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "ASCENDING",
+            "named": false
+          },
+          {
+            "type": "DESCENDING",
+            "named": false
+          },
+          {
+            "type": "ascending",
+            "named": false
+          },
+          {
+            "type": "descending",
+            "named": false
+          }
+        ]
+      }
+    }
+  },
+  {
+    "type": "sort_statement",
+    "named": true,
+    "fields": {
+      "file": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "file_name",
+            "named": true
+          }
+        ]
+      },
+      "output": {
+        "multiple": false,
+        "required": false,
+        "types": [
+          {
+            "type": "sort_giving",
+            "named": true
+          }
+        ]
+      },
+      "sort": {
+        "multiple": true,
+        "required": false,
+        "types": [
+          {
+            "type": "sort_key",
+            "named": true
+          }
+        ]
+      },
+      "using": {
+        "multiple": false,
+        "required": false,
+        "types": [
+          {
+            "type": "sort_using",
+            "named": true
+          }
+        ]
+      }
+    }
+  },
+  {
+    "type": "sort_using",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "file_name",
           "named": true
         }
       ]
@@ -5354,6 +5744,10 @@
     "named": false
   },
   {
+    "type": "DIVIDE",
+    "named": false
+  },
+  {
     "type": "DIVISION",
     "named": false
   },
@@ -5375,6 +5769,10 @@
   },
   {
     "type": "END",
+    "named": false
+  },
+  {
+    "type": "END-COMPUTE",
     "named": false
   },
   {
@@ -5411,6 +5809,10 @@
   },
   {
     "type": "EQUAL",
+    "named": false
+  },
+  {
+    "type": "ERROR",
     "named": false
   },
   {
@@ -5798,6 +6200,10 @@
     "named": false
   },
   {
+    "type": "REMAINDER",
+    "named": false
+  },
+  {
     "type": "REMARKS",
     "named": false
   },
@@ -5879,6 +6285,10 @@
   },
   {
     "type": "SMALLINT",
+    "named": false
+  },
+  {
+    "type": "SORT",
     "named": false
   },
   {
@@ -6300,11 +6710,11 @@
   },
   {
     "type": "decimal",
-    "named": false
+    "named": true
   },
   {
     "type": "decimal",
-    "named": true
+    "named": false
   },
   {
     "type": "decimal-point",
@@ -6339,6 +6749,10 @@
     "named": false
   },
   {
+    "type": "divide",
+    "named": false
+  },
+  {
     "type": "division",
     "named": false
   },
@@ -6360,6 +6774,10 @@
   },
   {
     "type": "end",
+    "named": false
+  },
+  {
+    "type": "end-compute",
     "named": false
   },
   {
@@ -6396,6 +6814,10 @@
   },
   {
     "type": "equal",
+    "named": false
+  },
+  {
+    "type": "error",
     "named": false
   },
   {
@@ -6556,11 +6978,11 @@
   },
   {
     "type": "integer",
-    "named": true
+    "named": false
   },
   {
     "type": "integer",
-    "named": false
+    "named": true
   },
   {
     "type": "into",
@@ -6807,6 +7229,10 @@
     "named": false
   },
   {
+    "type": "remainder",
+    "named": false
+  },
+  {
     "type": "remarks",
     "named": false
   },
@@ -6892,6 +7318,10 @@
   },
   {
     "type": "smallint",
+    "named": false
+  },
+  {
+    "type": "sort",
     "named": false
   },
   {

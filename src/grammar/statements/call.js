@@ -3,6 +3,6 @@ module.exports = {
     seq(
       kw("CALL"),
       field("program", choice($.variable, $.string)),
-      field("using", opseq(kw("USING"), repeat1($.variable))),
+      field("using", opseq($._USING, repeat1($.variable))),
     ),
 };

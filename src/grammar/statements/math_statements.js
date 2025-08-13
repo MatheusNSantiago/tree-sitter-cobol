@@ -38,33 +38,42 @@ module.exports = {
   // │                         COMPUTE                          │
   // ╰──────────────────────────────────────────────────────────╯
   compute_statement: ($) =>
-    seq(
-      $._COMPUTE,
-      choice(
-        $._compute_inline, //
-        $._compute_block,
+    prec.right(
+      seq(
+        $._COMPUTE,
+        // choice(
+        //   prec(1, $.compute_inline),
+        //   prec(0, $.compute_block),
+        // ),
+        field("left", $.variable),
+        choice("=", $._EQUAL),
+        field("right", $.expr),
+        op($.on_size_error), //
+        op(kw("END-COMPUTE")),
       ),
     ),
 
-  _compute_inline: ($) =>
-    seq(
-      field("left", $.variable),
-      choice("=", $._EQUAL),
-      field("right", $.expr),
-    ),
-
-  _compute_block: ($) =>
-    seq(
-      $.expr,
-      op($.on_size_error), //
-      kw("END-COMPUTE"),
-    ),
+  // compute_inline: ($) =>
+  //   seq(
+  //     field("left", $.variable),
+  //     choice("=", $._EQUAL),
+  //     field("right", $.expr),
+  //   ),
+  //
+  // compute_block: ($) =>
+  //   seq(
+  //     $.expr,
+  //     op($.on_size_error), //
+  //     kw("END-COMPUTE"),
+  //   ),
 
   on_size_error: ($) =>
-    seq(
-      kw("ON"),
-      kw("SIZE"),
-      kw("ERROR"),
-      choice($._CONTINUE, repeat1($._statement)),
+    prec.right(
+      seq(
+        kw("ON"),
+        kw("SIZE"),
+        kw("ERROR"),
+        choice($._CONTINUE, repeat1($._statement)),
+      ),
     ),
 };
