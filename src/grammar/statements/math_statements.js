@@ -73,7 +73,7 @@ module.exports = {
         kw("ON"),
         kw("SIZE"),
         kw("ERROR"),
-        choice($._CONTINUE, repeat1($._statement)),
+        repeat1($._statement),
       ),
     ),
 };
