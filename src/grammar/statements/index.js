@@ -1,6 +1,5 @@
 module.exports = {
-  _statement: ($) => prec.right(15, seq($._statements, C($))),
-  _statements: ($) =>
+  _statement: ($) =>
     prec.right(
       seq(
         choice(
@@ -34,6 +33,7 @@ module.exports = {
           $.string_statement,
           $.initialize_statement,
           $.sort_statement,
+          $.continue_statement,
         ),
         op("."),
       ),
@@ -165,4 +165,6 @@ module.exports = {
       kw("NATIONAL"),
       kw("NATIONAL_EDITED"),
     ),
+
+  continue_statement: ($) => $._CONTINUE,
 };

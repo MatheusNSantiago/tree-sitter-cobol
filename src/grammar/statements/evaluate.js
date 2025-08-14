@@ -13,12 +13,7 @@ module.exports = {
             seq(
               seq($._WHEN, $.expr), // WHEN <expr>
               C($),
-              repeat(
-                choice(
-                  $._statement, // <statement> ...
-                  $._CONTINUE, // <continue> ...
-                ),
-              ),
+              repeat($._statement),
             ),
           ),
         ),
