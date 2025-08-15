@@ -43,7 +43,14 @@ module.exports = {
     seq(
       $.file_type,
       $.file_name,
-      repeat1(choice($.fd_block, $.fd_record, $.fd_recording_mode)),
+      repeat1(
+        choice(
+          $.fd_block,
+          $.fd_record,
+          $.fd_recording_mode,
+          $.fd_label_records,
+        ),
+      ),
     ),
 
   file_type: (_) => choice(kw("FD"), kw("SD")),
@@ -64,16 +71,22 @@ module.exports = {
       optional($._CHARACTERS),
     ),
 
-  // fd_recording_mode: (_) => seq(
-  //   kw("RECORDING"),
-  //   /[A-Z]/,
-  // ),
   fd_recording_mode: ($) =>
     seq(
       kw("RECORDING"),
       optional(kw("MODE")),
       optional($._IS),
       field("mode", $.WORD),
+    ),
+
+  fd_label_records: ($) =>
+    seq(
+      $._LABEL,
+      choice(
+        seq($._RECORD, optional($._IS)),
+        seq($._RECORDS, optional($._ARE)),
+      ),
+      choice($._STANDARD, $._OMITTED),
     ),
 
   record_description: ($) => $.data_description,

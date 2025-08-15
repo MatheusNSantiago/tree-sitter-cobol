@@ -7,7 +7,12 @@ module.exports = {
       repeat(
         prec(
           20, // Mais precedencia que um statement ($._statements)
-          choice($.copy_statement, $._statement, $.paragraph, $.section),
+          choice(
+            $.copy_statement,
+            seq($._statement, op(".")),
+            $.paragraph,
+            $.section,
+          ),
         ),
       ),
     ),
@@ -24,8 +29,13 @@ module.exports = {
     prec.right(
       seq(
         field("section_header", $.section_header),
-        C($),
-        repeat(choice($._statement, $.paragraph)),
+        // C($),
+        repeat(
+          choice(
+            seq($._statement, op(".")),
+            $.paragraph, //
+          ),
+        ),
       ),
     ),
 
@@ -41,8 +51,8 @@ module.exports = {
     prec.right(
       seq(
         field("paragraph_header", $.paragraph_header), //
-        C($),
-        repeat($._statement),
+        // C($),
+        repeat(seq($._statement, op("."))),
       ),
     ),
   // paragraph_header: ($) => seq(/[A-Z0-9]+/, "."),
