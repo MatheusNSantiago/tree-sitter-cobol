@@ -14,7 +14,8 @@ module.exports = {
 
   _move_from: ($) =>
     seq(
-      optional(
+      op(kw("CORRESPONDING")),
+      op(
         choice(
           seq($._LENGTH, op($._OF)), //
           kw("FUNCTION"),
