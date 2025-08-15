@@ -78,7 +78,7 @@ module.exports = {
     seq(kw("HAVING"), field("predicate", $.sql_expression)),
 
   sql_order_by_clause: ($) =>
-    seq(kw("ORDER"), $._BY, sep1($.sql_order_target, ",")),
+    seq($._ORDER, $._BY, sep1($.sql_order_target, ",")),
 
   sql_limit_clause: ($) => seq(kw("LIMIT"), field("limit", $.integer)),
 
