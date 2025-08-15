@@ -5,6 +5,8 @@ module.exports = {
       repeat1(field("right", choice($.variable, $.number))),
       choice($._TO, $._GIVING),
       repeat1(field("left", $.variable)),
+      op($.on_size_error),
+      kw("END-ADD"),
     ),
 
   subtract_statement: ($) =>
