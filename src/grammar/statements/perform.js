@@ -1,14 +1,11 @@
 module.exports = {
   perform_statement: ($) =>
-    seq(
-      $._PERFORM,
-      choice(
-        $._perform_simple,
-        $._perform_times,
-        $._perform_until,
-        $._perform_x_until,
-        $._perform_varying,
-      ),
+    choice(
+      $._perform_simple,
+      $._perform_times,
+      $._perform_until,
+      $._perform_x_until,
+      $._perform_varying,
     ),
 
   _PERFORM: (_) => kw("PERFORM"),
@@ -17,11 +14,12 @@ module.exports = {
   // ╾───────────────────────────────────────────────────────────────────────────────────╼
   //  PERFORM 100000-FOO.
   // ╾───────────────────────────────────────────────────────────────────────────────────╼
-
+  perform_simple: ($) => $._perform_simple,
   _perform_simple: ($) =>
     seq(
+      $._PERFORM,
       field("label", $.section_name), //
-      optional(seq($._THRU, $.section_name)),
+      opseq($._THRU, field("thru", $.section_name)),
     ),
 
   // ╾───────────────────────────────────────────────────────────────────────────────────╼
@@ -31,8 +29,9 @@ module.exports = {
   // ╾───────────────────────────────────────────────────────────────────────────────────╼
   _perform_times: ($) =>
     seq(
+      $._PERFORM,
       seq(field("times", $.integer), kw("TIMES")),
-      repeat($._statement),
+      $.perform_body,
       $._END_PERFORM,
     ),
 
@@ -43,8 +42,9 @@ module.exports = {
   // ╾───────────────────────────────────────────────────────────────────────────────────╼
   _perform_until: ($) =>
     seq(
-      seq(kw("UNTIL"), $.expr), //
-      repeat($._statement),
+      $._PERFORM,
+      seq($._UNTIL, field("condition", $.expr)), //
+      $.perform_body,
       $._END_PERFORM,
     ),
 
@@ -53,6 +53,7 @@ module.exports = {
   // ╾───────────────────────────────────────────────────────────────────────────────────╼
   _perform_x_until: ($) =>
     seq(
+      $._PERFORM,
       field("label", $.section_name), //
       op($.varying),
       $._UNTIL,
@@ -76,11 +77,11 @@ module.exports = {
   _perform_varying: ($) =>
     prec.right(
       seq(
-        $.varying,
-        $._UNTIL,
-        field("until", $.expr),
-        repeat($._statement),
+        seq($._PERFORM, $.varying, $._UNTIL, field("condition", $.expr)),
+        $.perform_body,
         $._END_PERFORM,
       ),
     ),
+
+  perform_body: ($) => repeat1($._statement),
 };
