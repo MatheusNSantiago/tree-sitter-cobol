@@ -1,6 +1,16 @@
 op = (thing) => optional(thing);
-C = ($) => repeat(choice($.comment, $._BLANK_LINE));
-kw = (keyword) => choice(keyword.toUpperCase(), keyword.toLowerCase());
+C = ($) => repeat(choice($._comment, $._BLANK_LINE));
+kw = (keyword) => keyword.toUpperCase();
+// kw = (keyword) => choice(keyword.toUpperCase(), keyword.toLowerCase());
+// kw = (keyword) => {
+// regex = new RegExp(
+//   keyword
+//     .split("")
+//     .map((c) => `[${c.toLowerCase()}${c.toUpperCase()}]`)
+//     .join(""),
+// );
+// return regex;
+// };
 aspas = (thing) =>
   choice(
     seq(op("'"), thing, op("'")),
@@ -49,6 +59,8 @@ module.exports = grammar({
         optional($.data_division),
         optional($.procedure_division),
       ),
+
+    _comment: ($) => $.comment,
 
     // http://stackoverflow.com/questions/13014947/regex-to-match-a-c-style-multiline-comment/36328890#36328890
     // comment: ($) =>

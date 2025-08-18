@@ -4,20 +4,12 @@ module.exports = {
       field("division_header", $.procedure_division_header),
       op($.procedure_using),
       ".",
-      repeat(
-        prec(
-          20, // Mais precedencia que um statement ($._statements)
-          choice(
-            $.copy_statement,
-            seq($._statement, op(".")),
-            $.paragraph,
-            $.section,
-          ),
-        ),
-      ),
+      repeat(choice($.sentence, $.paragraph, $.section)),
     ),
 
-  procedure_division_header: ($) => seq(kw("PROCEDURE"), $._DIVISION),
+  sentence: ($) => seq(repeat1($._statement), "."),
+
+  procedure_division_header: ($) => seq($._PROCEDURE, $._DIVISION),
 
   procedure_using: ($) => seq($._USING, repeat1($.variable)),
 
@@ -29,19 +21,9 @@ module.exports = {
     prec.right(
       seq(
         field("section_header", $.section_header),
-        // C($),
-        repeat(
-          choice(
-            seq($._statement, op(".")),
-            $.paragraph, //
-          ),
-        ),
+        repeat(choice($.sentence, $.paragraph)),
       ),
     ),
-
-  // section_header: ($) => seq(/[A-Z0-9-]+/, $._SECTION, "."),
-
-  // NOTE: Section comments seria bom pra fazer tipo um docstring, mas não sei se vale a pena
 
   // ╭──────────────────────────────────────────────────────────╮
   // │                        Paragraphs                        │
@@ -51,9 +33,7 @@ module.exports = {
     prec.right(
       seq(
         field("paragraph_header", $.paragraph_header), //
-        // C($),
-        repeat(seq($._statement, op("."))),
+        repeat($.sentence),
       ),
     ),
-  // paragraph_header: ($) => seq(/[A-Z0-9]+/, "."),
 };

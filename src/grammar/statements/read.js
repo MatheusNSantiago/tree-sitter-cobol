@@ -1,17 +1,35 @@
 module.exports = {
-  read_statement: ($) =>
+  read_statement: ($) => choice(prec(1, $.read_block), $.read_sentence),
+
+  //  ╭──────────────────────────────────────────────────────────╮
+  //  │                          BLOCO                           │
+  //  ╰──────────────────────────────────────────────────────────╯
+  read_block: ($) =>
     prec.right(
       seq(
-        kw("READ"),
-        field("file", $.file_name),
-        $._INTO,
-        field("record", $.variable),
-        op(seq(C($), repeat(choice($.at_end, $.not_at_end)))),
-        optional(kw("END-READ")),
+        seq($._READ, field("file", $.file_name)),
+        opseq($._INTO, field("record", $.variable)),
+        choice(
+          seq($._AT, $._END, $.statement_block),
+          seq($._NOT, $._AT, $._END, $.statement_block),
+        ),
+
+        $._END_READ,
       ),
     ),
 
-  at_end: ($) => prec.right(seq($._AT, $._END, repeat1($._statement))),
-  not_at_end: ($) =>
-    prec.right(seq($._NOT, $._AT, $._END, repeat1($._statement))),
+  //  ╭──────────────────────────────────────────────────────────╮
+  //  │                         SENTENÇA                         │
+  //  ╰──────────────────────────────────────────────────────────╯
+  read_sentence: ($) =>
+    prec.right(
+      seq(
+        seq($._READ, field("file", $.file_name)),
+        opseq($._INTO, field("record", $.variable)),
+        choice(
+          seq($._AT, $._END, $.atomic_imperative_block),
+          seq($._NOT, $._AT, $._END, $.atomic_imperative_block),
+        ),
+      ),
+    ),
 };

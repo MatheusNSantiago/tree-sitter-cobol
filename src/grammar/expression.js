@@ -5,7 +5,7 @@ module.exports = {
         seq($._NOT, $.expr),
         seq($.expr, choice($._AND, $._OR), $.expr),
         $._expr_bool,
-        // paren($.expr),
+        paren($.expr),
       ),
     ),
 
@@ -23,12 +23,15 @@ module.exports = {
     ),
 
   _expr_calc: ($) =>
-    choice(
-      $._expr_calc_binary,
-      $._expr_calc_unary,
-      $._expr_data,
-      paren($.expr),
-      seq($._LENGTH, optional($._OF), $.variable),
+    prec(
+      1,
+      choice(
+        $._expr_calc_binary,
+        $._expr_calc_unary,
+        $._expr_data,
+        paren($._expr_calc),
+        // seq($._LENGTH, optional($._OF), $.variable),
+      ),
     ),
 
   _expr_calc_binary: ($) =>
@@ -58,25 +61,25 @@ module.exports = {
         $._expr_calc,
         $._comparator,
         $._expr_calc,
-        // repeat(
-        //   seq(
-        //     choice(
-        //       $._AND_LT,
-        //       $._AND_LE,
-        //       $._AND_GT,
-        //       $._AND_GE,
-        //       $._AND_EQ,
-        //       $._AND_NE,
-        //       $._OR_LT,
-        //       $._OR_LE,
-        //       $._OR_GT,
-        //       $._OR_GE,
-        //       $._OR_EQ,
-        //       $._OR_NE,
-        //     ),
-        //     $._expr_calc,
-        //   ),
-        // ),
+        repeat(
+          seq(
+            choice(
+              $._AND_LT,
+              $._AND_LE,
+              $._AND_GT,
+              $._AND_GE,
+              $._AND_EQ,
+              $._AND_NE,
+              $._OR_LT,
+              $._OR_LE,
+              $._OR_GT,
+              $._OR_GE,
+              $._OR_EQ,
+              $._OR_NE,
+            ),
+            $._expr_calc,
+          ),
+        ),
       ),
     ),
 
@@ -115,15 +118,12 @@ module.exports = {
     ),
 
   _expr_bool: ($) =>
-    prec(
-      3,
-      choice(
-        $._expr_is,
-        $._expr_compare,
-        $._expr_calc,
-        // $.is_class,
-        // $.is_not_class,
-      ),
+    choice(
+      $._expr_is,
+      $._expr_compare,
+      $._expr_calc,
+      // $.is_class,
+      // $.is_not_class,
     ),
 
   _exp: ($) =>
@@ -182,37 +182,20 @@ module.exports = {
     choice(
       seq(optional($._IS), ">="),
       seq(optional($._IS), $._NOT, "<"),
-      seq(
-        optional($._IS),
-        $._GREATER,
-        optional($._THAN),
-        optional($._OR),
-        $._EQUAL,
-        optional($._TO),
-      ),
-      seq(optional($._IS), $._NOT_LESS, optional($._THAN)),
+      seq(op($._IS), $._GREATER, op($._THAN), op($._OR), $._EQUAL, op($._TO)),
+      seq(op($._IS), $._NOT_LESS, op($._THAN)),
     ),
 
   le: ($) =>
     choice(
       seq(optional($._IS), "<="),
       seq(optional($._IS), $._NOT, ">"),
-      seq(
-        optional($._IS),
-        $._LESS,
-        optional($._THAN),
-        optional($._OR),
-        $._EQUAL,
-        optional($._TO),
-      ),
+      seq(op($._IS), $._LESS, op($._THAN), op($._OR), $._EQUAL, op($._TO)),
       seq(optional($._IS), $._NOT_GREATER, optional($._THAN)),
     ),
 
   ne: ($) =>
-    choice(
-      seq(optional($._IS), $._NOT_EQUAL, optional($._TO)), //
-      "<>",
-    ),
+    seq(op($._IS), choice("<>", "!=", seq($._NOT, $._EQUAL)), op($._TO)), //
 
   gt: ($) =>
     choice(
@@ -254,7 +237,6 @@ module.exports = {
   _OR_NE: (_) =>
     /[oO][rR][ \t]+(!=|[nN][oO][tT][ \t]+[eE][qQ][uU][aA][lL]([ \t]+[tT][oO])?)/,
 
-  _NOT_EQUAL: (_) => /(!=)|([nN][oO][tT][ \t]+(([eE][qQ][uU][aA][lL])|=))/,
   _NOT_LESS: (_) => /([nN][oO][tT][ \t]+(<|[lL][eE][sS][sS]))/,
   _NOT_GREATER: (_) => /([nN][oO][tT][ \t]+(>|[gG][rR][eE][aA][tT][eE][rR]))/,
 

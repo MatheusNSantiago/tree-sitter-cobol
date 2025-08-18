@@ -8,14 +8,29 @@ module.exports = {
   WORD: ($) => $._WORD,
 
   section_name: ($) => $._WORD,
-  variable: ($) =>
-    seq(
-      field("name", $._WORD), //
-      field("index", op(paren(repeat1($._WORD)))),
-    ),
+  // variable: ($) =>
+  //   seq(
+  //     field("name", $._WORD), //
+  //     field("index", op(paren(repeat1($._WORD)))),
+  //   ),
   // subref: ($) => seq("(", $._exp_list, ")"),
   // refmod: ($) => seq("(", $.exp, ":", optional($.exp), ")"),
 
+  variable: ($) =>
+    seq(
+      field("name", $._WORD),
+      optional(field("subscripts", $.subscript_reference)),
+      optional(field("reference_modification", $.reference_modification)),
+    ),
+
+  // `TABLE(I)`, `TABLE(I, J)`.
+  subscript_reference: ($) => paren(sep1($.expr, ",")),
+
+  // `TEXT-FIELD(5:10)`
+  reference_modification: ($) =>
+    paren(seq(field("start", $.expr), ":", optional(field("length", $.expr)))),
+
+  //  ╾───────────────────────────────────────────────────────────────────────────────────╼
   file_name: ($) => $._WORD,
 
   // ╭──────────────────────────────────────────────────────────╮
@@ -27,12 +42,6 @@ module.exports = {
   number: ($) => choice($.integer, $.decimal),
   integer: (_) => /[+-]?[0-9]+/,
   decimal: (_) => /[+-]?[0-9]*[\.,][0-9]+/,
-
-  // string: (_) =>
-  //   choice(
-  //     /('[^'\n]*')+/, //
-  //     /("[^"\n]*")+/,
-  //   ),
 
   string: ($) =>
     prec.right(
@@ -59,8 +68,6 @@ module.exports = {
       kw("LOW-VALUES"),
     ),
 
-  // ╾───────────────────────────────────────────────────────────────────────────────────╼
-
   _AT: (_) => kw("AT"),
   _END: (_) => kw("END"),
   _DIVISION: (_) => kw("DIVISION"),
@@ -77,7 +84,6 @@ module.exports = {
   _OF: (_) => kw("OF"),
   _IS: (_) => kw("IS"),
   _INTO: (_) => kw("INTO"),
-  _SIZE: (_) => kw("SIZE"),
   _BY: (_) => kw("BY"),
   _SEQUENTIAL: (_) => kw("SEQUENTIAL"),
   _RELATIVE: (_) => kw("RELATIVE"),
