@@ -139,7 +139,7 @@ module.exports = {
       ),
       kw("JOIN"),
       $.sql_relation,
-      kw("ON"),
+      $._ON,
       field("predicate", $.sql_expression),
     ),
 
@@ -244,7 +244,7 @@ module.exports = {
       $._FETCH,
       optional(
         choice(
-          seq(kw("NEXT"), $._ROWSET, op($._FROM)),
+          seq($._NEXT, $._ROWSET, op($._FROM)),
 
           //FETCH ROWSET STARTING AT ABSOLUTE :DEBSBS05-PSC
           seq(
@@ -263,10 +263,10 @@ module.exports = {
     ),
 
   sql_open_statement: ($) =>
-    seq(kw("OPEN"), field("cursor_name", $.cursor_identifier)),
+    seq($._OPEN, field("cursor_name", $.cursor_identifier)),
 
   sql_close_statement: ($) =>
-    seq(kw("CLOSE"), field("cursor_name", $.cursor_identifier)),
+    seq($._CLOSE, field("cursor_name", $.cursor_identifier)),
 
   sql_commit_statement: (_) => kw("COMMIT"),
 

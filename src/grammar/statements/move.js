@@ -6,19 +6,17 @@ module.exports = {
         op($._ALL),
         field("from", $._move_from),
         $._TO,
-        repeat1(
-          seq(C($), field("to", $.variable)), //
-        ),
+        repeat1(field("to", $.variable)),
       ),
     ),
 
   _move_from: ($) =>
     seq(
-      op(kw("CORRESPONDING")),
+      op($._CORRESPONDING),
       op(
         choice(
           seq($._LENGTH, op($._OF)), //
-          kw("FUNCTION"),
+          $._FUNCTION,
         ),
       ),
       $._expr_data,

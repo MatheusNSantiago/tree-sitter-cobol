@@ -1,24 +1,32 @@
 module.exports = {
-  search_statement: ($) =>
+  // search_statement: ($) => choice($.search_block, $.search_sentence),
+
+  //  ╭──────────────────────────────────────────────────────────╮
+  //  │                          BLOCO                           │
+  //  ╰──────────────────────────────────────────────────────────╯
+  search_block: ($) =>
     prec.right(
       seq(
-        kw("SEARCH"),
-        optional(kw("ALL")),
+        seq($._SEARCH, op($._ALL)),
         field("table_name", $.variable),
-        optional(field("varying", seq(kw("VARING"), $.WORD))),
-        repeat1(
-          choice($.search_when, $.at_end), //
-        ),
-        op(kw("END-SEARCH")),
+        opseq($._VARYING, $.WORD),
+        opseq($._AT, $._END, $.statement_block),
+        repeat1(seq($._WHEN, field("condition", $.expr), $.statement_block)),
+        $._END_SEARCH,
       ),
     ),
 
-  search_when: ($) =>
+  //  ╭──────────────────────────────────────────────────────────╮
+  //  │                         SENTENÇA                         │
+  //  ╰──────────────────────────────────────────────────────────╯
+  search_sentence: ($) =>
     prec.right(
       seq(
-        kw("WHEN"),
-        field("condition", $.expr),
-        repeat($._statement),
+        seq($._SEARCH, op($._ALL)),
+        field("table_name", $.variable),
+        op(seq($._VARYING, $.WORD)),
+        opseq($._AT, $._END, $.atomic_imperative_block),
+        repeat1(seq($._WHEN, field("condition", $.expr), $.atomic_imperative_block)),
       ),
     ),
 };

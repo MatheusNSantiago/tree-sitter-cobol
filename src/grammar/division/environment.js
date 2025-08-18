@@ -21,7 +21,7 @@ module.exports = {
       seq(field("section_header", $.configuration_section_header), "."),
       repeat($._configuration_paragraph),
     ),
-  configuration_section_header: ($) => seq(kw("CONFIGURATION"), $._SECTION),
+  configuration_section_header: ($) => seq($._CONFIGURATION, $._SECTION),
 
   _configuration_paragraph: ($) => seq(choice($.special_names_paragraph), C($)),
 
@@ -58,8 +58,69 @@ module.exports = {
   file_control_paragraph: ($) =>
     seq(
       seq(field("paragraph_header", $.file_control_paragraph_header), "."),
-      C($),
-      repeat(seq($.select_statement, C($))),
+      repeat(
+        seq(
+          seq($.select_statement, "."), //
+          C($),
+        ),
+      ),
     ),
-  file_control_paragraph_header: (_) => kw("FILE-CONTROL"),
+  file_control_paragraph_header: ($) => $._FILE_CONTROL,
+
+  //  ╭──────────────────────────────────────────────────────────╮
+  //  │                  SELECT FILE STATEMENT                   │
+  //  ╰──────────────────────────────────────────────────────────╯
+
+  select_statement: ($) =>
+    seq($._SELECT, field("file", $.file_name), repeat($._select_clause)),
+
+  _select_clause: ($) =>
+    choice(
+      $.assign_clause,
+      $.access_mode_clause,
+      $.organization_clause,
+      $.relative_key_clause,
+      $.file_status_clause,
+      $.record_key_clause,
+    ),
+
+  assign_clause: ($) => seq($._ASSIGN, op($._TO), field("dd_name", $.WORD)),
+
+  access_mode_clause: ($) =>
+    seq(
+      kw("ACCESS"),
+      op($._MODE),
+      op($._IS),
+      choice($._SEQUENTIAL, kw("DYNAMIC"), kw("RANDOM")),
+    ),
+
+  organization_clause: ($) =>
+    seq(
+      optional(seq(kw("ORGANIZATION"), optional($._IS))),
+      choice(
+        kw("INDEXED"),
+        seq($._RECORD, optional(kw("BINARY")), $._SEQUENTIAL),
+        $._SEQUENTIAL,
+        $._RELATIVE,
+      ),
+    ),
+
+  relative_key_clause: ($) =>
+    seq($._RELATIVE, op($._KEY), op($._IS), field("relative_key", $.WORD)),
+
+  file_status_clause: ($) =>
+    seq(
+      kw("FILE"),
+      kw("STATUS"),
+      optional($._IS), //
+      field("reference", $.WORD),
+    ),
+
+  record_key_clause: ($) =>
+    seq(
+      $._RECORD,
+      optional($._KEY),
+      optional($._IS),
+      field("reference", $.WORD),
+    ),
 };
