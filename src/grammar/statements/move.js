@@ -12,7 +12,7 @@ module.exports = {
 
   _move_from: ($) =>
     seq(
-      op($._CORRESPONDING),
+      op(choice($._CORRESPONDING, $._CORR)),
       op(
         choice(
           seq($._LENGTH, op($._OF)), //

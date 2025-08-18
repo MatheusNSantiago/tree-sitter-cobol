@@ -71,6 +71,7 @@ module.exports = {
   // _CONTROL_HEADING: (_) => kw("CONTROL-HEADING"),
   // _CORE_INDEX: (_) => kw("CORE-INDEX"),
   _CORRESPONDING: (_) => kw("CORRESPONDING"),
+  _CORR: (_) => kw("CORR"),
   // _CRT: (_) => kw("CRT"),
   // _CURRENCY: (_) => kw("CURRENCY"),
   _CURRENT: (_) => kw("CURRENT"),

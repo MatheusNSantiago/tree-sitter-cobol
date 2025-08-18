@@ -25,7 +25,7 @@ module.exports = {
   add_block: ($) =>
     prec.right(
       seq(
-        op($._CORRESPONDING),
+        op(choice($._CORRESPONDING, $._CORR)),
         seq($._ADD, field("amount", $._data_reference_list)),
         choice(
           seq($._TO, field("to", $._variable_list)),
@@ -39,7 +39,7 @@ module.exports = {
   add_sentence: ($) =>
     prec.right(
       seq(
-        op($._CORRESPONDING),
+        op(choice($._CORRESPONDING, $._CORR)),
         seq($._ADD, field("amount", $._data_reference_list)),
         choice(
           seq($._TO, field("to", $._variable_list)),
