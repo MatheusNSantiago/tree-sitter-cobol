@@ -132,25 +132,15 @@ module.exports = {
   _picture: ($) =>
     seq(
       $._PIC,
-      field("def", $._pic_def),
-      op(
+      repeat(
         choice(
-          seq(
-            choice($._VALUE, $._VALUES),
-            op($._ALL),
-            field("value", repeat1($.value_item)),
-            field("comp", op($.comp)),
-          ),
-          seq(
-            field("comp", op($.comp)),
-            choice($._VALUE, $._VALUES),
-            op($._ALL),
-            field("value", repeat1($.value_item)),
-          ),
-          field("comp", op($.comp)),
+          $._pic_value, //
+          field("def", $._pic_def),
+          field("comp", $.comp),
         ),
       ),
     ),
+
 
   _pic_def: ($) => choice($.pic_x, $.pic_9, $.pic_a, $.pic_edit),
 
@@ -192,8 +182,7 @@ module.exports = {
 
   occurs: ($) =>
     seq(
-      $._OCCURS,
-      field("times", $.number),
+      seq($._OCCURS, field("times", $.number)),
       field("to", opseq($._TO, $.number)),
       op($._TIMES),
       field("depending", opseq($._DEPENDING, op($._ON), $.variable)),
