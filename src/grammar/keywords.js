@@ -73,6 +73,7 @@ module.exports = {
   _CORRESPONDING: (_) => kw("CORRESPONDING"),
   // _CRT: (_) => kw("CRT"),
   // _CURRENCY: (_) => kw("CURRENCY"),
+  _CURRENT: (_) => kw("CURRENT"),
   // _CURSOR: (_) => kw("CURSOR"),
   // _CYL_OVERFLOW: (_) => kw("CYL-OVERFLOW"),
   _DATA: (_) => kw("DATA"),

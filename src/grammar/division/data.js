@@ -17,10 +17,7 @@ module.exports = {
   data_division_header: ($) => seq($._DATA, $._DIVISION),
 
   _data_division_statements: ($) =>
-    seq(
-      choice($.exec_sql, $.data_description, $.copy_statement), //
-      ".",
-    ),
+    seq(choice($.exec_sql, $.data_description, $.copy_statement), "."),
 
   // ╭──────────────────────────────────────────────────────────╮
   // │                       FILE SECTION                       │
@@ -196,7 +193,9 @@ module.exports = {
   occurs: ($) =>
     seq(
       $._OCCURS,
-      field("times", seq($.number, $._TIMES)),
+      field("times", $.number),
+      field("to", opseq($._TO, $.number)),
+      op($._TIMES),
       field("depending", opseq($._DEPENDING, op($._ON), $.variable)),
       field("key_spec", op($.occurs_key_spec)),
       op(choice($._picture, $.indexed_by)),
@@ -241,7 +240,7 @@ module.exports = {
     seq(
       seq(field("section_header", $.linkage_section_header), "."),
       C($),
-      $._data_division_statements,
+      repeat($._data_division_statements),
     ),
   linkage_section_header: ($) => seq(kw("LINKAGE"), $._SECTION),
 };

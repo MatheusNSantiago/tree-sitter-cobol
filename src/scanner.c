@@ -216,7 +216,10 @@ bool tree_sitter_cobol_external_scanner_scan(void *payload, TSLexer *lexer,
   //  ╰──────────────────────────────────────────────────────────╯
 
   if (valid_symbols[SECTION_HEADER] && valid_symbols[PARAGRAPH_HEADER]) {
-    if (get_column(lexer) == 7) {
+    if (get_column(lexer) >= 7 && get_column(lexer) <= 10) {
+      while (is_inline_space(*next_char))
+        advance(lexer);
+
       // Passa pelas labels. Ex: 100000-SECTION-NAME
       while (isalnum(*next_char) || *next_char == '-')
         advance(lexer);
@@ -241,7 +244,7 @@ bool tree_sitter_cobol_external_scanner_scan(void *payload, TSLexer *lexer,
   //  ╰──────────────────────────────────────────────────────────╯
 
   int current_column = get_column(lexer);
-  if (current_column >= 7) {
+  if (current_column > 10) {
     // Checa por início de string literal
     if (valid_symbols[STRING_START]) {
       if (*next_char == '\'' || *next_char == '"') {
