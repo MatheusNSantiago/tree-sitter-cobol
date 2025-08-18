@@ -33,7 +33,7 @@ module.exports = {
   // =========================================================================
   _compound_imperative: ($) =>
     choice(
-      $.if_sentence,
+      // $.if_sentence,
       $.perform_sentence,
       $.read_sentence,
       $.search_sentence,
@@ -50,7 +50,6 @@ module.exports = {
   // =========================================================================
   _scoped_block: ($) =>
     choice(
-      $.if_block,
       $.perform_block,
       $.evaluate_statement,
       $.read_block,
@@ -67,15 +66,16 @@ module.exports = {
   // =========================================================================
   _statement: ($) =>
     choice(
+      $.if_statement,
       prec(1, $._atomic_imperative),
-      prec(2, $._scoped_block),
+      $._scoped_block,
       $._compound_imperative,
     ),
 
   // =========================================================================
   // REGRAS DE CORPO DE BLOCO
   // =========================================================================
-  statement_block: ($) => repeat1($._statement),
+  statement_block: ($) => prec.right(repeat1($._statement)),
   atomic_imperative_block: ($) => prec.left(repeat1($._atomic_imperative)),
 
   // =========================================================================

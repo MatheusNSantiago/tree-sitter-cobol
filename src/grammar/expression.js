@@ -180,10 +180,9 @@ module.exports = {
 
   ge: ($) =>
     choice(
-      seq(optional($._IS), ">="),
-      seq(optional($._IS), $._NOT, "<"),
+      seq(op($._IS), ">="),
+      seq(op($._IS), $._NOT, choice("<", $._LESS), op($._THAN)),
       seq(op($._IS), $._GREATER, op($._THAN), op($._OR), $._EQUAL, op($._TO)),
-      seq(op($._IS), $._NOT_LESS, op($._THAN)),
     ),
 
   le: ($) =>
@@ -194,8 +193,7 @@ module.exports = {
       seq(optional($._IS), $._NOT_GREATER, optional($._THAN)),
     ),
 
-  ne: ($) =>
-    seq(op($._IS), choice("<>", "!=", seq($._NOT, $._EQUAL)), op($._TO)), //
+  ne: ($) => seq(op($._IS), choice($._NOT_EQUAL, "<>"), op($._TO)),
 
   gt: ($) =>
     choice(
@@ -237,7 +235,7 @@ module.exports = {
   _OR_NE: (_) =>
     /[oO][rR][ \t]+(!=|[nN][oO][tT][ \t]+[eE][qQ][uU][aA][lL]([ \t]+[tT][oO])?)/,
 
-  _NOT_LESS: (_) => /([nN][oO][tT][ \t]+(<|[lL][eE][sS][sS]))/,
+  _NOT_EQUAL: (_) => /(!=)|([nN][oO][tT][ \t]+(([eE][qQ][uU][aA][lL])|=))/,
   _NOT_GREATER: (_) => /([nN][oO][tT][ \t]+(>|[gG][rR][eE][aA][tT][eE][rR]))/,
 
   _NUMERIC: (_) => kw("NUMERIC"),

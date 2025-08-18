@@ -328,6 +328,7 @@ module.exports = {
         $.sql_exists_expression,
         $.sql_between_expression,
         $.sql_like_expression,
+        $.sql_current_of_cursor,
       ),
     ),
 
@@ -456,7 +457,7 @@ module.exports = {
     choice(
       kw("CURRENT_TIME"),
       kw("CURRENT_DATE"),
-      seq(kw("CURRENT"), choice($._TIME, $._DATE, $._TIMESTAMP)), //
+      seq($._CURRENT, choice($._TIME, $._DATE, $._TIMESTAMP)), //
     ),
 
   sql_variable: ($) =>
@@ -477,6 +478,8 @@ module.exports = {
       ),
       field("name", $.sql_identifier),
     ),
+  sql_current_of_cursor: ($) =>
+    seq($._CURRENT, $._OF, field("cursor_name", $.cursor_identifier)),
 
   _OUTER: (_) => kw("OUTER"),
   _DISTINCT: (_) => kw("DISTINCT"),
