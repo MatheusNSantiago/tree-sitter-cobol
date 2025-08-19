@@ -30,7 +30,7 @@ module.exports = {
         $._expr_calc_unary,
         $._expr_data,
         paren($._expr_calc),
-        // seq($._LENGTH, optional($._OF), $.variable),
+        seq($._LENGTH, optional($._OF), $.variable),
       ),
     ),
 

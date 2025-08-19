@@ -47,7 +47,6 @@ module.exports = {
   _OF: () => kw("OF"),
   _FROM: () => kw("FROM"),
   _FOR: () => kw("FOR"),
-  _LENGTH: () => kw("LENGTH"),
   _INTO: () => kw("INTO"),
   SELECT: () => kw("SELECT"),
   INSERT: () => kw("INSERT"),
