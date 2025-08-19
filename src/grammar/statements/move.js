@@ -13,12 +13,7 @@ module.exports = {
   _move_from: ($) =>
     seq(
       op(choice($._CORRESPONDING, $._CORR)),
-      op(
-        choice(
-          seq($._LENGTH, op($._OF)), //
-          $._FUNCTION,
-        ),
-      ),
+      op(choice(seq($._LENGTH, op($._OF)), $._FUNCTION)),
       $._expr_data,
     ),
 };
