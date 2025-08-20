@@ -45,10 +45,10 @@ module.exports = grammar({
     $._BLANK_LINE,
     $.sql_line_comment, // Comentários de SQL
     $.sql_block_comment, // Comentários de SQL
+    $._CONTINUATION_HYPHEN,
   ],
   conflicts: ($) => [
     [$.sql_between_expression, $.sql_binary_expression, $.sql_like_expression],
-    [$.sql_object_reference],
   ],
   rules: {
     source_file: ($) =>
