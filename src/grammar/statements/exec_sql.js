@@ -18,10 +18,20 @@ module.exports = {
   exec_sql: ($) =>
     prec.right(
       seq(
-        alias(seq($._EXEC, kw("SQL")), $.sql_exec_start_delimiter),
+        alias(seq($._EXEC, $._SQL), $.sql_exec_start_delimiter),
         $._sql_statement,
         alias($._END_EXEC, $.sql_end_exec_delimiter),
       ),
+    ),
+
+  sql_with_clause: ($) =>
+    seq($._WITH, sep1($.sql_common_table_expression, ",")),
+
+  sql_common_table_expression: ($) =>
+    seq(
+      field("name", $.sql_identifier),
+      optional(paren(sep1($.sql_identifier, ","))),
+      seq($._AS, field("query", $.sql_subquery)),
     ),
 
   _sql_statement: ($) =>
@@ -42,11 +52,14 @@ module.exports = {
 
   sql_line_comment: (_) => token(prec(1, /--[^\n]*/)),
   sql_block_comment: (_) => token(prec(1, /\/\*[^*]*\*+(?:[^/*][^*]*\*+)*\//)),
-  sql_identifier: (_) => token(/[a-zA-Z][0-9a-zA-Z_-]*/),
+  sql_identifier: (_) => token(/[a-zA-Z][0-9a-zA-Z_-]*/), // /([0-9][a-zA-Z0-9-]*[a-zA-Z][a-zA-Z0-9-]*)|([a-zA-Z][a-zA-Z0-9-]*)/,
+  // sql_identifier: ($) => $._WORD,
+
   cursor_identifier: ($) => $.sql_identifier,
 
   sql_select_statement: ($) =>
     seq(
+      op($.sql_with_clause),
       $.sql_select_clause,
       op($.sql_into_clause),
       $.sql_from_clause,
@@ -68,31 +81,34 @@ module.exports = {
   sql_from_clause: ($) =>
     seq($._FROM, sep1($.sql_relation, ","), repeat($.sql_join_clause)),
 
-  sql_where_clause: ($) =>
-    seq(kw("WHERE"), field("predicate", $.sql_expression)),
+  sql_where_clause: ($) => seq($._WHERE, field("predicate", $.sql_expression)),
 
-  sql_group_by_clause: ($) =>
-    seq(kw("GROUP"), $._BY, sep1($.sql_expression, ",")),
+  sql_group_by_clause: ($) => seq($._GROUP, $._BY, sep1($.sql_expression, ",")),
 
   sql_having_clause: ($) =>
-    seq(kw("HAVING"), field("predicate", $.sql_expression)),
+    seq($._HAVING, field("predicate", $.sql_expression)),
 
   sql_order_by_clause: ($) =>
     seq($._ORDER, $._BY, sep1($.sql_order_target, ",")),
 
-  sql_limit_clause: ($) => seq(kw("LIMIT"), field("limit", $.integer)),
+  sql_limit_clause: ($) => seq($._LIMIT, field("limit", $.integer)),
 
   sql_fetch_first_clause: ($) =>
     seq(
       $._FETCH,
-      kw("FIRST"),
+      $._FIRST,
       field("count", choice($.integer, $.sql_variable)),
-      $._ROWS,
+      choice($._ROWS, $._ROW),
       $._ONLY,
     ),
 
   sql_optimize_for_clause: ($) =>
-    seq(kw("optimize"), $._FOR, field("count", $.integer), $._ROWS),
+    seq(
+      $._OPTIMIZE,
+      $._FOR,
+      field("count", $.integer),
+      choice($._ROWS, $._ROW),
+    ),
 
   sql_for_update_of_clause: ($) =>
     seq($._FOR, $._UPDATE, op($._OF), sep1($.sql_identifier, ",")),
@@ -111,13 +127,13 @@ module.exports = {
       op($.sql_alias),
     ),
 
-  sql_all_fields: ($) =>
-    seq(
-      opseq(choice($.sql_identifier, $.sql_object_reference), "."), //
-      "*",
-    ),
+  // sql_all_fields: ($) =>
+  //   seq(
+  //     opseq(choice($.sql_identifier, $.sql_object_reference), "."), //
+  //     "*",
+  //   ),
 
-  sql_alias: ($) => seq(op(kw("AS")), field("alias", $.sql_identifier)),
+  sql_alias: ($) => seq(op($._AS), field("alias", $.sql_identifier)),
 
   sql_relation: ($) =>
     prec.right(
@@ -131,24 +147,21 @@ module.exports = {
     seq(
       op(
         choice(
-          kw("INNER"),
-          seq(kw("LEFT"), op($._OUTER)),
-          seq(kw("RIGHT"), op($._OUTER)),
-          seq(kw("FULL"), op($._OUTER)),
+          $._INNER, //
+          seq(choice($._LEFT, $._RIGHT, $._FULL), op($._OUTER)),
         ),
       ),
-      kw("JOIN"),
+      $._JOIN,
       $.sql_relation,
       $._ON,
       field("predicate", $.sql_expression),
     ),
 
-  sql_order_target: ($) =>
-    seq($.sql_expression, op(choice(kw("ASC"), kw("DESC")))),
+  sql_order_target: ($) => seq($.sql_expression, op(choice($._ASC, $._DESC))),
 
   sql_insert_statement: ($) =>
     seq(
-      kw("INSERT"),
+      $._INSERT,
       $._INTO,
       $.sql_object_reference,
       op(alias($.sql_column_list_for_insert, $.sql_columns)),
@@ -166,7 +179,7 @@ module.exports = {
       $._UPDATE,
       op($._ONLY),
       $.sql_object_reference,
-      kw("SET"),
+      $._SET,
       $.sql_assignment_list,
       op($.sql_where_clause),
     ),
@@ -192,51 +205,43 @@ module.exports = {
   _sql_declare_cursor_body: ($) =>
     seq(
       field("cursor_name", $.sql_identifier),
-      op(kw("SCROLL")),
-      kw("CURSOR"),
-      opseq(
-        $._WITH,
-        choice(
-          kw("HOLD"), //
-          seq($._ROWSET, kw("POSITIONING")),
-        ),
-      ),
+      op($._SCROLL),
+      $._CURSOR,
+      repeat($.sql_cursor_option),
       $._FOR,
       field("query", $.sql_select_statement),
     ),
 
+  sql_cursor_option: ($) =>
+    seq(
+      $._WITH,
+      choice(
+        $._HOLD, //
+        seq($._ROWSET, $._POSITIONING),
+      ),
+    ),
+
   sql_whenever_statement: ($) =>
     seq(
-      kw("WHENEVER"),
+      $._WHENEVER,
       field(
         "condition",
-        choice(kw("SQLERROR"), kw("SQLWARNING"), seq(kw("NOT"), kw("FOUND"))),
+        choice(kw("SQLERROR"), kw("SQLWARNING"), seq($._NOT, kw("FOUND"))),
       ),
       field(
         "action",
         choice(
-          seq(
-            choice(kw("GO"), kw("GOTO")),
-            $._TO,
-            field("paragraph_name", $.WORD),
-          ),
+          seq(choice($._GO, $._GOTO), $._TO, field("paragraph_name", $.WORD)),
           $._CONTINUE,
-          kw("STOP"),
+          $._STOP,
         ),
       ),
     ),
 
   sql_include_statement: ($) =>
     seq(
-      kw("INCLUDE"),
-      field(
-        "member_name",
-        choice(
-          kw("SQLCA"),
-          kw("SQLDA"),
-          $.sql_identifier, //
-        ),
-      ),
+      $._INCLUDE,
+      field("member_name", choice(kw("SQLCA"), kw("SQLDA"), $.sql_identifier)),
     ),
 
   sql_fetch_statement: ($) =>
@@ -249,9 +254,9 @@ module.exports = {
           //FETCH ROWSET STARTING AT ABSOLUTE :DEBSBS05-PSC
           seq(
             $._ROWSET,
-            kw("STARTING"),
+            $._STARTING,
             $._AT,
-            kw("ABSOLUTE"),
+            $._ABSOLUTE,
             field("start", $.sql_variable),
           ),
         ),
@@ -268,9 +273,9 @@ module.exports = {
   sql_close_statement: ($) =>
     seq($._CLOSE, field("cursor_name", $.cursor_identifier)),
 
-  sql_commit_statement: (_) => kw("COMMIT"),
+  sql_commit_statement: ($) => $._COMMIT,
 
-  sql_rollback_statement: (_) => kw("ROLLBACK"),
+  sql_rollback_statement: ($) => $._ROLLBACK,
 
   sql_declare_statement: ($) =>
     seq(
@@ -284,7 +289,7 @@ module.exports = {
   _sql_declare_table_body: ($) =>
     seq(
       field("table_name", $.sql_object_reference), // e.g., DB2DEB.TDEB1120
-      kw("TABLE"),
+      $._TABLE,
       paren(sep1($.sql_column_definition, ",")),
     ),
 
@@ -297,13 +302,13 @@ module.exports = {
 
   sql_data_type: ($) =>
     choice(
-      kw("SMALLINT"),
-      kw("INTEGER"),
-      seq(kw("DECIMAL"), op(paren(sep1($.integer, ",")))), // DECIMAL(p, s)
-      seq(kw("NUMERIC"), op(paren(sep1($.integer, ",")))), // NUMERIC(p, s)
-      seq(kw("CHARACTER"), op(paren($.integer))),
-      seq(kw("CHAR"), op(paren($.integer))),
-      seq(kw("VARCHAR"), paren($.integer)),
+      $._SMALLINT,
+      $._INTEGER,
+      seq($._DECIMAL, op(paren(sep1($.integer, ",")))), // DECIMAL(p, s)
+      seq($._NUMERIC, op(paren(sep1($.integer, ",")))), // NUMERIC(p, s)
+      seq($._CHARACTER, op(paren($.integer))),
+      seq($._CHAR, op(paren($.integer))),
+      seq($._VARCHAR, paren($.integer)),
       $._DATE,
       $._TIME,
       $._TIMESTAMP,
@@ -322,13 +327,14 @@ module.exports = {
         $.sql_unary_expression,
         $.sql_binary_expression,
         $.sql_case_expression,
-        $.sql_invocation,
+        prec(2, $.sql_invocation),
         $.sql_list,
         $.sql_subquery,
         $.sql_exists_expression,
         $.sql_between_expression,
         $.sql_like_expression,
         $.sql_current_of_cursor,
+        $.sql_all_fields,
       ),
     ),
 
@@ -436,12 +442,6 @@ module.exports = {
       $._END,
     ),
 
-  sql_invocation: ($) =>
-    seq(
-      field("function_name", $.sql_identifier),
-      paren(op(sep1(seq(op($._DISTINCT), $.sql_expression), ","))),
-    ),
-
   sql_exists_expression: ($) => seq(kw("EXISTS"), $.sql_subquery),
 
   sql_subquery: ($) => paren($.sql_select_statement),
@@ -449,7 +449,9 @@ module.exports = {
   sql_list: ($) => paren(sep1($.sql_expression, ",")),
 
   sql_literal: ($) =>
-    choice($.sql_string_literal, $.sql_constant, $.number, kw("NULL")),
+    choice($.sql_string_literal, $.sql_constant, $.number, $._NULL),
+
+  sql_all_fields: (_) => "*",
 
   sql_string_literal: (_) => seq(/'([^']|'')*'/, repeat(/'([^']|'')*'/)),
 
@@ -469,23 +471,36 @@ module.exports = {
   sql_qualified_field: ($) =>
     seq(op(seq($.sql_object_reference, ".")), field("name", $.sql_identifier)),
 
-  sql_object_reference: ($) =>
+  sql_function_name: ($) =>
     choice(
-      seq(
-        field("schema", $.sql_identifier),
-        ".",
+      $.sql_identifier,
+      $._VALUE,
+      $._CHAR,
+      $._TO_CHAR, //
+      $._TO_DATE, //
+    ),
+
+  sql_invocation: ($) =>
+    seq(
+      field("function_name", $.sql_function_name),
+      paren(op(sep1(seq(op($._DISTINCT), $.sql_expression), ","))),
+    ),
+
+  sql_object_reference: ($) =>
+    prec.right(
+      choice(
+        seq(
+          field("schema", $.sql_identifier),
+          ".",
+          field("name", $.sql_identifier),
+        ),
         field("name", $.sql_identifier),
       ),
-      field("name", $.sql_identifier),
     ),
+
   sql_current_of_cursor: ($) =>
     seq($._CURRENT, $._OF, field("cursor_name", $.cursor_identifier)),
 
-  _OUTER: (_) => kw("OUTER"),
-  _DISTINCT: (_) => kw("DISTINCT"),
-  _WITH: (_) => kw("WITH"),
-  _ROWS: (_) => choice(kw("ROWS"), kw("ROW")),
-  _ONLY: (_) => kw("ONLY"),
   _ROWSET: (_) => kw("ROWSET"),
   _FETCH: (_) => kw("FETCH"),
   _DECLARE: (_) => kw("DECLARE"),
