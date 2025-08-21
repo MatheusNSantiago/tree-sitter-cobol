@@ -1,4 +1,6 @@
 module.exports = {
+  perform_statement: ($) => choice($._perform_block, $._perform_sentence),
+
   //  ╭──────────────────────────────────────────────────────────╮
   //  │                          BLOCO                           │
   //  ╰──────────────────────────────────────────────────────────╯
@@ -7,7 +9,7 @@ module.exports = {
   //     PERFORM 100 TIMES ... DISPLAY "FOO" ... END-PERFORM
   //     PERFORM UNTIL IND-FIM-610E = 1 ... DISPLAY "FOO" ... END-PERFORM
   // ╾───────────────────────────────────────────────────────────────────────────────────╼
-  perform_block: ($) =>
+  _perform_block: ($) =>
     prec.right(
       // Necessário para resolver aninhamento de blocos PERFORM
       seq(
@@ -30,7 +32,7 @@ module.exports = {
   //     PERFORM 1000-ROTINA VARYING I FROM 1 BY 1 UNTIL I > 10.
   //     PERFORM 200000-PROCESSA WS-CNT TIMES
   //     PERFORM 200000-PROCESSA UNTIL CND-ARQUIVO-FIM
-  perform_sentence: ($) =>
+  _perform_sentence: ($) =>
     seq(
       $._PERFORM,
       seq(field("label", $.section_name)),

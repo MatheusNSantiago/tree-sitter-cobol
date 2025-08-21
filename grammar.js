@@ -1,7 +1,6 @@
 op = (thing) => optional(thing);
 C = ($) => repeat(choice($._comment, $._BLANK_LINE));
 kw = (keyword) => keyword.toUpperCase();
-// kw = (keyword) => choice(keyword.toUpperCase(), keyword.toLowerCase());
 // kw = (keyword) => {
 // regex = new RegExp(
 //   keyword
@@ -36,6 +35,10 @@ module.exports = grammar({
     $.section_header,
     $._INLINE_COMMENT,
     $._SUFFIX_COMMENT,
+    $._SQL_EXEC_START,
+    $._SQL_EXEC_END,
+    $.sql_line_comment,
+    $.sql_block_comment,
   ],
   extras: ($) => [
     /\s/, // Espaços em branco padrão
@@ -43,9 +46,9 @@ module.exports = grammar({
     $._INLINE_COMMENT, // Comentários '*>'
     $._SUFFIX_COMMENT, // Comentários na área de sufixo
     $._BLANK_LINE,
-    $.sql_line_comment, // Comentários de SQL
-    $.sql_block_comment, // Comentários de SQL
     $._CONTINUATION_HYPHEN,
+    $.sql_line_comment,
+    $.sql_block_comment,
   ],
   conflicts: ($) => [
     [$.sql_between_expression, $.sql_binary_expression, $.sql_like_expression],
@@ -62,18 +65,7 @@ module.exports = grammar({
 
     _comment: ($) => $.comment,
 
-    // http://stackoverflow.com/questions/13014947/regex-to-match-a-c-style-multiline-comment/36328890#36328890
-    // comment: ($) =>
-    //   choice(
-    //     token(seq("*>", /([^\n])*/)), // inline
-    //     $._COMMENT,
-    //   ),
-    // foo: ($) => $._COMMENT,
-
-    directive: (_) =>
-      choice(
-        seq(kw("CBL"), "ARITH(EXTEND)"), //
-      ),
+    directive: (_) => choice(seq(kw("CBL"), "ARITH(EXTEND)")),
 
     ...require("./src/grammar/division/identification"),
     ...require("./src/grammar/division/environment"),

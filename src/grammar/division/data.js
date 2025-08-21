@@ -95,32 +95,28 @@ module.exports = {
       C($),
       repeat($._data_division_statements),
     ),
-  working_storage_section_header: ($) => seq(kw("WORKING-STORAGE"), $._SECTION),
+  working_storage_section_header: ($) => seq($._WORKING_STORAGE, $._SECTION),
 
   data_description: ($) =>
-    choice(
-      $._level_88_description,
-      $._general_data_description, //
-    ),
-
-  _level_88_description: ($) =>
-    seq(
-      field("level", alias("88", $.level_number)),
-      field("name", $.data_name),
-      $._pic_value,
-    ),
-
-  // Regra para todos os outros níveis de dados (01-49, 77)
-  _general_data_description: ($) =>
     seq(
       field("level", $.level_number),
       field("name", $.data_name),
-      optional(
-        choice(
-          $._picture,
-          field("redefines", seq(kw("REDEFINES"), $.variable, op($._picture))),
-          seq(op($._picture), field("occurs", $.occurs)),
-          $._INDEX,
+      choice(
+        seq($._REDEFINES, field("redefines", $.variable)),
+        $._pic_value, // level 88
+        seq(
+          $._PIC,
+          choice(
+            $._INDEX,
+            repeat(
+              choice(
+                $._pic_value,
+                field("def", choice($.pic_x, $.pic_9, $.pic_a, $.pic_edit)),
+                field("comp", $.comp),
+                field("occurs", $.occurs),
+              ),
+            ),
+          ),
         ),
       ),
     ),
@@ -129,24 +125,9 @@ module.exports = {
   level_number: (_) => /[0-9][0-9]?/,
 
   // ╾───────────────────────────────────────────────────────────────────────────────────╼
-  _picture: ($) =>
-    seq(
-      $._PIC,
-      repeat(
-        choice(
-          $._pic_value, //
-          field("def", $._pic_def),
-          field("comp", $.comp),
-        ),
-      ),
-    ),
-
-
-  _pic_def: ($) => choice($.pic_x, $.pic_9, $.pic_a, $.pic_edit),
 
   pic_x: (_) => /[xX]+(\([0-9]+\))?/,
   pic_9: (_) => /[sS]?9+(\([0-9]+\))?([vV](9(\([0-9]+\))?)*)?/,
-
   pic_a: (_) => /([aA](\([0-9]+\))?)+/,
   pic_edit: (_) =>
     /([aAxX9bBvVzZpPwW\(\)0-9$/,\.*+<>-]|[cC][rR]|[dD][bB])*([aAxX9bBvVzZpPwW\(\)0-9$/,*+<>-]|[cC][rR]|[dD][bB])/,
@@ -183,11 +164,12 @@ module.exports = {
   occurs: ($) =>
     seq(
       seq($._OCCURS, field("times", $.number)),
-      field("to", opseq($._TO, $.number)),
+      opseq($._TO, field("to", $.number)),
       op($._TIMES),
       field("depending", opseq($._DEPENDING, op($._ON), $.variable)),
       field("key_spec", op($.occurs_key_spec)),
-      op(choice($._picture, $.indexed_by)),
+      op($.indexed_by),
+      // op(choice($._picture, $.indexed_by)),
     ),
 
   occurs_key_spec: ($) =>
