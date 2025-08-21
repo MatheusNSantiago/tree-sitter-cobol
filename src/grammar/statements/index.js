@@ -1,9 +1,6 @@
 module.exports = {
-  // =========================================================================
-  // NÍVEL 1: COMANDOS ATÔMICOS
   // Verbos simples que não contêm outros statements.
-  // =========================================================================
-  _atomic_imperative: ($) =>
+  _imperative_sentences: ($) =>
     choice(
       $.move_statement,
       $.display_statement,
@@ -27,56 +24,27 @@ module.exports = {
       $.sort_statement,
     ),
 
-  // =========================================================================
-  // NÍVEL 2: COMANDOS COMPOSTOS (as "sentenças" ambíguas)
-  // Seus corpos SÓ podem conter Comandos Atômicos.
-  // =========================================================================
-  _compound_imperative: ($) =>
-    choice(
-      // $.if_sentence,
-      $.perform_sentence,
-      $.read_sentence,
-      $.search_sentence,
-      $.add_sentence,
-      $.subtract_sentence,
-      $.multiply_sentence,
-      $.divide_sentence,
-      $.compute_sentence,
-    ),
-
-  // =========================================================================
-  // NÍVEL 3: BLOCOS COM ESCOPO
-  // Seus corpos podem conter qualquer coisa, pois são seguros.
-  // =========================================================================
-  _scoped_block: ($) =>
-    choice(
-      $.perform_block,
-      $.evaluate_statement,
-      $.read_block,
-      $.search_block,
-      $.add_block,
-      $.subtract_block,
-      $.multiply_block,
-      $.divide_block,
-      $.compute_block,
-    ),
-  // =========================================================================
-  // A LISTA MESTRA ("_statement")
-  // Um statement é um Bloco, um Composto ou um Atômico.
-  // =========================================================================
   _statement: ($) =>
     choice(
       $.if_statement,
-      prec(1, $._atomic_imperative),
-      $._scoped_block,
-      $._compound_imperative,
+      prec(1, $._imperative_sentences),
+      $.perform_statement,
+      $.read_statement,
+      $.search_sentence,
+      $.subtract_statement,
+      $.multiply_statement,
+      $.divide_statement,
+      $.compute_statement,
+      $.evaluate_statement,
+      $.add_statement,
+      $.search_block,
     ),
 
   // =========================================================================
   // REGRAS DE CORPO DE BLOCO
   // =========================================================================
   statement_block: ($) => prec.right(repeat1($._statement)),
-  atomic_imperative_block: ($) => prec.left(repeat1($._atomic_imperative)),
+  atomic_imperative_block: ($) => prec.left(repeat1($._imperative_sentences)),
 
   // =========================================================================
   // EXPORTS
@@ -115,11 +83,16 @@ module.exports = {
     seq(
       seq($._STRING, field("from", repeat1($.string_item))),
       seq($._INTO, field("into", $.variable)),
+      op($.string_with_pointer),
       op($._END_STRING),
     ),
 
   string_item: ($) =>
-    seq(choice($.string, $.variable), opseq($._DELIMITED, op($._BY), $._SIZE)),
+    seq(
+      choice($.string, $.variable),
+      opseq($._DELIMITED, op($._BY), choice($._SIZE, $._value)),
+    ),
+  string_with_pointer: ($) => seq(op($._WITH), $._POINTER, $.variable),
 
   display_statement: ($) => seq($._DISPLAY, repeat1($._expr_data)),
 

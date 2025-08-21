@@ -17,10 +17,16 @@ enum TokenType {
   SECTION_HEADER,
   INLINE_COMMENT,
   SUFFIX_COMMENT,
+  //////////////////
+  SQL_EXEC_START,
+  SQL_EXEC_END,
+  SQL_LINE_COMMENT,
+  SQL_BLOCK_COMMENT
 };
 
 typedef struct {
   char open_quote_char;
+  bool is_inside_sql;
 } Scanner;
 
 static inline void advance(TSLexer *lexer) { lexer->advance(lexer, false); }
@@ -83,12 +89,16 @@ void tree_sitter_cobol_external_scanner_destroy(void *payload) {
 bool tree_sitter_cobol_external_scanner_scan(void *payload, TSLexer *lexer,
                                              const bool *valid_symbols) {
   Scanner *scanner = (Scanner *)payload;
-
   int *next_char = &(lexer->lookahead);
 
-  // Primeiro, lide com o estado "dentro da string", que é o mais complexo.
+  //  ╭──────────────────────────────────────────────────────────╮
+  //  │       STRINGS COM CONTINUACAO (MULTILINE STRINGS)        │
+  //  ╰──────────────────────────────────────────────────────────╯
+
   bool is_inside_string = scanner->open_quote_char != 0;
-  if (is_inside_string) {
+  if (is_inside_string &&
+      (valid_symbols[STRING_CONTENT] && valid_symbols[STRING_END])) {
+
     bool has_content = false;
 
     // Consume o conteúdo da string na linha atual.
@@ -157,6 +167,81 @@ bool tree_sitter_cobol_external_scanner_scan(void *payload, TSLexer *lexer,
 
   if (lexer->eof(lexer)) {
     return false;
+  }
+
+  //  ╭──────────────────────────────────────────────────────────╮
+  //  │              DETECÇÃO DE COMENTARIOS NO SQL              │
+  //  ╰──────────────────────────────────────────────────────────╯
+
+  while (isspace(*next_char)) {
+    skip(lexer);
+  }
+
+  // Se o parser espera o fim do bloco SQL
+  if (valid_symbols[SQL_EXEC_END] && scanner->is_inside_sql) {
+    if (toupper(lexer->lookahead) == 'E') {
+      lexer->mark_end(lexer);
+      advance(lexer);
+
+      if (match_next(lexer, "ND-EXEC")) { // Procura por 'END-EXEC'
+        scanner->is_inside_sql = false;
+        return end_token(lexer, SQL_EXEC_END);
+      }
+    }
+  }
+
+  // Se estamos dentro do SQL, procure por comentários SQL
+  if (scanner->is_inside_sql) {
+    if (valid_symbols[SQL_LINE_COMMENT] && *next_char == '-') {
+      advance(lexer);
+
+      if (*next_char == '-') {
+        advance(lexer);
+
+        while (*next_char != '\n' && *next_char != '\r' && !lexer->eof(lexer)) {
+          advance(lexer);
+        }
+        return end_token(lexer, SQL_LINE_COMMENT);
+      }
+    }
+
+    if (valid_symbols[SQL_BLOCK_COMMENT] && *next_char == '/') {
+      advance(lexer);
+      if (*next_char == '*') {
+        advance(lexer);
+
+        while (!lexer->eof(lexer)) {
+          if (*next_char == '*') {
+            advance(lexer);
+            if (*next_char == '/') {
+              advance(lexer);
+              return end_token(lexer, SQL_BLOCK_COMMENT);
+            }
+          } else {
+            advance(lexer);
+          }
+        }
+      }
+    }
+  }
+
+  // Se o parser espera o início de um bloco SQL
+  if (valid_symbols[SQL_EXEC_START] && !scanner->is_inside_sql) {
+    if (toupper(lexer->lookahead) == 'E') {
+      lexer->mark_end(lexer);
+      advance(lexer);
+
+      if (match_next(lexer, "XEC")) { // Procura por 'EXEC'
+        while (isspace(lexer->lookahead)) {
+          skip(lexer);
+        }
+
+        if (match_next(lexer, "SQL")) { // Procura por 'SQL'
+          scanner->is_inside_sql = true;
+          return end_token(lexer, SQL_EXEC_START);
+        }
+      }
+    }
   }
 
   // ╭──────────────────────────────────────────────────────────╮
@@ -289,7 +374,9 @@ unsigned tree_sitter_cobol_external_scanner_serialize(void *payload,
                                                       char *buffer) {
   Scanner *scanner = (Scanner *)payload;
   buffer[0] = scanner->open_quote_char;
-  return 1;
+  buffer[1] = scanner->is_inside_sql;
+
+  return 2;
 }
 
 /// Restora o estado do scanner
@@ -299,7 +386,9 @@ void tree_sitter_cobol_external_scanner_deserialize(void *payload,
   Scanner *scanner = (Scanner *)payload;
   if (length > 0) {
     scanner->open_quote_char = buffer[0];
+    scanner->is_inside_sql = buffer[1];
   } else {
     scanner->open_quote_char = 0;
+    scanner->is_inside_sql = false;
   }
 }

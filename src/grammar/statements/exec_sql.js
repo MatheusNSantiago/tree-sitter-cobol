@@ -16,22 +16,17 @@ const SQL_PREC = {
 
 module.exports = {
   exec_sql: ($) =>
-    prec.right(
-      seq(
-        alias(seq($._EXEC, $._SQL), $.sql_exec_start_delimiter),
-        $._sql_statement,
-        alias($._END_EXEC, $.sql_end_exec_delimiter),
-      ),
+    seq(
+      $._SQL_EXEC_START,
+      repeat1($._sql_statement), //
+      $._SQL_EXEC_END,
     ),
 
-  sql_with_clause: ($) =>
-    seq($._WITH, sep1($.sql_common_table_expression, ",")),
-
-  sql_common_table_expression: ($) =>
-    seq(
-      field("name", $.sql_identifier),
-      optional(paren(sep1($.sql_identifier, ","))),
-      seq($._AS, field("query", $.sql_subquery)),
+  _sql_content_item: ($) =>
+    choice(
+      $._sql_statement,
+      $.sql_line_comment,
+      $.sql_block_comment, //
     ),
 
   _sql_statement: ($) =>
@@ -50,27 +45,39 @@ module.exports = {
       $.sql_rollback_statement,
     ),
 
-  sql_line_comment: (_) => token(prec(1, /--[^\n]*/)),
-  sql_block_comment: (_) => token(prec(1, /\/\*[^*]*\*+(?:[^/*][^*]*\*+)*\//)),
+  // sql_line_comment: (_) => prec(1, /--[^\n]*/),
+  // sql_block_comment: (_) => token(prec(1, /\/\*[^*]*\*+(?:[^/*][^*]*\*+)*\//)),
   sql_identifier: (_) => token(/[a-zA-Z][0-9a-zA-Z_-]*/), // /([0-9][a-zA-Z0-9-]*[a-zA-Z][a-zA-Z0-9-]*)|([a-zA-Z][a-zA-Z0-9-]*)/,
   // sql_identifier: ($) => $._WORD,
 
   cursor_identifier: ($) => $.sql_identifier,
 
   sql_select_statement: ($) =>
+    prec.right(
+      seq(
+        op($.sql_with_clause),
+        $.sql_select_clause,
+        op($.sql_into_clause),
+        $.sql_from_clause,
+        op($.sql_where_clause),
+        op($.sql_group_by_clause),
+        op($.sql_having_clause),
+        op($.sql_order_by_clause),
+        op($.sql_limit_clause),
+        op($.sql_fetch_first_clause),
+        op($.sql_optimize_for_clause),
+        op($.sql_for_update_of_clause),
+      ),
+    ),
+
+  sql_with_clause: ($) =>
+    seq($._WITH, sep1($.sql_common_table_expression, ",")),
+
+  sql_common_table_expression: ($) =>
     seq(
-      op($.sql_with_clause),
-      $.sql_select_clause,
-      op($.sql_into_clause),
-      $.sql_from_clause,
-      op($.sql_where_clause),
-      op($.sql_group_by_clause),
-      op($.sql_having_clause),
-      op($.sql_order_by_clause),
-      op($.sql_limit_clause),
-      op($.sql_fetch_first_clause),
-      op($.sql_optimize_for_clause),
-      op($.sql_for_update_of_clause),
+      field("name", $.sql_identifier),
+      optional(paren(sep1($.sql_identifier, ","))),
+      seq($._AS, field("query", $.sql_subquery)),
     ),
 
   sql_select_clause: ($) =>
@@ -188,7 +195,7 @@ module.exports = {
 
   sql_assignment: ($) =>
     seq(
-      field("column", $.sql_qualified_field),
+      field("column", $.sql_object_reference),
       "=",
       field("value", $.sql_expression),
     ),
@@ -321,7 +328,7 @@ module.exports = {
       1,
       choice(
         $.sql_literal,
-        alias($.sql_qualified_field, $.sql_column_reference),
+        alias($.sql_object_reference, $.sql_column_reference),
         $.sql_variable,
         $.sql_parenthesized_expression,
         $.sql_unary_expression,
@@ -467,9 +474,6 @@ module.exports = {
       field("value_var", seq(":", $.variable)),
       op(field("indicator_var", seq(":", $.variable))),
     ),
-
-  sql_qualified_field: ($) =>
-    seq(op(seq($.sql_object_reference, ".")), field("name", $.sql_identifier)),
 
   sql_function_name: ($) =>
     choice(
