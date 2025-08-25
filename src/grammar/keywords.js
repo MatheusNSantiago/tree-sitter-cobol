@@ -199,6 +199,7 @@ module.exports = {
   // _MINUS: (_) => kw("MINUS"),
   // _MNEMONIC_NAME: (_) => /[sS][wW]\-[0-9]/,
   _MODE: (_) => kw("MODE"),
+  _MOVE: (_) => kw("MOVE"),
   // _MULTIPLE: (_) => kw("MULTIPLE"),
   _MULTIPLY: (_) => kw("MULTIPLY"),
   _END_MULTIPLY: (_) => kw("END-MULTIPLY"),
@@ -338,6 +339,8 @@ module.exports = {
   _WITH: (_) => kw("WITH"),
   // _WORDS: (_) => kw("WORDS"),
   _WORKING_STORAGE: (_) => kw("WORKING-STORAGE"),
+  _WRITE: (_) => kw("WRITE"),
+  _END_WRITE: (_) => kw("END-WRITE"),
   _ZERO: (_) => kw("ZERO"),
   // _ZEROS: (_) => kw("ZEROS"),
 };

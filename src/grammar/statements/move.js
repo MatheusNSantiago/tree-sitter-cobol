@@ -2,7 +2,7 @@ module.exports = {
   move_statement: ($) =>
     prec.left(
       seq(
-        kw("MOVE"),
+        $._MOVE,
         op($._ALL),
         field("from", $._move_from),
         $._TO,
