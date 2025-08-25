@@ -30,14 +30,13 @@ module.exports = {
       prec(1, $._imperative_sentences),
       $.perform_statement,
       $.read_statement,
-      $.search_sentence,
+      $.search_statement,
       $.subtract_statement,
       $.multiply_statement,
       $.divide_statement,
       $.compute_statement,
       $.evaluate_statement,
       $.add_statement,
-      $.search_block,
     ),
 
   // =========================================================================

@@ -104,6 +104,7 @@ module.exports = {
       choice(
         seq($._REDEFINES, field("redefines", $.variable)),
         $._pic_value, // level 88
+        field("occurs", $.occurs),
         seq(
           $._PIC,
           choice(

@@ -1,15 +1,22 @@
 module.exports = {
+  search_statement: ($) => choice($._search_block, $._search_sentence),
   //  ╭──────────────────────────────────────────────────────────╮
   //  │                          BLOCO                           │
   //  ╰──────────────────────────────────────────────────────────╯
-  search_block: ($) =>
+  _search_block: ($) =>
     prec.right(
       seq(
         seq($._SEARCH, op($._ALL)),
         field("table_name", $.variable),
         opseq($._VARYING, $.WORD),
         opseq($._AT, $._END, $.statement_block),
-        repeat1(seq($._WHEN, field("condition", $.expr), $.statement_block)),
+        repeat1(
+          seq(
+            $._WHEN,
+            field("condition", $.expr),
+            field("body", $.statement_block),
+          ),
+        ),
         $._END_SEARCH,
       ),
     ),
@@ -17,7 +24,7 @@ module.exports = {
   //  ╭──────────────────────────────────────────────────────────╮
   //  │                         SENTENÇA                         │
   //  ╰──────────────────────────────────────────────────────────╯
-  search_sentence: ($) =>
+  _search_sentence: ($) =>
     prec.right(
       seq(
         seq($._SEARCH, op($._ALL)),
@@ -34,3 +41,4 @@ module.exports = {
       ),
     ),
 };
+
