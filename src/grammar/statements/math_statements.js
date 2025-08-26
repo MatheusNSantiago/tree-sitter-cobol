@@ -20,7 +20,7 @@ module.exports = {
       seq(
         op(choice($._CORRESPONDING, $._CORR)),
         seq($._ADD, field("amount", $._data_reference_list)),
-        seq($._TO, field("to", $._variable_list)),
+        opseq($._TO, field("to", $._variable_list)),
         opseq($._GIVING, field("result", $._variable_list)),
         op($._on_size_error_block),
         $._END_ADD,
@@ -32,7 +32,7 @@ module.exports = {
       seq(
         op(choice($._CORRESPONDING, $._CORR)),
         seq($._ADD, field("amount", $._data_reference_list)),
-        seq($._TO, field("to", $._variable_list)),
+        opseq($._TO, field("to", $._variable_list)),
         opseq($._GIVING, field("result", $._variable_list)),
         op($._on_size_error_sentence),
       ),
