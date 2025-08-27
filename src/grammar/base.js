@@ -17,10 +17,12 @@ module.exports = {
   // refmod: ($) => seq("(", $.exp, ":", optional($.exp), ")"),
 
   variable: ($) =>
-    seq(
-      field("name", $._WORD),
-      optional(field("subscripts", $.subscript_reference)),
-      optional(field("reference_modification", $.reference_modification)),
+    prec.right(
+      seq(
+        field("name", sep1($._WORD, choice($._IN, $._OF))),
+        optional(field("subscripts", $.subscript_reference)),
+        optional(field("reference_modification", $.reference_modification)),
+      ),
     ),
 
   // `TABLE(I)`, `TABLE(I, J)`.
