@@ -212,6 +212,7 @@ module.exports = {
   _sql_declare_cursor_body: ($) =>
     seq(
       field("cursor_name", $.sql_identifier),
+      op($._INSENSITIVE),
       op($._SCROLL),
       $._CURSOR,
       repeat($.sql_cursor_option),
@@ -257,7 +258,7 @@ module.exports = {
       optional(
         choice(
           seq($._NEXT, $._ROWSET, op($._FROM)),
-
+          seq($._INSENSITIVE, $._ABSOLUTE, $.sql_variable),
           //FETCH ROWSET STARTING AT ABSOLUTE :DEBSBS05-PSC
           seq(
             $._ROWSET,

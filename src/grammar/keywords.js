@@ -169,6 +169,7 @@ module.exports = {
   // _INVALID_KEY: (_) => kw("INVALID-KEY"),
   _INNER: (_) => kw("INNER"),
   _INSERT: (_) => kw("INSERT"),
+  _INSENSITIVE: (_) => kw("INSENSITIVE"),
   _IS: (_) => kw("IS"),
   _IF: (_) => kw("IF"),
   _END_IF: (_) => kw("END-IF"),
