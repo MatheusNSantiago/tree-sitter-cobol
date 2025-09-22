@@ -17,11 +17,14 @@ module.exports = {
   data_division_header: ($) => seq($._DATA, $._DIVISION),
 
   _data_division_statements: ($) =>
-    choice(
-      seq($.exec_sql, op(".")),
-      seq($.data_description, "."),
-      seq($.copy_statement, "."),
-    ),
+    prec.right(seq(
+      choice(
+        seq($.exec_sql, op(".")),
+        seq($.data_description, "."),
+        seq($.copy_statement, "."),
+      ),
+      C($),
+    )),
 
   // ╭──────────────────────────────────────────────────────────╮
   // │                       FILE SECTION                       │

@@ -7,7 +7,8 @@ module.exports = {
       repeat(choice($._sentence, $.paragraph, $.section)),
     ),
 
-  _sentence: ($) => seq(repeat1($._statement), "."),
+  _sentence: ($) => seq(repeat1($._statement), ".", C($)),
+
   // _sentence: ($) => prec.right(seq(repeat1($._statement), op("."))),
 
   procedure_division_header: ($) => seq($._PROCEDURE, $._DIVISION),
