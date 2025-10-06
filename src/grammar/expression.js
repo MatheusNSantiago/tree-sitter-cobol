@@ -17,8 +17,18 @@ module.exports = {
         $.variable,
         // $.tab_field,
         // seq(":", $.variable),
+        $.function,
         $.string,
         $.constant,
+      ),
+    ),
+
+  function: ($) =>
+    prec.left(
+      seq(
+        $._FUNCTION,
+        field("name", $.WORD),
+        parenOrNot(sep1($._expr_calc, ",")),
       ),
     ),
 
