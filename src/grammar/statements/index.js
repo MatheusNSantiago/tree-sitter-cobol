@@ -37,6 +37,7 @@ module.exports = {
       $.compute_statement,
       $.evaluate_statement,
       $.add_statement,
+      $.unstring_statement,
     ),
 
   // =========================================================================
@@ -60,6 +61,7 @@ module.exports = {
   ...require("./exec_cics"),
   ...require("./move"),
   ...require("./sort"),
+  ...require("./unstring"),
 
   exit_statement: ($) => $._EXIT,
   goback_statement: ($) => $._GOBACK,

@@ -249,7 +249,14 @@ module.exports = {
   sql_include_statement: ($) =>
     seq(
       $._INCLUDE,
-      field("member_name", choice(kw("SQLCA"), kw("SQLDA"), $.sql_identifier)),
+      field(
+        "member_name",
+        choice(
+          kw("SQLCA"), //
+          kw("SQLDA"),
+          $.sql_identifier,
+        ),
+      ),
     ),
 
   sql_fetch_statement: ($) =>
