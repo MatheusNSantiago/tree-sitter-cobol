@@ -38,6 +38,7 @@ module.exports = {
       $.evaluate_statement,
       $.add_statement,
       $.unstring_statement,
+      $.inspect_statement,
     ),
 
   // =========================================================================
@@ -62,6 +63,7 @@ module.exports = {
   ...require("./move"),
   ...require("./sort"),
   ...require("./unstring"),
+  ...require("./inspect"),
 
   exit_statement: ($) => $._EXIT,
   goback_statement: ($) => $._GOBACK,
