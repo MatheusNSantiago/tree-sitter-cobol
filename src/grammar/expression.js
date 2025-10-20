@@ -128,12 +128,15 @@ module.exports = {
     ),
 
   _expr_bool: ($) =>
-    choice(
-      $._expr_is,
-      $._expr_compare,
-      $._expr_calc,
-      // $.is_class,
-      // $.is_not_class,
+    prec.right(
+      1,
+      choice(
+        $._expr_is,
+        $._expr_compare,
+        $._expr_calc,
+        // $.is_class,
+        // $.is_not_class,
+      ),
     ),
 
   _exp: ($) =>
