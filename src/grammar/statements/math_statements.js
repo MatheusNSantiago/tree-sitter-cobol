@@ -29,6 +29,7 @@ module.exports = {
 
   _add_sentence: ($) =>
     prec.right(
+      1,
       seq(
         op(choice($._CORRESPONDING, $._CORR)),
         seq($._ADD, field("amount", $._data_reference_list)),
@@ -55,6 +56,7 @@ module.exports = {
 
   _subtract_sentence: ($) =>
     prec.right(
+      1,
       seq(
         seq($._SUBTRACT, field("left", $._data_reference_list)),
         seq($._FROM, field("right", $._variable_list)),
@@ -80,6 +82,7 @@ module.exports = {
 
   _multiply_sentence: ($) =>
     prec.right(
+      1,
       seq(
         seq($._MULTIPLY, field("left", choice($.variable, $.number))),
         seq($._BY, field("right", $._data_reference_list)),
@@ -109,6 +112,7 @@ module.exports = {
 
   _divide_sentence: ($) =>
     prec.right(
+      1,
       seq(
         seq($._DIVIDE, field("left", choice($.variable, $.number))),
         choice(
@@ -138,6 +142,7 @@ module.exports = {
 
   _compute_sentence: ($) =>
     prec.right(
+      1,
       seq(
         seq($._COMPUTE, repeat1(field("left", $.variable))),
         choice("=", $._EQUAL),
@@ -157,4 +162,3 @@ module.exports = {
   _on_size_error_sentence: ($) =>
     seq(seq($._ON, op($._SIZE), $._ERROR), $.atomic_imperative_block),
 };
-
