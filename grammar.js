@@ -46,6 +46,7 @@ module.exports = grammar({
     $._INLINE_COMMENT, // Comentários '*>'
     $._SUFFIX_COMMENT, // Comentários na área de sufixo
     $._BLANK_LINE,
+    $._PREFIX, // Colunas 1-6 (área de sequência)
     $._CONTINUATION_HYPHEN,
     $.sql_line_comment,
     $.sql_block_comment,

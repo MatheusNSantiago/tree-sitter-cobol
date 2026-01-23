@@ -107,21 +107,31 @@ module.exports = {
   data_description: ($) =>
     seq(
       field("level", $.level_number),
-      field("name", $.data_name),
-      choice(
-        seq($._REDEFINES, field("redefines", $.variable)),
-        $._pic_value, // level 88
-        field("occurs", $.occurs),
-        seq(
-          $._PIC,
-          choice(
-            $._INDEX,
-            repeat(
-              choice(
-                $._pic_value,
-                field("def", choice($.pic_x, $.pic_9, $.pic_a, $.pic_edit)),
-                field("comp", $.comp),
-                field("occurs", $.occurs),
+      field("name", optional($.data_name)), // opcional para FILLER implícito
+      optional(
+        choice(
+          seq($._REDEFINES, field("redefines", $.variable)),
+          $._pic_value, // level 88
+          field("occurs", $.occurs),
+          // COMP-1/COMP-2 sem PIC (floating point)
+          seq(
+            optional($._pic_value),
+            field("comp", $.comp),
+            optional($._pic_value),
+          ),
+          // PIC clause (VALUE pode vir antes ou depois)
+          seq(
+            optional($._pic_value), // VALUE antes do PIC
+            $._PIC,
+            choice(
+              $._INDEX,
+              repeat(
+                choice(
+                  $._pic_value,
+                  field("def", choice($.pic_x, $.pic_9, $.pic_a, $.pic_edit)),
+                  field("comp", $.comp),
+                  field("occurs", $.occurs),
+                ),
               ),
             ),
           ),

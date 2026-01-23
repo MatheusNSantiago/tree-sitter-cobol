@@ -1,0 +1,17 @@
+{
+  "timestamp": "2026-01-22T22:17:12-03:00",
+  "metrics": {
+    "state_count": 32861,
+    "large_state_count": 5452,
+    "symbol_count": 854,
+    "parser_size_bytes": 51560296
+  },
+  "parsing": {
+    "sample_size": 100,
+    "success": 70,
+    "failed": 30,
+    "success_rate": 70.00,
+    "total_errors": 131,
+    "avg_errors": 1.3
+  }
+}

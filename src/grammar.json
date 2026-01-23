@@ -1636,112 +1636,177 @@
           "type": "FIELD",
           "name": "name",
           "content": {
-            "type": "SYMBOL",
-            "name": "data_name"
+            "type": "CHOICE",
+            "members": [
+              {
+                "type": "SYMBOL",
+                "name": "data_name"
+              },
+              {
+                "type": "BLANK"
+              }
+            ]
           }
         },
         {
           "type": "CHOICE",
           "members": [
             {
-              "type": "SEQ",
+              "type": "CHOICE",
               "members": [
                 {
-                  "type": "SYMBOL",
-                  "name": "_REDEFINES"
-                },
-                {
-                  "type": "FIELD",
-                  "name": "redefines",
-                  "content": {
-                    "type": "SYMBOL",
-                    "name": "variable"
-                  }
-                }
-              ]
-            },
-            {
-              "type": "SYMBOL",
-              "name": "_pic_value"
-            },
-            {
-              "type": "FIELD",
-              "name": "occurs",
-              "content": {
-                "type": "SYMBOL",
-                "name": "occurs"
-              }
-            },
-            {
-              "type": "SEQ",
-              "members": [
-                {
-                  "type": "SYMBOL",
-                  "name": "_PIC"
-                },
-                {
-                  "type": "CHOICE",
+                  "type": "SEQ",
                   "members": [
                     {
                       "type": "SYMBOL",
-                      "name": "_INDEX"
+                      "name": "_REDEFINES"
                     },
                     {
-                      "type": "REPEAT",
+                      "type": "FIELD",
+                      "name": "redefines",
                       "content": {
-                        "type": "CHOICE",
-                        "members": [
-                          {
-                            "type": "SYMBOL",
-                            "name": "_pic_value"
-                          },
-                          {
-                            "type": "FIELD",
-                            "name": "def",
-                            "content": {
-                              "type": "CHOICE",
-                              "members": [
-                                {
-                                  "type": "SYMBOL",
-                                  "name": "pic_x"
-                                },
-                                {
-                                  "type": "SYMBOL",
-                                  "name": "pic_9"
-                                },
-                                {
-                                  "type": "SYMBOL",
-                                  "name": "pic_a"
-                                },
-                                {
-                                  "type": "SYMBOL",
-                                  "name": "pic_edit"
-                                }
-                              ]
-                            }
-                          },
-                          {
-                            "type": "FIELD",
-                            "name": "comp",
-                            "content": {
-                              "type": "SYMBOL",
-                              "name": "comp"
-                            }
-                          },
-                          {
-                            "type": "FIELD",
-                            "name": "occurs",
-                            "content": {
-                              "type": "SYMBOL",
-                              "name": "occurs"
-                            }
-                          }
-                        ]
+                        "type": "SYMBOL",
+                        "name": "variable"
                       }
+                    }
+                  ]
+                },
+                {
+                  "type": "SYMBOL",
+                  "name": "_pic_value"
+                },
+                {
+                  "type": "FIELD",
+                  "name": "occurs",
+                  "content": {
+                    "type": "SYMBOL",
+                    "name": "occurs"
+                  }
+                },
+                {
+                  "type": "SEQ",
+                  "members": [
+                    {
+                      "type": "CHOICE",
+                      "members": [
+                        {
+                          "type": "SYMBOL",
+                          "name": "_pic_value"
+                        },
+                        {
+                          "type": "BLANK"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "FIELD",
+                      "name": "comp",
+                      "content": {
+                        "type": "SYMBOL",
+                        "name": "comp"
+                      }
+                    },
+                    {
+                      "type": "CHOICE",
+                      "members": [
+                        {
+                          "type": "SYMBOL",
+                          "name": "_pic_value"
+                        },
+                        {
+                          "type": "BLANK"
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "SEQ",
+                  "members": [
+                    {
+                      "type": "CHOICE",
+                      "members": [
+                        {
+                          "type": "SYMBOL",
+                          "name": "_pic_value"
+                        },
+                        {
+                          "type": "BLANK"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "SYMBOL",
+                      "name": "_PIC"
+                    },
+                    {
+                      "type": "CHOICE",
+                      "members": [
+                        {
+                          "type": "SYMBOL",
+                          "name": "_INDEX"
+                        },
+                        {
+                          "type": "REPEAT",
+                          "content": {
+                            "type": "CHOICE",
+                            "members": [
+                              {
+                                "type": "SYMBOL",
+                                "name": "_pic_value"
+                              },
+                              {
+                                "type": "FIELD",
+                                "name": "def",
+                                "content": {
+                                  "type": "CHOICE",
+                                  "members": [
+                                    {
+                                      "type": "SYMBOL",
+                                      "name": "pic_x"
+                                    },
+                                    {
+                                      "type": "SYMBOL",
+                                      "name": "pic_9"
+                                    },
+                                    {
+                                      "type": "SYMBOL",
+                                      "name": "pic_a"
+                                    },
+                                    {
+                                      "type": "SYMBOL",
+                                      "name": "pic_edit"
+                                    }
+                                  ]
+                                }
+                              },
+                              {
+                                "type": "FIELD",
+                                "name": "comp",
+                                "content": {
+                                  "type": "SYMBOL",
+                                  "name": "comp"
+                                }
+                              },
+                              {
+                                "type": "FIELD",
+                                "name": "occurs",
+                                "content": {
+                                  "type": "SYMBOL",
+                                  "name": "occurs"
+                                }
+                              }
+                            ]
+                          }
+                        }
+                      ]
                     }
                   ]
                 }
               ]
+            },
+            {
+              "type": "BLANK"
             }
           ]
         }
@@ -13060,6 +13125,10 @@
     {
       "type": "SYMBOL",
       "name": "_BLANK_LINE"
+    },
+    {
+      "type": "SYMBOL",
+      "name": "_PREFIX"
     },
     {
       "type": "SYMBOL",
