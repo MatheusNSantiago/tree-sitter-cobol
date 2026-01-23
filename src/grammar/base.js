@@ -7,7 +7,7 @@ module.exports = {
 
   WORD: ($) => $._WORD,
 
-  section_name: ($) => $._WORD,
+  section_name: ($) => $._PLAIN_WORD,
   // variable: ($) =>
   //   seq(
   //     field("name", $._WORD), //

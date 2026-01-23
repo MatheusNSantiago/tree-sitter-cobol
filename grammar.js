@@ -54,6 +54,7 @@ module.exports = grammar({
     [$.sql_between_expression, $.sql_binary_expression, $.sql_like_expression],
   ],
   rules: {
+    // Entry point principal: programa COBOL completo ou fragmento (copybook)
     source_file: ($) =>
       seq(
         repeat($.directive),
@@ -62,6 +63,8 @@ module.exports = grammar({
         optional($.data_division),
         optional($.procedure_division),
       ),
+
+    // Conteúdo de copybook: lista de data descriptions
 
     _comment: ($) => $.comment,
 
