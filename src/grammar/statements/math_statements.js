@@ -156,14 +156,17 @@ module.exports = {
       ),
     ),
 
+  // ON [SIZE] ERROR consolidado em regex
+  _ON_SIZE_ERROR: (_) => /[oO][nN]([ \t]+[sS][iI][zZ][eE])?[ \t]+[eE][rR][rR][oO][rR]/,
+
   _on_size_error_block: ($) =>
     seq(
-      seq($._ON, op($._SIZE), $._ERROR),
+      $._ON_SIZE_ERROR,
       $.statement_block, // dentro de bloco pode ter qualquer tipo de statement
     ),
 
   // https://bs2manuals.ts.fujitsu.com/psCOBOL2000V16en/cobol2000-reference-manual-21133/procedure-division-cobol-compiler-reference-manual-2022-11-177/phrases-in-statements-cobol-compiler-reference-manual-2022-11-193/on-size-error-phrase-cobol-compiler-reference-manual-2022-11-197
   // On size error
   _on_size_error_sentence: ($) =>
-    seq(seq($._ON, op($._SIZE), $._ERROR), $.atomic_imperative_block),
+    seq($._ON_SIZE_ERROR, $.atomic_imperative_block),
 };

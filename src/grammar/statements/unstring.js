@@ -16,8 +16,9 @@ module.exports = {
 
   _delimiter: ($) => choice($.variable, $.string, $.constant),
 
+  // Reutiliza _DELIMITED_BY já definido em index.js
   unstring_delimited: ($) =>
-    seq($._DELIMITED, optional($._BY), repeat1($.unstring_delimited_item)),
+    seq($._DELIMITED_BY, repeat1($.unstring_delimited_item)),
 
   unstring_delimited_item: ($) =>
     seq(op($._ALL), field("delimiter", $._delimiter)),

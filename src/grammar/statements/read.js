@@ -1,6 +1,10 @@
 module.exports = {
   read_statement: ($) => choice($._read_block, $._read_sentence),
 
+  // AT END e NOT AT END consolidados em regex
+  _AT_END: (_) => /[aA][tT][ \t]+[eE][nN][dD]/,
+  _NOT_AT_END: (_) => /[nN][oO][tT][ \t]+[aA][tT][ \t]+[eE][nN][dD]/,
+
   //  ╭──────────────────────────────────────────────────────────╮
   //  │                          BLOCO                           │
   //  ╰──────────────────────────────────────────────────────────╯
@@ -17,8 +21,8 @@ module.exports = {
       $._END_READ,
     ),
 
-  _at_end_block: ($) => seq($._AT, $._END, $.statement_block),
-  _not_at_end_block: ($) => seq($._NOT, $._AT, $._END, $.statement_block),
+  _at_end_block: ($) => seq($._AT_END, $.statement_block),
+  _not_at_end_block: ($) => seq($._NOT_AT_END, $.statement_block),
 
   //  ╭──────────────────────────────────────────────────────────╮
   //  │                         SENTENÇA                         │
@@ -37,7 +41,6 @@ module.exports = {
       ),
     ),
 
-  _at_end_sentence: ($) => seq($._AT, $._END, $.atomic_imperative_block),
-  _not_at_end_sentence: ($) =>
-    seq($._NOT, $._AT, $._END, $.atomic_imperative_block),
+  _at_end_sentence: ($) => seq($._AT_END, $.atomic_imperative_block),
+  _not_at_end_sentence: ($) => seq($._NOT_AT_END, $.atomic_imperative_block),
 };

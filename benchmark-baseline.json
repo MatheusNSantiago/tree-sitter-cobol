@@ -1,10 +1,10 @@
 {
-  "timestamp": "2026-01-23T00:49:33-03:00",
+  "timestamp": "2026-01-23T01:10:34-03:00",
   "metrics": {
-    "state_count": 29425,
-    "large_state_count": 5271,
-    "symbol_count": 848,
-    "parser_size_bytes": 46525552
+    "state_count": 29157,
+    "large_state_count": 5238,
+    "symbol_count": 847,
+    "parser_size_bytes": 46215783
   },
   "parsing": {
     "corpus_size": 386,

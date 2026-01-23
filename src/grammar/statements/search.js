@@ -1,5 +1,6 @@
 module.exports = {
   search_statement: ($) => choice($._search_block, $._search_sentence),
+
   //  ╭──────────────────────────────────────────────────────────╮
   //  │                          BLOCO                           │
   //  ╰──────────────────────────────────────────────────────────╯
@@ -9,7 +10,7 @@ module.exports = {
         seq($._SEARCH, op($._ALL)),
         field("table_name", $.variable),
         opseq($._VARYING, $.WORD),
-        opseq($._AT, $._END, $.statement_block),
+        opseq($._AT_END, $.statement_block),
         repeat1(
           seq(
             $._WHEN,
@@ -30,7 +31,7 @@ module.exports = {
         seq($._SEARCH, op($._ALL)),
         field("table_name", $.variable),
         op(seq($._VARYING, $.WORD)),
-        opseq($._AT, $._END, $.atomic_imperative_block),
+        opseq($._AT_END, $.atomic_imperative_block),
         repeat1(
           seq(
             $._WHEN,
