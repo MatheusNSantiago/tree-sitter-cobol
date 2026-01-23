@@ -90,12 +90,16 @@ module.exports = {
       op($._END_STRING),
     ),
 
+  // DELIMITED [BY] consolidado
+  _DELIMITED_BY: (_) => /[dD][eE][lL][iI][mM][iI][tT][eE][dD]([ \t]+[bB][yY])?/,
   string_item: ($) =>
     seq(
       choice($.string, $.variable),
-      opseq($._DELIMITED, op($._BY), choice($._SIZE, $._value)),
+      opseq($._DELIMITED_BY, choice($._SIZE, $._value)),
     ),
-  string_with_pointer: ($) => seq(op($._WITH), $._POINTER, $.variable),
+  // [WITH] POINTER consolidado
+  _WITH_POINTER: (_) => /([wW][iI][tT][hH][ \t]+)?[pP][oO][iI][nN][tT][eE][rR]/,
+  string_with_pointer: ($) => seq($._WITH_POINTER, $.variable),
 
   display_statement: ($) => seq($._DISPLAY, repeat1($._expr_data)),
 

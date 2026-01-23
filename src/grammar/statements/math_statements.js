@@ -15,13 +15,16 @@ module.exports = {
   //  ╭──────────────────────────────────────────────────────────╮
   //  │                           ADD                            │
   //  ╰──────────────────────────────────────────────────────────╯
+  // ADD com patterns mutuamente exclusivos (reduz optionals sequenciais)
   _add_block: ($) =>
     prec.right(
       seq(
-        op(choice($._CORRESPONDING, $._CORR)),
-        seq($._ADD, field("amount", $._data_reference_list)),
-        opseq($._TO, field("to", $._variable_list)),
-        opseq($._GIVING, field("result", $._variable_list)),
+        $._ADD,
+        choice(
+          seq(choice($._CORRESPONDING, $._CORR), $._data_reference_list, $._TO, $._variable_list),
+          seq($._data_reference_list, $._TO, $._variable_list, opseq($._GIVING, $._variable_list)),
+          seq($._data_reference_list, $._GIVING, $._variable_list),
+        ),
         op($._on_size_error_block),
         $._END_ADD,
       ),
@@ -31,10 +34,12 @@ module.exports = {
     prec.right(
       1,
       seq(
-        op(choice($._CORRESPONDING, $._CORR)),
-        seq($._ADD, field("amount", $._data_reference_list)),
-        opseq($._TO, field("to", $._variable_list)),
-        opseq($._GIVING, field("result", $._variable_list)),
+        $._ADD,
+        choice(
+          seq(choice($._CORRESPONDING, $._CORR), $._data_reference_list, $._TO, $._variable_list),
+          seq($._data_reference_list, $._TO, $._variable_list, opseq($._GIVING, $._variable_list)),
+          seq($._data_reference_list, $._GIVING, $._variable_list),
+        ),
         op($._on_size_error_sentence),
       ),
     ),

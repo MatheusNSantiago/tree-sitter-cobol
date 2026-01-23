@@ -12,52 +12,25 @@
   {
     "type": "add_statement",
     "named": true,
-    "fields": {
-      "amount": {
-        "multiple": true,
-        "required": true,
-        "types": [
-          {
-            "type": "number",
-            "named": true
-          },
-          {
-            "type": "variable",
-            "named": true
-          }
-        ]
-      },
-      "result": {
-        "multiple": true,
-        "required": false,
-        "types": [
-          {
-            "type": "variable",
-            "named": true
-          }
-        ]
-      },
-      "to": {
-        "multiple": true,
-        "required": false,
-        "types": [
-          {
-            "type": "variable",
-            "named": true
-          }
-        ]
-      }
-    },
+    "fields": {},
     "children": {
-      "multiple": false,
-      "required": false,
+      "multiple": true,
+      "required": true,
       "types": [
         {
           "type": "atomic_imperative_block",
           "named": true
         },
         {
+          "type": "number",
+          "named": true
+        },
+        {
           "type": "statement_block",
+          "named": true
+        },
+        {
+          "type": "variable",
           "named": true
         }
       ]
@@ -1956,6 +1929,10 @@
         "required": true,
         "types": [
           {
+            "type": "ALL",
+            "named": false
+          },
+          {
             "type": "CORR",
             "named": false
           },
@@ -2123,14 +2100,6 @@
         "multiple": true,
         "required": false,
         "types": [
-          {
-            "type": "DEPENDING",
-            "named": false
-          },
-          {
-            "type": "ON",
-            "named": false
-          },
           {
             "type": "variable",
             "named": true
@@ -2803,21 +2772,125 @@
     "named": true,
     "fields": {
       "length": {
-        "multiple": false,
+        "multiple": true,
         "required": false,
         "types": [
           {
-            "type": "expr",
+            "type": "(",
+            "named": false
+          },
+          {
+            "type": ")",
+            "named": false
+          },
+          {
+            "type": "*",
+            "named": false
+          },
+          {
+            "type": "**",
+            "named": false
+          },
+          {
+            "type": "+",
+            "named": false
+          },
+          {
+            "type": "-",
+            "named": false
+          },
+          {
+            "type": "/",
+            "named": false
+          },
+          {
+            "type": "^",
+            "named": false
+          },
+          {
+            "type": "boolean",
+            "named": true
+          },
+          {
+            "type": "constant",
+            "named": true
+          },
+          {
+            "type": "function",
+            "named": true
+          },
+          {
+            "type": "number",
+            "named": true
+          },
+          {
+            "type": "string",
+            "named": true
+          },
+          {
+            "type": "variable",
             "named": true
           }
         ]
       },
       "start": {
-        "multiple": false,
+        "multiple": true,
         "required": true,
         "types": [
           {
-            "type": "expr",
+            "type": "(",
+            "named": false
+          },
+          {
+            "type": ")",
+            "named": false
+          },
+          {
+            "type": "*",
+            "named": false
+          },
+          {
+            "type": "**",
+            "named": false
+          },
+          {
+            "type": "+",
+            "named": false
+          },
+          {
+            "type": "-",
+            "named": false
+          },
+          {
+            "type": "/",
+            "named": false
+          },
+          {
+            "type": "^",
+            "named": false
+          },
+          {
+            "type": "boolean",
+            "named": true
+          },
+          {
+            "type": "constant",
+            "named": true
+          },
+          {
+            "type": "function",
+            "named": true
+          },
+          {
+            "type": "number",
+            "named": true
+          },
+          {
+            "type": "string",
+            "named": true
+          },
+          {
+            "type": "variable",
             "named": true
           }
         ]
@@ -3309,20 +3382,6 @@
           {
             "type": "variable",
             "named": true
-          }
-        ]
-      },
-      "order": {
-        "multiple": false,
-        "required": true,
-        "types": [
-          {
-            "type": "ASCENDING",
-            "named": false
-          },
-          {
-            "type": "DESCENDING",
-            "named": false
           }
         ]
       }
@@ -5139,7 +5198,27 @@
       "required": true,
       "types": [
         {
-          "type": "expr",
+          "type": "boolean",
+          "named": true
+        },
+        {
+          "type": "constant",
+          "named": true
+        },
+        {
+          "type": "function",
+          "named": true
+        },
+        {
+          "type": "number",
+          "named": true
+        },
+        {
+          "type": "string",
+          "named": true
+        },
+        {
+          "type": "variable",
           "named": true
         }
       ]
@@ -5320,7 +5399,7 @@
         ]
       },
       "reference_modification": {
-        "multiple": false,
+        "multiple": true,
         "required": false,
         "types": [
           {
@@ -5330,7 +5409,7 @@
         ]
       },
       "subscripts": {
-        "multiple": false,
+        "multiple": true,
         "required": false,
         "types": [
           {
@@ -5483,10 +5562,6 @@
     "named": false
   },
   {
-    "type": "ACCESS",
-    "named": false
-  },
-  {
     "type": "ADD",
     "named": false
   },
@@ -5523,10 +5598,6 @@
     "named": false
   },
   {
-    "type": "ARE",
-    "named": false
-  },
-  {
     "type": "ARITH(EXTEND)",
     "named": false
   },
@@ -5536,10 +5607,6 @@
   },
   {
     "type": "ASC",
-    "named": false
-  },
-  {
-    "type": "ASCENDING",
     "named": false
   },
   {
@@ -5564,10 +5631,6 @@
   },
   {
     "type": "BINARY",
-    "named": false
-  },
-  {
-    "type": "BLOCK",
     "named": false
   },
   {
@@ -5687,10 +5750,6 @@
     "named": false
   },
   {
-    "type": "CONTAINS",
-    "named": false
-  },
-  {
     "type": "CONTINUE",
     "named": false
   },
@@ -5763,15 +5822,7 @@
     "named": false
   },
   {
-    "type": "DEPENDING",
-    "named": false
-  },
-  {
     "type": "DESC",
-    "named": false
-  },
-  {
-    "type": "DESCENDING",
     "named": false
   },
   {
@@ -5967,10 +6018,6 @@
     "named": false
   },
   {
-    "type": "GREATER",
-    "named": false
-  },
-  {
     "type": "GROUP",
     "named": false
   },
@@ -6067,14 +6114,6 @@
     "named": false
   },
   {
-    "type": "KEY",
-    "named": false
-  },
-  {
-    "type": "LABEL",
-    "named": false
-  },
-  {
     "type": "LEADING",
     "named": false
   },
@@ -6084,10 +6123,6 @@
   },
   {
     "type": "LENGTH",
-    "named": false
-  },
-  {
-    "type": "LESS",
     "named": false
   },
   {
@@ -6120,10 +6155,6 @@
   },
   {
     "type": "LOW-VALUES",
-    "named": false
-  },
-  {
-    "type": "MODE",
     "named": false
   },
   {
@@ -6235,10 +6266,6 @@
     "named": false
   },
   {
-    "type": "POINTER",
-    "named": false
-  },
-  {
     "type": "POSITIONING",
     "named": false
   },
@@ -6276,10 +6303,6 @@
   },
   {
     "type": "RECORD",
-    "named": false
-  },
-  {
-    "type": "RECORDING",
     "named": false
   },
   {
@@ -6419,10 +6442,6 @@
     "named": false
   },
   {
-    "type": "STATUS",
-    "named": false
-  },
-  {
     "type": "STOP",
     "named": false
   },
@@ -6444,10 +6463,6 @@
   },
   {
     "type": "TALLYING",
-    "named": false
-  },
-  {
-    "type": "THAN",
     "named": false
   },
   {
@@ -6508,10 +6523,6 @@
   },
   {
     "type": "UPDATE",
-    "named": false
-  },
-  {
-    "type": "USAGE",
     "named": false
   },
   {

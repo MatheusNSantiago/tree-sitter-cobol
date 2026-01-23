@@ -1,13 +1,12 @@
 #!/bin/bash
 # Benchmark script para tree-sitter-cobol
+# Usa os arquivos do corpus local (test/corpus/)
 
 set -euo pipefail
 
-COBOL_DIR="/home/matheus/dev/mainframe-doc/backend/data/sgt/cobol"
 SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
 PROJECT_DIR="$(dirname "$SCRIPT_DIR")"
-CLEAN_SCRIPT="$SCRIPT_DIR/clean-cobol.sh"
-SAMPLE_SIZE="${1:-50}"
+CORPUS_DIR="$PROJECT_DIR/test/corpus"
 
 cd "$PROJECT_DIR"
 
@@ -36,23 +35,17 @@ echo "  LARGE_STATE_COUNT: $LARGE_STATE_COUNT"
 echo "  SYMBOL_COUNT:      $SYMBOL_COUNT"
 echo "  Parser size:       $(numfmt --to=iec $PARSER_SIZE)"
 
-# 3. Parsear arquivos COBOL (com limpeza)
-echo -e "\n[3/4] Parseando $SAMPLE_SIZE arquivos..."
+# 3. Parsear TODOS os arquivos do corpus
+echo -e "\n[3/4] Parseando arquivos do corpus..."
 
-FILELIST=$(mktemp)
-CLEANFILE=$(mktemp --suffix=.cbl)
-ls "$COBOL_DIR"/*.cbl | shuf -n "$SAMPLE_SIZE" > "$FILELIST"
-
+TOTAL_FILES=$(ls "$CORPUS_DIR"/*.cbl 2>/dev/null | wc -l)
 SUCCESS=0
 FAILED=0
 TOTAL_ERRORS=0
 FAILED_LIST=""
 
-while read -r f; do
-    # Limpa o arquivo para tmp
-    "$CLEAN_SCRIPT" "$f" > "$CLEANFILE"
-    # Parseia
-    OUTPUT=$(tree-sitter parse "$CLEANFILE" 2>&1 || true)
+for f in "$CORPUS_DIR"/*.cbl; do
+    OUTPUT=$(tree-sitter parse "$f" 2>&1 || true)
     ERROR_COUNT=$(echo "$OUTPUT" | grep -c "ERROR\|MISSING") || ERROR_COUNT=0
 
     if [[ $ERROR_COUNT -eq 0 ]]; then
@@ -62,16 +55,23 @@ while read -r f; do
         TOTAL_ERRORS=$((TOTAL_ERRORS + ERROR_COUNT))
         FAILED_LIST="$FAILED_LIST $(basename "$f")"
     fi
-done < "$FILELIST"
-
-rm "$FILELIST" "$CLEANFILE"
+done
 
 TOTAL=$((SUCCESS + FAILED))
-SUCCESS_RATE=$(awk "BEGIN {printf \"%.2f\", $SUCCESS * 100 / $TOTAL}")
-AVG_ERRORS=$(awk "BEGIN {printf \"%.1f\", $TOTAL_ERRORS / $TOTAL}")
+if [[ $TOTAL -gt 0 ]]; then
+    SUCCESS_RATE=$(awk "BEGIN {printf \"%.2f\", $SUCCESS * 100 / $TOTAL}")
+    AVG_ERRORS=$(awk "BEGIN {printf \"%.1f\", $TOTAL_ERRORS / $TOTAL}")
+else
+    SUCCESS_RATE="0.00"
+    AVG_ERRORS="0.0"
+fi
 
 echo "  Success: $SUCCESS / $TOTAL (${SUCCESS_RATE}%)"
 echo "  Failed:  $FAILED (avg errors: $AVG_ERRORS)"
+
+if [[ $FAILED -gt 0 ]]; then
+    echo "  Arquivos com falha:$FAILED_LIST"
+fi
 
 # 4. Relatório JSON
 echo -e "\n[4/4] Salvando relatório..."
@@ -86,7 +86,7 @@ cat > "$PROJECT_DIR/benchmark-report.json" << EOF
     "parser_size_bytes": $PARSER_SIZE
   },
   "parsing": {
-    "sample_size": $TOTAL,
+    "corpus_size": $TOTAL,
     "success": $SUCCESS,
     "failed": $FAILED,
     "success_rate": $SUCCESS_RATE,
@@ -118,3 +118,21 @@ fi
 echo -e "\n========================================="
 echo "STATE=$STATE_COUNT | LARGE=$LARGE_STATE_COUNT | PARSE=${SUCCESS_RATE}%"
 echo "========================================="
+
+# Falhar se não tiver 100% de sucesso
+if [[ "$SUCCESS_RATE" != "100.00" ]]; then
+    echo -e "\n⚠️  ATENÇÃO: Taxa de sucesso não é 100%!"
+    exit 1
+fi
+
+# Atualizar baseline automaticamente se melhorou ou é igual
+if [[ -f "$PROJECT_DIR/benchmark-baseline.json" ]]; then
+    if [[ $DIFF_STATES -le 0 ]]; then
+        cp "$PROJECT_DIR/benchmark-report.json" "$PROJECT_DIR/benchmark-baseline.json"
+        echo -e "\n✓ Baseline atualizado automaticamente"
+    fi
+else
+    # Se não existe baseline, criar
+    cp "$PROJECT_DIR/benchmark-report.json" "$PROJECT_DIR/benchmark-baseline.json"
+    echo -e "\n✓ Baseline criado"
+fi

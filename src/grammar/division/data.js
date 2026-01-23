@@ -63,30 +63,34 @@ module.exports = {
     ),
 
   file_type: (_) => choice(kw("FD"), kw("SD")),
+  // BLOCK [CONTAINS] num [CHARACTERS|RECORDS]
+  _BLOCK_CONTAINS: (_) => /[bB][lL][oO][cC][kK]([ \t]+[cC][oO][nN][tT][aA][iI][nN][sS])?/,
   fd_block: ($) =>
     seq(
-      $._BLOCK,
-      op($._CONTAINS),
+      $._BLOCK_CONTAINS,
       field("num", $.number),
-      op(choice($._CHARACTERS, $._RECORDS)),
+      optional(choice($._CHARACTERS, $._RECORDS)),
     ),
 
+  // RECORD [CONTAINS] num [TO num] [CHARACTERS]
+  _RECORD_CONTAINS: (_) => /[rR][eE][cC][oO][rR][dD]([ \t]+[cC][oO][nN][tT][aA][iI][nN][sS])?/,
   fd_record: ($) =>
     seq(
-      $._RECORD,
-      optional($._CONTAINS),
+      $._RECORD_CONTAINS,
       field("num", $.integer),
       field("to", opseq($._TO, $.integer)),
       optional($._CHARACTERS),
     ),
 
-  fd_recording_mode: ($) =>
-    seq($._RECORDING, op($._MODE), op($._IS), field("mode", $.WORD)),
+  // RECORDING [MODE] [IS] mode - consolidado em regex
+  _RECORDING_MODE: (_) => /[rR][eE][cC][oO][rR][dD][iI][nN][gG]([ \t]+[mM][oO][dD][eE])?([ \t]+[iI][sS])?/,
+  fd_recording_mode: ($) => seq($._RECORDING_MODE, field("mode", $.WORD)),
 
+  // LABEL RECORD[S] [IS|ARE] STANDARD|OMITTED
+  _LABEL_RECORDS: (_) => /[lL][aA][bB][eE][lL][ \t]+[rR][eE][cC][oO][rR][dD][sS]?([ \t]+([iI][sS]|[aA][rR][eE]))?/,
   fd_label_records: ($) =>
     seq(
-      $._LABEL,
-      choice(seq($._RECORD, op($._IS)), seq($._RECORDS, op($._ARE))),
+      $._LABEL_RECORDS,
       choice($._STANDARD, $._OMITTED),
     ),
 
@@ -150,9 +154,11 @@ module.exports = {
   pic_edit: (_) =>
     /([aAxX9bBvVzZpPwW\(\)0-9$/,\.*+<>-]|[cC][rR]|[dD][bB])*([aAxX9bBvVzZpPwW\(\)0-9$/,*+<>-]|[cC][rR]|[dD][bB])/,
 
+  // [USAGE [IS]] COMP-n - USAGE IS é opcional
+  _USAGE_IS: (_) => /[uU][sS][aA][gG][eE]([ \t]+[iI][sS])?[ \t]+/,
   comp: ($) =>
     seq(
-      opseq($._USAGE, optional($._IS)),
+      optional($._USAGE_IS),
       choice(
         $._COMP,
         $._COMP_1,
@@ -179,15 +185,16 @@ module.exports = {
 
   value_item: ($) => seq($._value, opseq($._THRU, $._value)),
 
+  // DEPENDING [ON] consolidado em regex
+  _DEPENDING_ON: (_) => /[dD][eE][pP][eE][nN][dD][iI][nN][gG]([ \t]+[oO][nN])?/,
   occurs: ($) =>
     seq(
       seq($._OCCURS, field("times", $.number)),
       opseq($._TO, field("to", $.number)),
       op($._TIMES),
-      field("depending", opseq($._DEPENDING, op($._ON), $.variable)),
+      field("depending", opseq($._DEPENDING_ON, $.variable)),
       field("key_spec", op($.occurs_key_spec)),
       op($.indexed_by),
-      // op(choice($._picture, $.indexed_by)),
     ),
 
   occurs_key_spec: ($) =>
@@ -199,11 +206,12 @@ module.exports = {
       ),
     ),
 
+  // ASCENDING/DESCENDING [KEY] [IS] - consolidado
+  _ASCENDING_KEY: (_) => /[aA][sS][cC][eE][nN][dD][iI][nN][gG]([ \t]+[kK][eE][yY])?([ \t]+[iI][sS])?/,
+  _DESCENDING_KEY: (_) => /[dD][eE][sS][cC][eE][nN][dD][iI][nN][gG]([ \t]+[kK][eE][yY])?([ \t]+[iI][sS])?/,
   sort_key: ($) =>
     seq(
-      field("order", choice($._ASCENDING, $._DESCENDING)),
-      op($._KEY),
-      op($._IS),
+      field("order", choice($._ASCENDING_KEY, $._DESCENDING_KEY)),
       field("keys", repeat1($.variable)),
     ),
 

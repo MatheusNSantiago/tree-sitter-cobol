@@ -16,21 +16,27 @@ module.exports = {
   // subref: ($) => seq("(", $._exp_list, ")"),
   // refmod: ($) => seq("(", $.exp, ":", optional($.exp), ")"),
 
+  // Flatten optionals: em vez de 2 optionals sequenciais, usar repeat
+  // Isso reduz estados de 4 combinações para 1 loop
   variable: ($) =>
     prec.right(
       seq(
         field("name", sep1($._WORD, choice($._IN, $._OF))),
-        optional(field("subscripts", $.subscript_reference)),
-        optional(field("reference_modification", $.reference_modification)),
+        repeat(choice(
+          field("subscripts", $.subscript_reference),
+          field("reference_modification", $.reference_modification),
+        )),
       ),
     ),
 
   // `TABLE(I)`, `TABLE(I, J)`.
-  subscript_reference: ($) => paren(sep1($.expr, ",")),
+  // Usa _expr_calc (aritmético) em vez de expr (booleano) - subscripts são numéricos
+  subscript_reference: ($) => paren(sep1($._expr_calc, ",")),
 
   // `TEXT-FIELD(5:10)`
+  // Usa _expr_calc (aritmético) - posições são numéricas
   reference_modification: ($) =>
-    paren(seq(field("start", $.expr), ":", optional(field("length", $.expr)))),
+    paren(seq(field("start", $._expr_calc), ":", optional(field("length", $._expr_calc)))),
 
   //  ╾───────────────────────────────────────────────────────────────────────────────────╼
   file_name: ($) => $._WORD,

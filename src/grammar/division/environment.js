@@ -84,13 +84,15 @@ module.exports = {
       $.record_key_clause,
     ),
 
-  assign_clause: ($) => seq($._ASSIGN, op($._TO), field("dd_name", $.WORD)),
+  // ASSIGN [TO] consolidado
+  _ASSIGN_TO: (_) => /[aA][sS][sS][iI][gG][nN]([ \t]+[tT][oO])?/,
+  assign_clause: ($) => seq($._ASSIGN_TO, field("dd_name", $.WORD)),
 
+  // ACCESS [MODE] [IS] consolidado
+  _ACCESS_MODE_IS: (_) => /[aA][cC][cC][eE][sS][sS]([ \t]+[mM][oO][dD][eE])?([ \t]+[iI][sS])?/,
   access_mode_clause: ($) =>
     seq(
-      kw("ACCESS"),
-      op($._MODE),
-      op($._IS),
+      $._ACCESS_MODE_IS,
       choice($._SEQUENTIAL, kw("DYNAMIC"), kw("RANDOM")),
     ),
 
@@ -105,22 +107,18 @@ module.exports = {
       ),
     ),
 
+  // RELATIVE [KEY] [IS] consolidado
+  _RELATIVE_KEY_IS: (_) => /[rR][eE][lL][aA][tT][iI][vV][eE]([ \t]+[kK][eE][yY])?([ \t]+[iI][sS])?/,
   relative_key_clause: ($) =>
-    seq($._RELATIVE, op($._KEY), op($._IS), field("relative_key", $.WORD)),
+    seq($._RELATIVE_KEY_IS, field("relative_key", $.WORD)),
 
+  // FILE STATUS [IS] consolidado
+  _FILE_STATUS_IS: (_) => /[fF][iI][lL][eE][ \t]+[sS][tT][aA][tT][uU][sS]([ \t]+[iI][sS])?/,
   file_status_clause: ($) =>
-    seq(
-      kw("FILE"),
-      kw("STATUS"),
-      optional($._IS), //
-      field("reference", $.WORD),
-    ),
+    seq($._FILE_STATUS_IS, field("reference", $.WORD)),
 
+  // RECORD [KEY] [IS] consolidado
+  _RECORD_KEY_IS: (_) => /[rR][eE][cC][oO][rR][dD]([ \t]+[kK][eE][yY])?([ \t]+[iI][sS])?/,
   record_key_clause: ($) =>
-    seq(
-      $._RECORD,
-      optional($._KEY),
-      optional($._IS),
-      field("reference", $.WORD),
-    ),
+    seq($._RECORD_KEY_IS, field("reference", $.WORD)),
 };

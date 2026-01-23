@@ -32,6 +32,9 @@ module.exports = {
       ),
     ),
 
+  // LENGTH [OF] consolidado em regex
+  _LENGTH_OF: (_) => /[lL][eE][nN][gG][tT][hH]([ \t]+[oO][fF])?/,
+
   _expr_calc: ($) =>
     prec(
       1,
@@ -40,7 +43,7 @@ module.exports = {
         $._expr_calc_unary,
         $._expr_data,
         paren($._expr_calc),
-        seq($._LENGTH, optional($._OF), $.variable),
+        seq($._LENGTH_OF, $.variable),
       ),
     ),
 
@@ -189,38 +192,33 @@ module.exports = {
   // is_not_class: ($) =>
   // prec(1, seq(field("x", $._x), $._NOT, field("class", $.WORD))),
 
-  eq: ($) => seq(optional($._IS), choice($._EQUAL, "="), optional($._TO)),
+  // Comparadores simplificados usando regex para reduzir estados
+  // Padrões COBOL: IS EQUAL TO, =, IS NOT EQUAL, etc.
 
-  ge: ($) =>
-    choice(
-      seq(op($._IS), ">="),
-      seq(op($._IS), $._NOT, choice("<", $._LESS), op($._THAN)),
-      seq(op($._IS), $._GREATER, op($._THAN), op($._OR), $._EQUAL, op($._TO)),
-    ),
+  eq: ($) => choice($._EQ_SYMBOL, $._EQ_WORD),
+  _EQ_SYMBOL: (_) => /([iI][sS][ \t]+)?=/,
+  _EQ_WORD: (_) => /([iI][sS][ \t]+)?[eE][qQ][uU][aA][lL]([ \t]+[tT][oO])?/,
 
-  le: ($) =>
-    choice(
-      seq(optional($._IS), "<="),
-      seq(optional($._IS), $._NOT, ">"),
-      seq(op($._IS), $._LESS, op($._THAN), op($._OR), $._EQUAL, op($._TO)),
-      seq(optional($._IS), $._NOT_GREATER, optional($._THAN)),
-    ),
+  ne: ($) => choice($._NE_SYMBOL, $._NE_WORD),
+  _NE_SYMBOL: (_) => /([iI][sS][ \t]+)?(<>|!=)/,
+  // NOT = , NOT EQUAL, NOT EQUAL TO
+  _NE_WORD: (_) => /([iI][sS][ \t]+)?[nN][oO][tT][ \t]+(=|[eE][qQ][uU][aA][lL]([ \t]+[tT][oO])?)/,
 
-  ne: ($) => seq(op($._IS), choice($._NOT_EQUAL, "<>"), op($._TO)),
+  gt: ($) => choice($._GT_WORD, ">"),
+  _GT_WORD: (_) => /([iI][sS][ \t]+)?[gG][rR][eE][aA][tT][eE][rR]([ \t]+[tT][hH][aA][nN])?/,
 
-  gt: ($) =>
-    choice(
-      seq(optional($._IS), ">"),
-      seq(optional($._IS), $._NOT, "<="),
-      seq(optional($._IS), $._GREATER, optional($._THAN)),
-    ),
+  lt: ($) => choice($._LT_WORD, "<"),
+  _LT_WORD: (_) => /([iI][sS][ \t]+)?[lL][eE][sS][sS]([ \t]+[tT][hH][aA][nN])?/,
 
-  lt: ($) =>
-    choice(
-      seq(optional($._IS), "<"),
-      seq(optional($._IS), $._NOT, ">="),
-      seq(optional($._IS), $._LESS, optional($._THAN)),
-    ),
+  ge: ($) => choice($._GE_SYMBOL, $._GE_WORD, $._GE_NOT_LESS),
+  _GE_SYMBOL: (_) => /([iI][sS][ \t]+)?>=/,
+  _GE_WORD: (_) => /([iI][sS][ \t]+)?[gG][rR][eE][aA][tT][eE][rR]([ \t]+[tT][hH][aA][nN])?([ \t]+[oO][rR][ \t]+[eE][qQ][uU][aA][lL]([ \t]+[tT][oO])?)?/,
+  _GE_NOT_LESS: (_) => /([iI][sS][ \t]+)?[nN][oO][tT][ \t]+(<|[lL][eE][sS][sS]([ \t]+[tT][hH][aA][nN])?)/,
+
+  le: ($) => choice($._LE_SYMBOL, $._LE_WORD, $._LE_NOT_GREATER),
+  _LE_SYMBOL: (_) => /([iI][sS][ \t]+)?<=/,
+  _LE_WORD: (_) => /([iI][sS][ \t]+)?[lL][eE][sS][sS]([ \t]+[tT][hH][aA][nN])?([ \t]+[oO][rR][ \t]+[eE][qQ][uU][aA][lL]([ \t]+[tT][oO])?)?/,
+  _LE_NOT_GREATER: (_) => /([iI][sS][ \t]+)?[nN][oO][tT][ \t]+(>|[gG][rR][eE][aA][tT][eE][rR]([ \t]+[tT][hH][aA][nN])?)/,
 
   // ╭──────────────────────────────────────────────────────────╮
   // │                         keywords                         │
@@ -248,8 +246,7 @@ module.exports = {
   _OR_NE: (_) =>
     /[oO][rR][ \t]+(!=|[nN][oO][tT][ \t]+[eE][qQ][uU][aA][lL]([ \t]+[tT][oO])?)/,
 
-  _NOT_EQUAL: (_) => /(!=)|([nN][oO][tT][ \t]+(([eE][qQ][uU][aA][lL])|=))/,
-  _NOT_GREATER: (_) => /([nN][oO][tT][ \t]+(>|[gG][rR][eE][aA][tT][eE][rR]))/,
+  // _NOT_EQUAL e _NOT_GREATER movidos para regex nos comparadores
 
   _NUMERIC: (_) => kw("NUMERIC"),
   _NOT_NUMERIC: ($) => seq($._NOT, $._NUMERIC),

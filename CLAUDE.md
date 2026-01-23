@@ -4,13 +4,13 @@
 
 Reduzir a complexidade do parser (STATE_COUNT e LARGE_STATE_COUNT) **sem perder funcionalidade**. O parser atual está muito grande (~50MB, 32k estados) e precisa ser otimizado.
 
-## Métricas Atuais (Baseline)
+## Métricas Atuais
 
 ```
-STATE_COUNT:       32861
-LARGE_STATE_COUNT: 5452
-SYMBOL_COUNT:      854
-Parser size:       50MB
+STATE_COUNT:       29425  (baseline original: 32861, -10.5%)
+LARGE_STATE_COUNT: 5271   (baseline original: 5452)
+SYMBOL_COUNT:      848    (baseline original: 854)
+Parser size:       45MB
 Arquivos de teste: 386 (100% sucesso)
 ```
 
@@ -250,6 +250,26 @@ tree-sitter-cobol/
 
 ---
 
+## ⚠️ REGRA OBRIGATÓRIA: Benchmark Após Cada Mudança
+
+**SEMPRE execute `./scripts/benchmark.sh 100` após completar qualquer mudança na gramática.**
+
+Este script:
+1. Regenera o parser
+2. Extrai métricas (STATE_COUNT, LARGE_STATE_COUNT, etc.)
+3. Testa parsing em 100 arquivos COBOL reais
+4. Compara com o baseline
+5. Salva relatório em `benchmark-report.json`
+
+```bash
+# Após QUALQUER mudança na gramática:
+./scripts/benchmark.sh 100
+```
+
+O corpus em `test/corpus/` deve manter **100% de sucesso**. Se o benchmark mostrar falhas, a mudança deve ser revertida.
+
+---
+
 ## Processo de Iteração
 
 ```
@@ -260,7 +280,7 @@ tree-sitter-cobol/
 │  4. Aplicar UMA técnica (flatten, split, extract)               │
 │  5. Rodar: tree-sitter generate                                 │
 │  6. Verificar: --report-states-for-rule (a regra melhorou?)     │
-│  7. Rodar: ./scripts/benchmark.sh 100                           │
+│  7. **OBRIGATÓRIO: ./scripts/benchmark.sh 100**                 │
 │  8. Validar: todos os 386 arquivos ainda passam?                │
 │  9. Se MELHOROU (menos estados + 100% testes) → git commit      │
 │  10. Se PIOROU ou QUEBROU → git checkout . (descartar)          │
@@ -343,6 +363,19 @@ git diff src/parser.c | grep -E "STATE_COUNT|LARGE_STATE"
 | Data | Mudança | STATE antes | STATE depois | Diff |
 |------|---------|-------------|--------------|------|
 | 2026-01-22 | Baseline inicial | - | 32861 | - |
+| 2026-01-23 | Comparadores (eq,ne,gt,lt,ge,le) → regex | 32861 | 32798 | -63 |
+| 2026-01-23 | move_statement: optionals → choice | 32798 | 32367 | -431 |
+| 2026-01-23 | ON SIZE ERROR → regex | 32367 | 32155 | -212 |
+| 2026-01-23 | RECORDING MODE, ASCENDING/DESCENDING KEY → regex | 32155 | 31595 | -560 |
+| 2026-01-23 | USAGE IS, BLOCK CONTAINS, RECORD CONTAINS, LABEL RECORDS → regex | 31595 | 31574 | -21 |
+| 2026-01-23 | DEPENDING ON → regex | 31574 | 31494 | -80 |
+| 2026-01-23 | ASSIGN TO, ACCESS MODE, RELATIVE KEY, FILE STATUS, RECORD KEY → regex | 31494 | 31475 | -19 |
+| 2026-01-23 | DELIMITED BY, WITH POINTER → regex | 31475 | 31466 | -9 |
+| 2026-01-23 | **variable: flatten optionals (subscripts/refmod)** | 31466 | 29720 | **-1746** |
+| 2026-01-23 | subscript/refmod: expr → _expr_calc | 29720 | 29706 | -14 |
+| 2026-01-23 | LENGTH OF → regex | 29706 | 29592 | -114 |
+| 2026-01-23 | ADD statement: optionals → choice mutuamente exclusivo | 29592 | 29425 | -167 |
+| 2026-01-23 | ❌ TENTATIVA FALHA: unificar block/sentence com END opcional | 29425 | ∞ | EXPLOSÃO |
 
 ---
 
@@ -361,10 +394,60 @@ Baseado no `--report-states-for-rule`:
 
 ---
 
+## ⚠️ FOCO: Regras de Alto Impacto
+
+### Entendendo o Relatório de Estados
+
+Símbolos com alto número de estados (como `variable`, `_WORD`, `expr`) aparecem no topo porque são **USADOS** por outras regras mais importantes.
+
+**INSIGHT CRUCIAL:** Esses números altos são SINTOMAS, não CAUSAS. Os estados se acumulam por causa de como as regras são COMPOSTAS nos statements. Se você otimizar os STATEMENTS, os números de `variable`, `expr`, etc. **VÃO DIMINUIR AUTOMATICAMENTE** porque:
+
+1. Menos contextos de uso = menos estados acumulados
+2. A complexidade está na COMPOSIÇÃO, não nas regras individuais
+3. Simplificar statements tem EFEITO CASCATA em todas as regras que eles usam
+
+### Onde Focar: STATEMENTS
+
+**Os STATEMENTS são as regras fundamentais do sistema.** Se você otimizar os statements, resolve ~90% do problema.
+
+**Foque em:**
+- `if_statement`, `perform_statement`, `evaluate_statement`
+- `read_statement`, `search_statement`
+- Qualquer statement que tenha blocos aninhados ou END opcional
+- A estrutura `_statement` → `statement_block` → aninhamento
+
+**NÃO foque em:**
+- `variable`, `_WORD`, `expr` - são terminais, otimizá-los diretamente tem retorno diminuto
+- Regras de data division (menos impacto)
+- SQL embarcado (impacto ínfimo)
+
+### Comando de Diagnóstico
+
+```bash
+tree-sitter generate --report-states-for-rule - 2>&1 | head -20
+```
+
+Procure por `_statement`, `_block`, `_sentence` no relatório - esses são os alvos.
+
+---
+
+## 📝 Documentar Aprendizados
+
+**Sempre que aprender algo importante durante experimentos, documente em `APRENDIZADOS.md`:**
+
+- Experimentos que falharam e POR QUÊ
+- Técnicas que funcionaram melhor que o esperado
+- Armadilhas a evitar
+- Insights sobre o comportamento do tree-sitter
+
+Isso evita repetir erros e preserva conhecimento entre sessões.
+
+---
+
 ## Notas Importantes
 
 1. **Não edite `src/parser.c`** - é gerado automaticamente
 2. **Uma mudança por vez** - facilita identificar o que funcionou
 3. **`variable` é usada em centenas de lugares** - mudanças têm grande cascata
-4. **O problema STATEMENT/END-STATEMENT** é provavelmente o maior contribuidor
+4. **NUNCA unifique block/sentence com END opcional** - causa explosão de estados (ver APRENDIZADOS.md)
 5. **SQL embarcado tem impacto ínfimo** - não é alvo de otimização
