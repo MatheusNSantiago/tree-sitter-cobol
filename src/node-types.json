@@ -3471,22 +3471,6 @@
     }
   },
   {
-    "type": "sql_alias",
-    "named": true,
-    "fields": {
-      "alias": {
-        "multiple": false,
-        "required": true,
-        "types": [
-          {
-            "type": "sql_identifier",
-            "named": true
-          }
-        ]
-      }
-    }
-  },
-  {
     "type": "sql_all_fields",
     "named": true,
     "fields": {}
@@ -3822,42 +3806,6 @@
     "fields": {}
   },
   {
-    "type": "sql_common_table_expression",
-    "named": true,
-    "fields": {
-      "name": {
-        "multiple": false,
-        "required": true,
-        "types": [
-          {
-            "type": "sql_identifier",
-            "named": true
-          }
-        ]
-      },
-      "query": {
-        "multiple": false,
-        "required": true,
-        "types": [
-          {
-            "type": "sql_subquery",
-            "named": true
-          }
-        ]
-      }
-    },
-    "children": {
-      "multiple": true,
-      "required": false,
-      "types": [
-        {
-          "type": "sql_identifier",
-          "named": true
-        }
-      ]
-    }
-  },
-  {
     "type": "sql_constant",
     "named": true,
     "fields": {}
@@ -4085,26 +4033,6 @@
     }
   },
   {
-    "type": "sql_fetch_first_clause",
-    "named": true,
-    "fields": {
-      "count": {
-        "multiple": false,
-        "required": true,
-        "types": [
-          {
-            "type": "integer",
-            "named": true
-          },
-          {
-            "type": "sql_variable",
-            "named": true
-          }
-        ]
-      }
-    }
-  },
-  {
     "type": "sql_fetch_statement",
     "named": true,
     "fields": {
@@ -4151,40 +4079,6 @@
     }
   },
   {
-    "type": "sql_for_update_of_clause",
-    "named": true,
-    "fields": {},
-    "children": {
-      "multiple": true,
-      "required": true,
-      "types": [
-        {
-          "type": "sql_identifier",
-          "named": true
-        }
-      ]
-    }
-  },
-  {
-    "type": "sql_from_clause",
-    "named": true,
-    "fields": {},
-    "children": {
-      "multiple": true,
-      "required": true,
-      "types": [
-        {
-          "type": "sql_join_clause",
-          "named": true
-        },
-        {
-          "type": "sql_relation",
-          "named": true
-        }
-      ]
-    }
-  },
-  {
     "type": "sql_function_name",
     "named": true,
     "fields": {},
@@ -4197,37 +4091,6 @@
           "named": true
         }
       ]
-    }
-  },
-  {
-    "type": "sql_group_by_clause",
-    "named": true,
-    "fields": {},
-    "children": {
-      "multiple": true,
-      "required": true,
-      "types": [
-        {
-          "type": "sql_expression",
-          "named": true
-        }
-      ]
-    }
-  },
-  {
-    "type": "sql_having_clause",
-    "named": true,
-    "fields": {
-      "predicate": {
-        "multiple": false,
-        "required": true,
-        "types": [
-          {
-            "type": "sql_expression",
-            "named": true
-          }
-        ]
-      }
     }
   },
   {
@@ -4282,21 +4145,6 @@
     }
   },
   {
-    "type": "sql_into_clause",
-    "named": true,
-    "fields": {},
-    "children": {
-      "multiple": true,
-      "required": true,
-      "types": [
-        {
-          "type": "sql_variable",
-          "named": true
-        }
-      ]
-    }
-  },
-  {
     "type": "sql_invocation",
     "named": true,
     "fields": {
@@ -4323,32 +4171,6 @@
     }
   },
   {
-    "type": "sql_join_clause",
-    "named": true,
-    "fields": {
-      "predicate": {
-        "multiple": false,
-        "required": true,
-        "types": [
-          {
-            "type": "sql_expression",
-            "named": true
-          }
-        ]
-      }
-    },
-    "children": {
-      "multiple": false,
-      "required": true,
-      "types": [
-        {
-          "type": "sql_relation",
-          "named": true
-        }
-      ]
-    }
-  },
-  {
     "type": "sql_like_expression",
     "named": true,
     "fields": {
@@ -4368,22 +4190,6 @@
         "types": [
           {
             "type": "sql_expression",
-            "named": true
-          }
-        ]
-      }
-    }
-  },
-  {
-    "type": "sql_limit_clause",
-    "named": true,
-    "fields": {
-      "limit": {
-        "multiple": false,
-        "required": true,
-        "types": [
-          {
-            "type": "integer",
             "named": true
           }
         ]
@@ -4471,52 +4277,6 @@
     }
   },
   {
-    "type": "sql_optimize_for_clause",
-    "named": true,
-    "fields": {
-      "count": {
-        "multiple": false,
-        "required": true,
-        "types": [
-          {
-            "type": "integer",
-            "named": true
-          }
-        ]
-      }
-    }
-  },
-  {
-    "type": "sql_order_by_clause",
-    "named": true,
-    "fields": {},
-    "children": {
-      "multiple": true,
-      "required": true,
-      "types": [
-        {
-          "type": "sql_order_target",
-          "named": true
-        }
-      ]
-    }
-  },
-  {
-    "type": "sql_order_target",
-    "named": true,
-    "fields": {},
-    "children": {
-      "multiple": false,
-      "required": true,
-      "types": [
-        {
-          "type": "sql_expression",
-          "named": true
-        }
-      ]
-    }
-  },
-  {
     "type": "sql_parenthesized_expression",
     "named": true,
     "fields": {},
@@ -4532,125 +4292,14 @@
     }
   },
   {
-    "type": "sql_relation",
-    "named": true,
-    "fields": {},
-    "children": {
-      "multiple": true,
-      "required": true,
-      "types": [
-        {
-          "type": "sql_alias",
-          "named": true
-        },
-        {
-          "type": "sql_invocation",
-          "named": true
-        },
-        {
-          "type": "sql_object_reference",
-          "named": true
-        },
-        {
-          "type": "sql_subquery",
-          "named": true
-        }
-      ]
-    }
-  },
-  {
     "type": "sql_rollback_statement",
     "named": true,
     "fields": {}
   },
   {
-    "type": "sql_select_clause",
-    "named": true,
-    "fields": {},
-    "children": {
-      "multiple": false,
-      "required": true,
-      "types": [
-        {
-          "type": "sql_select_expression_list",
-          "named": true
-        }
-      ]
-    }
-  },
-  {
-    "type": "sql_select_expression_list",
-    "named": true,
-    "fields": {},
-    "children": {
-      "multiple": true,
-      "required": true,
-      "types": [
-        {
-          "type": "sql_term",
-          "named": true
-        }
-      ]
-    }
-  },
-  {
     "type": "sql_select_statement",
     "named": true,
-    "fields": {},
-    "children": {
-      "multiple": true,
-      "required": true,
-      "types": [
-        {
-          "type": "sql_fetch_first_clause",
-          "named": true
-        },
-        {
-          "type": "sql_for_update_of_clause",
-          "named": true
-        },
-        {
-          "type": "sql_from_clause",
-          "named": true
-        },
-        {
-          "type": "sql_group_by_clause",
-          "named": true
-        },
-        {
-          "type": "sql_having_clause",
-          "named": true
-        },
-        {
-          "type": "sql_into_clause",
-          "named": true
-        },
-        {
-          "type": "sql_limit_clause",
-          "named": true
-        },
-        {
-          "type": "sql_optimize_for_clause",
-          "named": true
-        },
-        {
-          "type": "sql_order_by_clause",
-          "named": true
-        },
-        {
-          "type": "sql_select_clause",
-          "named": true
-        },
-        {
-          "type": "sql_where_clause",
-          "named": true
-        },
-        {
-          "type": "sql_with_clause",
-          "named": true
-        }
-      ]
-    }
+    "fields": {}
   },
   {
     "type": "sql_string_literal",
@@ -4667,32 +4316,6 @@
       "types": [
         {
           "type": "sql_select_statement",
-          "named": true
-        }
-      ]
-    }
-  },
-  {
-    "type": "sql_term",
-    "named": true,
-    "fields": {
-      "value": {
-        "multiple": false,
-        "required": true,
-        "types": [
-          {
-            "type": "sql_expression",
-            "named": true
-          }
-        ]
-      }
-    },
-    "children": {
-      "multiple": false,
-      "required": false,
-      "types": [
-        {
-          "type": "sql_alias",
           "named": true
         }
       ]
@@ -4882,21 +4505,6 @@
           }
         ]
       }
-    }
-  },
-  {
-    "type": "sql_with_clause",
-    "named": true,
-    "fields": {},
-    "children": {
-      "multiple": true,
-      "required": true,
-      "types": [
-        {
-          "type": "sql_common_table_expression",
-          "named": true
-        }
-      ]
     }
   },
   {
@@ -5531,14 +5139,6 @@
     "named": false
   },
   {
-    "type": "AS",
-    "named": false
-  },
-  {
-    "type": "ASC",
-    "named": false
-  },
-  {
     "type": "ASCENDING",
     "named": false
   },
@@ -5767,10 +5367,6 @@
     "named": false
   },
   {
-    "type": "DESC",
-    "named": false
-  },
-  {
     "type": "DESCENDING",
     "named": false
   },
@@ -5939,10 +5535,6 @@
     "named": false
   },
   {
-    "type": "FULL",
-    "named": false
-  },
-  {
     "type": "FUNCTION",
     "named": false
   },
@@ -5968,14 +5560,6 @@
   },
   {
     "type": "GREATER",
-    "named": false
-  },
-  {
-    "type": "GROUP",
-    "named": false
-  },
-  {
-    "type": "HAVING",
     "named": false
   },
   {
@@ -6027,10 +5611,6 @@
     "named": false
   },
   {
-    "type": "INNER",
-    "named": false
-  },
-  {
     "type": "INPUT",
     "named": false
   },
@@ -6063,10 +5643,6 @@
     "named": false
   },
   {
-    "type": "JOIN",
-    "named": false
-  },
-  {
     "type": "KEY",
     "named": false
   },
@@ -6079,10 +5655,6 @@
     "named": false
   },
   {
-    "type": "LEFT",
-    "named": false
-  },
-  {
     "type": "LENGTH",
     "named": false
   },
@@ -6092,10 +5664,6 @@
   },
   {
     "type": "LIKE",
-    "named": false
-  },
-  {
-    "type": "LIMIT",
     "named": false
   },
   {
@@ -6199,15 +5767,7 @@
     "named": false
   },
   {
-    "type": "OPTIMIZE",
-    "named": false
-  },
-  {
     "type": "OR",
-    "named": false
-  },
-  {
-    "type": "ORDER",
     "named": false
   },
   {
@@ -6216,10 +5776,6 @@
   },
   {
     "type": "OTHER",
-    "named": false
-  },
-  {
-    "type": "OUTER",
     "named": false
   },
   {
@@ -6319,15 +5875,7 @@
     "named": false
   },
   {
-    "type": "RIGHT",
-    "named": false
-  },
-  {
     "type": "ROLLBACK",
-    "named": false
-  },
-  {
-    "type": "ROW",
     "named": false
   },
   {
@@ -6614,6 +6162,10 @@
   {
     "type": "pic_x",
     "named": true
+  },
+  {
+    "type": "s",
+    "named": false
   },
   {
     "type": "section_header",
