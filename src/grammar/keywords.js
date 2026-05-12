@@ -33,6 +33,7 @@ module.exports = {
   _BY: (_) => kw("BY"),
   // _CH: (_) => kw("CH"),
   _CANCEL: (_) => kw("CANCEL"),
+  _CALL: (_) => kw("CALL"),
   // _CHAINING: (_) => kw("CHAINING"),
   _CHARACTER: (_) => kw("CHARACTER"),
   _CHARACTERS: (_) => kw("CHARACTERS"),
