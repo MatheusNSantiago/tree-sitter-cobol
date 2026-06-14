@@ -12,6 +12,7 @@ enum TokenType {
   //////////////////
   BLANK_LINE,
   PREFIX,
+  COPY_INCLUDE,
   LINE_COMMENT,
   PARAGRAPH_HEADER,
   SECTION_HEADER,
@@ -254,6 +255,21 @@ bool tree_sitter_cobol_external_scanner_scan(void *payload, TSLexer *lexer,
         advance(lexer);
 
         return end_token(lexer, BLANK_LINE);
+      }
+    }
+  }
+
+  // ╭──────────────────────────────────────────────────────────╮
+  // │                 Dialect COPY Include                     │
+  // ╰──────────────────────────────────────────────────────────╯
+
+  if (valid_symbols[COPY_INCLUDE]) {
+    if (get_column(lexer) == 0 && (*next_char == '-' || *next_char == '=')) {
+      advance(lexer);
+
+      if (match_next(lexer, "INC") &&
+          (is_inline_space(*next_char) || is_next_char_terminal(lexer))) {
+        return end_token(lexer, COPY_INCLUDE);
       }
     }
   }

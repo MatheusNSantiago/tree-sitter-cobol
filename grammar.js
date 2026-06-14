@@ -30,6 +30,7 @@ module.exports = grammar({
     $._STRING_END,
     $._BLANK_LINE,
     $._PREFIX,
+    $.copy_include,
     $.comment,
     $.paragraph_header,
     $.section_header,
@@ -54,8 +55,10 @@ module.exports = grammar({
     [$.sql_between_expression, $.sql_binary_expression, $.sql_like_expression],
   ],
   rules: {
-    // Entry point principal: programa COBOL completo ou fragmento (copybook)
-    source_file: ($) =>
+    // Entry point: programa completo OU fragmento (copybook, hover snippet, etc.).
+    source_file: ($) => choice($._program, $._fragment),
+
+    _program: ($) =>
       seq(
         repeat($.directive),
         $.identification_division,
@@ -64,7 +67,17 @@ module.exports = grammar({
         optional($.procedure_division),
       ),
 
-    // Conteúdo de copybook: lista de data descriptions
+    // Fragmento sem cabeçalhos: section/paragraph/sentence/data description soltos.
+    _fragment: ($) =>
+      repeat1(
+        choice(
+          $.section,
+          $.paragraph,
+          $._sentence,
+          $.data_description,
+          prec(3, alias($._copy_include_statement, $.copy_statement)),
+        ),
+      ),
 
     _comment: ($) => $.comment,
 

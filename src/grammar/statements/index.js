@@ -69,7 +69,13 @@ module.exports = {
   goback_statement: ($) => $._GOBACK,
   stop_run_statement: ($) => seq($._STOP, $._RUN),
   close_statement: ($) => seq($._CLOSE, repeat1($.file_name)),
-  copy_statement: ($) => seq($._COPY, field("copybook", $.variable)),
+  copy_statement: ($) =>
+    choice(
+      seq($._COPY, field("copybook", $.variable)),
+      $._copy_include_statement,
+    ),
+  _copy_include_statement: ($) =>
+    seq($.copy_include, field("copybook", $.variable)),
   goto_statement: ($) => seq($._GO, optional($._TO), field("to", $.WORD)),
   set_statement: ($) =>
     seq(
@@ -123,6 +129,7 @@ module.exports = {
   initialize_replacing_item: ($) =>
     seq(
       field("category", $._initialize_category),
+      op($._DATA),
       seq($._BY, field("by", $._value)),
     ),
 

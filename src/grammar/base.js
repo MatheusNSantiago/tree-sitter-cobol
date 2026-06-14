@@ -39,11 +39,13 @@ module.exports = {
   // │                        Data types                        │
   // ╰──────────────────────────────────────────────────────────╯
   value: ($) => $._value,
-  _value: ($) => choice($.boolean, $.number, $.string, $.constant),
+  _value: ($) =>
+    choice($.boolean, $.number, $.hexadecimal_literal, $.string, $.constant),
   boolean: ($) => choice($._TRUE, $._FALSE),
   number: ($) => choice($.integer, $.decimal),
   integer: (_) => /[+-]?[0-9]+/,
   decimal: (_) => /[+-]?[0-9]*[\.,][0-9]+/,
+  hexadecimal_literal: (_) => /[xX]'[0-9a-fA-F]+'/,
 
   string: ($) =>
     prec.right(

@@ -4,7 +4,14 @@ module.exports = {
       field("division_header", $.procedure_division_header),
       op($.procedure_using),
       ".",
-      repeat(choice($._sentence, $.paragraph, $.section)),
+      repeat(
+        choice(
+          $._sentence,
+          $.paragraph,
+          $.section,
+          prec(3, alias($._copy_include_statement, $.copy_statement)),
+        ),
+      ),
     ),
 
   _sentence: ($) => seq(repeat1($._statement), ".", C($)),
@@ -23,7 +30,13 @@ module.exports = {
     prec.right(
       seq(
         field("section_header", $.section_header),
-        repeat(choice($._sentence, $.paragraph)),
+        repeat(
+          choice(
+            $._sentence,
+            $.paragraph,
+            prec(3, alias($._copy_include_statement, $.copy_statement)),
+          ),
+        ),
       ),
     ),
 
@@ -35,7 +48,12 @@ module.exports = {
     prec.right(
       seq(
         field("paragraph_header", $.paragraph_header), //
-        repeat($._sentence),
+        repeat(
+          choice(
+            $._sentence,
+            prec(3, alias($._copy_include_statement, $.copy_statement)),
+          ),
+        ),
       ),
     ),
 };

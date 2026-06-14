@@ -22,6 +22,7 @@ module.exports = {
         seq($.exec_sql, op(".")),
         seq($.data_description, "."),
         seq($.copy_statement, "."),
+        prec(3, alias($._copy_include_statement, $.copy_statement)),
       ),
       C($),
     )),
@@ -108,25 +109,22 @@ module.exports = {
     seq(
       field("level", $.level_number),
       field("name", $.data_name),
-      choice(
-        seq($._REDEFINES, field("redefines", $.variable)),
-        $._pic_value, // level 88
-        field("occurs", $.occurs),
-        seq(
-          $._PIC,
-          choice(
-            $._INDEX,
-            repeat(
-              choice(
-                $._pic_value,
-                field("def", choice($.pic_x, $.pic_9, $.pic_a, $.pic_edit)),
-                field("comp", $.comp),
-                field("occurs", $.occurs),
-              ),
-            ),
-          ),
-        ),
-      ),
+      repeat1($._data_description_clause),
+    ),
+
+  _data_description_clause: ($) =>
+    choice(
+      seq($._REDEFINES, field("redefines", $.variable)),
+      $._pic_value,
+      field("occurs", $.occurs),
+      $._picture_clause,
+      field("comp", $.comp),
+    ),
+
+  _picture_clause: ($) =>
+    seq(
+      $._PIC,
+      choice($._INDEX, field("def", choice($.pic_x, $.pic_9, $.pic_a, $.pic_edit))),
     ),
 
   data_name: ($) => choice($._FILLER, $.variable),
