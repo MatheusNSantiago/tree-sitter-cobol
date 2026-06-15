@@ -24,7 +24,7 @@ module.exports = {
   program_name: ($) => $._WORD,
 
   author: ($) => seq(kw("AUTHOR"), ".", $.author_name, op(".")),
-  author_name: ($) => repeat1($._WORD),
+  author_name: (_) => /[^.\r\n]+/,
 
   date_written: ($) =>
     seq(kw("DATE-WRITTEN"), ".", opseq(field("date", $.date_text), ".")),
@@ -34,5 +34,5 @@ module.exports = {
 
   remarks: (_) => seq(kw("REMARKS"), "."),
 
-  date_text: (_) => /[A-Z\/\d]+/,
+  date_text: (_) => /[^.\r\n]+/,
 };

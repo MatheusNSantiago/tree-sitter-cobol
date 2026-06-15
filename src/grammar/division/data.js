@@ -51,18 +51,21 @@ module.exports = {
   file_section_header: ($) => seq(kw("FILE"), $._SECTION),
 
   file_description: ($) =>
-    seq(
+    prec.right(seq(
       $.file_type,
       $.file_name,
       repeat1(
-        choice(
-          $.fd_block,
-          $.fd_record,
-          $.fd_recording_mode,
-          $.fd_label_records,
+        seq(
+          op($._PREFIX),
+          choice(
+            $.fd_block,
+            $.fd_record,
+            $.fd_recording_mode,
+            $.fd_label_records,
+          ),
         ),
       ),
-    ),
+    )),
 
   file_type: (_) => choice(kw("FD"), kw("SD")),
   fd_block: ($) =>

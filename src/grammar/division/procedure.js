@@ -6,6 +6,7 @@ module.exports = {
       ".",
       repeat(
         choice(
+          $.empty_sentence,
           $._sentence,
           $.paragraph,
           $.section,
@@ -15,6 +16,7 @@ module.exports = {
     ),
 
   _sentence: ($) => seq(repeat1($._statement), ".", C($)),
+  empty_sentence: (_) => ".",
 
   // _sentence: ($) => prec.right(seq(repeat1($._statement), op("."))),
 
@@ -32,6 +34,7 @@ module.exports = {
         field("section_header", $.section_header),
         repeat(
           choice(
+            $.empty_sentence,
             $._sentence,
             $.paragraph,
             prec(3, alias($._copy_include_statement, $.copy_statement)),
@@ -50,6 +53,7 @@ module.exports = {
         field("paragraph_header", $.paragraph_header), //
         repeat(
           choice(
+            $.empty_sentence,
             $._sentence,
             prec(3, alias($._copy_include_statement, $.copy_statement)),
           ),

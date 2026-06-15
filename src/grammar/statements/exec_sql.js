@@ -81,7 +81,7 @@ module.exports = {
     ),
 
   sql_select_clause: ($) =>
-    seq(kw("SELECT"), op($._DISTINCT), $.sql_select_expression_list),
+    seq($._SELECT, op($._DISTINCT), $.sql_select_expression_list),
 
   sql_into_clause: ($) => seq($._INTO, sep1($.sql_variable, ",")),
 
@@ -104,7 +104,7 @@ module.exports = {
     seq(
       $._FETCH,
       $._FIRST,
-      field("count", choice($.integer, $.sql_variable)),
+      op(field("count", choice($.integer, $.sql_variable))),
       choice($._ROWS, $._ROW),
       $._ONLY,
     ),
@@ -175,6 +175,7 @@ module.exports = {
       choice(
         seq($._VALUES, $.sql_value_list_for_insert),
         $.sql_select_statement, // INSERT INTO ... SELECT ...
+        $.sql_subquery, // INSERT INTO ... (SELECT ...)
       ),
     ),
 

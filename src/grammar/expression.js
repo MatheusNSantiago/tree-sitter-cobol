@@ -3,7 +3,11 @@ module.exports = {
     prec.left(
       choice(
         seq($._NOT, $.expr),
-        seq($.expr, choice($._AND, $._OR), $.expr),
+        seq(
+          $.expr,
+          choice($._AND, $._OR),
+          choice($.expr, seq($._comparator, $._expr_calc)),
+        ),
         $._expr_bool,
         paren($.expr),
       ),
@@ -74,6 +78,8 @@ module.exports = {
         repeat(
           seq(
             choice(
+              seq($._AND, $._comparator),
+              seq($._OR, $._comparator),
               $._AND_LT,
               $._AND_LE,
               $._AND_GT,
@@ -236,7 +242,7 @@ module.exports = {
     /[aA][nN][dD][ \t]+(>=|[nN][oO][tT][ \t]+(<|[lL][eE][sS][sS][ \t]+[tT][hH][aA][nN]))/,
   _AND_EQ: (_) => /[aA][nN][dD][ \t]+(=|[eE][qQ][uU][aA][lL]([ \t]+[tT][oO])?)/,
   _AND_NE: (_) =>
-    /[aA][nN][dD][ \t]+(!=|[nN][oO][tT][ \t]+[eE][qQ][uU][aA][lL]([ \t]+[tT][oO])?)/,
+    /[aA][nN][dD][ \t]+(!=|[nN][oO][tT][ \t]+(=|[eE][qQ][uU][aA][lL]([ \t]+[tT][oO])?))/,
   _OR_LT: (_) => /[oO][rR][ \t]+(<|[lL][eE][sS][sS][ \t]+[tT][hH][aA][nN])/,
   _OR_LE: (_) =>
     /[oO][rR][ \t]+(<=|[nN][oO][tT][ \t]+(>|[gG][rR][eE][aA][tT][eE][rR][ \t]+[tT][hH][aA][nN]))/,
@@ -246,7 +252,7 @@ module.exports = {
     /[oO][rR][ \t]+(>=|[nN][oO][tT][ \t]+(<|[lL][eE][sS][sS][ \t]+[tT][hH][aA][nN]))/,
   _OR_EQ: (_) => /[oO][rR][ \t]+(=|[eE][qQ][uU][aA][lL]([ \t]+[tT][oO])?)/,
   _OR_NE: (_) =>
-    /[oO][rR][ \t]+(!=|[nN][oO][tT][ \t]+[eE][qQ][uU][aA][lL]([ \t]+[tT][oO])?)/,
+    /[oO][rR][ \t]+(!=|[nN][oO][tT][ \t]+(=|[eE][qQ][uU][aA][lL]([ \t]+[tT][oO])?))/,
 
   _NOT_EQUAL: (_) => /(!=)|([nN][oO][tT][ \t]+(([eE][qQ][uU][aA][lL])|=))/,
   _NOT_GREATER: (_) => /([nN][oO][tT][ \t]+(>|[gG][rR][eE][aA][tT][eE][rR]))/,

@@ -140,6 +140,16 @@ bool tree_sitter_cobol_external_scanner_scan(void *payload, TSLexer *lexer,
           skip(lexer);
         }
 
+        // Formato fixo com area de sequencia antes do indicador:
+        // 003500-    'continua'.
+        if (get_column(lexer) == 0) {
+          int width = 0;
+          while (width < 6 && is_sequence_area_char(*next_char)) {
+            skip(lexer);
+            width++;
+          }
+        }
+
         // Agora verifica o indicador de continuação
         bool is_continuation_indicator =
             get_column(lexer) == 6 && *next_char == '-';
@@ -285,23 +295,21 @@ bool tree_sitter_cobol_external_scanner_scan(void *payload, TSLexer *lexer,
   if (valid_symbols[PREFIX]) {
     if (get_column(lexer) == 0) {
       int width = 0;
-      bool star_prefix = *next_char == '*';
-      while (width < 6 && !is_next_char_terminal(lexer)) {
-        if (star_prefix) {
-          if (*next_char != '*')
+      if (is_sequence_area_char(*next_char)) {
+        while (width < 6 && !is_next_char_terminal(lexer)) {
+          if (!is_sequence_area_char(*next_char)) {
             return false;
-        } else if (!is_sequence_area_char(*next_char)) {
-          return false;
+          }
+
+          advance(lexer);
+          width++;
         }
 
-        advance(lexer);
-        width++;
+        if (width != 6)
+          return false;
+
+        return end_token(lexer, PREFIX);
       }
-
-      if (width != 6)
-        return false;
-
-      return end_token(lexer, PREFIX);
     }
   }
 
@@ -369,9 +377,23 @@ bool tree_sitter_cobol_external_scanner_scan(void *payload, TSLexer *lexer,
         return end_token(lexer, PARAGRAPH_HEADER);
       }
 
-      bool is_section = match_next(lexer, "SECTION.");
-      if (is_section)
+      bool is_section = match_next(lexer, "SECTION");
+      if (is_section) {
+        while (is_inline_space(*next_char))
+          advance(lexer);
+
+        while (isdigit(*next_char))
+          advance(lexer);
+
+        while (is_inline_space(*next_char))
+          advance(lexer);
+
+        if (*next_char != '.')
+          return false;
+
+        advance(lexer);
         return end_token(lexer, SECTION_HEADER);
+      }
     }
   }
 

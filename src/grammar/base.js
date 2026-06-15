@@ -42,7 +42,7 @@ module.exports = {
   _value: ($) =>
     choice($.boolean, $.number, $.hexadecimal_literal, $.string, $.constant),
   boolean: ($) => choice($._TRUE, $._FALSE),
-  number: ($) => choice($.integer, $.decimal),
+  number: ($) => choice($.decimal, $.integer),
   integer: (_) => /[+-]?[0-9]+/,
   decimal: (_) => /[+-]?[0-9]*[\.,][0-9]+/,
   hexadecimal_literal: (_) => /[xX]'[0-9a-fA-F]+'/,

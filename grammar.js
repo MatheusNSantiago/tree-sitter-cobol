@@ -1,15 +1,6 @@
 op = (thing) => optional(thing);
-C = ($) => repeat(choice($._comment, $._BLANK_LINE));
-kw = (keyword) => keyword.toUpperCase();
-// kw = (keyword) => {
-// regex = new RegExp(
-//   keyword
-//     .split("")
-//     .map((c) => `[${c.toLowerCase()}${c.toUpperCase()}]`)
-//     .join(""),
-// );
-// return regex;
-// };
+C = ($) => repeat(choice($._PREFIX, $._comment, $._BLANK_LINE));
+kw = (keyword) => choice(keyword.toUpperCase(), keyword.toLowerCase());
 aspas = (thing) =>
   choice(
     seq(op("'"), thing, op("'")),
@@ -58,10 +49,11 @@ module.exports = grammar({
     [$._fragment, $.copy_statement],
     [$._fragment],
     [$._sentence],
+    [$._data_division_statements],
   ],
   rules: {
     // Entry point: programa completo OU fragmento (copybook, hover snippet, etc.).
-    source_file: ($) => choice($._program, $._fragment),
+    source_file: ($) => seq(C($), choice(prec(10, $._program), $._fragment)),
 
     _program: ($) =>
       seq(

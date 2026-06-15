@@ -30,7 +30,7 @@ module.exports = {
       seq(
         seq(field("paragraph_header", $.special_names_paragraph_header), "."),
         // optional(seq($.special_name, ".")),
-        repeat(seq($.special_name, optional("."))),
+        repeat(seq(C($), $.special_name, optional("."))),
         C($),
       ),
     ),
