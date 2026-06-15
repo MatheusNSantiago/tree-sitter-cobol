@@ -454,6 +454,24 @@
           }
         ]
       },
+      "depending": {
+        "multiple": true,
+        "required": false,
+        "types": [
+          {
+            "type": "DEPENDING",
+            "named": false
+          },
+          {
+            "type": "ON",
+            "named": false
+          },
+          {
+            "type": "variable",
+            "named": true
+          }
+        ]
+      },
       "level": {
         "multiple": false,
         "required": true,
@@ -466,7 +484,7 @@
       },
       "name": {
         "multiple": false,
-        "required": true,
+        "required": false,
         "types": [
           {
             "type": "data_name",
@@ -5677,6 +5695,14 @@
     "named": false
   },
   {
+    "type": "ABCODE",
+    "named": false
+  },
+  {
+    "type": "ABEND",
+    "named": false
+  },
+  {
     "type": "ABSOLUTE",
     "named": false
   },
@@ -5874,6 +5900,10 @@
   },
   {
     "type": "COMPUTE",
+    "named": false
+  },
+  {
+    "type": "CONDITION",
     "named": false
   },
   {
@@ -6173,6 +6203,10 @@
     "named": false
   },
   {
+    "type": "HANDLE",
+    "named": false
+  },
+  {
     "type": "HAVING",
     "named": false
   },
@@ -6198,6 +6232,10 @@
   },
   {
     "type": "IF",
+    "named": false
+  },
+  {
+    "type": "IGNORE",
     "named": false
   },
   {
@@ -6637,6 +6675,10 @@
     "named": false
   },
   {
+    "type": "SYSID",
+    "named": false
+  },
+  {
     "type": "TABLE",
     "named": false
   },
@@ -6710,6 +6752,10 @@
   },
   {
     "type": "USAGE",
+    "named": false
+  },
+  {
+    "type": "USERID",
     "named": false
   },
   {

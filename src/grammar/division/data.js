@@ -19,10 +19,11 @@ module.exports = {
   _data_division_statements: ($) =>
     prec.right(seq(
       choice(
+        $._PREFIX,
         seq($.exec_sql, op(".")),
-        seq($.data_description, "."),
-        seq($.copy_statement, "."),
-        prec(3, alias($._copy_include_statement, $.copy_statement)),
+        seq(op($._PREFIX), $.data_description, "."),
+        seq(op($._PREFIX), $.copy_statement, "."),
+        $.copy_statement,
       ),
       C($),
     )),
@@ -106,17 +107,18 @@ module.exports = {
   working_storage_section_header: ($) => seq($._WORKING_STORAGE, $._SECTION),
 
   data_description: ($) =>
-    seq(
+    prec.right(seq(
       field("level", $.level_number),
-      field("name", $.data_name),
-      repeat1($._data_description_clause),
-    ),
+      optional(field("name", $.data_name)),
+      repeat(seq(op($._PREFIX), $._data_description_clause)),
+    )),
 
   _data_description_clause: ($) =>
     choice(
       seq($._REDEFINES, field("redefines", $.variable)),
       $._pic_value,
       field("occurs", $.occurs),
+      field("depending", seq($._DEPENDING, op($._ON), $.variable)),
       $._picture_clause,
       field("comp", $.comp),
     ),
@@ -148,6 +150,7 @@ module.exports = {
         $._COMP_3,
         $._COMP_4,
         $._COMP_5,
+        kw("BINARY"),
         $._COMPUTATIONAL,
         $._COMPUTATIONAL_1,
         $._COMPUTATIONAL_2,
@@ -168,7 +171,7 @@ module.exports = {
   value_item: ($) => seq($._value, opseq($._THRU, $._value)),
 
   occurs: ($) =>
-    seq(
+    prec.right(seq(
       seq($._OCCURS, field("times", $.number)),
       opseq($._TO, field("to", $.number)),
       op($._TIMES),
@@ -176,7 +179,7 @@ module.exports = {
       field("key_spec", op($.occurs_key_spec)),
       op($.indexed_by),
       // op(choice($._picture, $.indexed_by)),
-    ),
+    )),
 
   occurs_key_spec: ($) =>
     prec.left(

@@ -43,6 +43,7 @@ module.exports = grammar({
   ],
   extras: ($) => [
     /\s/, // Espaços em branco padrão
+    $._PREFIX, // Area de sequencia fixed-format: 000010, 000020, ...
     $.comment, // Comentários de linha inteira '*' na col 7
     $._INLINE_COMMENT, // Comentários '*>'
     $._SUFFIX_COMMENT, // Comentários na área de sufixo
@@ -53,6 +54,10 @@ module.exports = grammar({
   ],
   conflicts: ($) => [
     [$.sql_between_expression, $.sql_binary_expression, $.sql_like_expression],
+    [$._fragment, $._imperative_sentences],
+    [$._fragment, $.copy_statement],
+    [$._fragment],
+    [$._sentence],
   ],
   rules: {
     // Entry point: programa completo OU fragmento (copybook, hover snippet, etc.).
@@ -69,13 +74,26 @@ module.exports = grammar({
 
     // Fragmento sem cabeçalhos: section/paragraph/sentence/data description soltos.
     _fragment: ($) =>
-      repeat1(
-        choice(
-          $.section,
-          $.paragraph,
-          $._sentence,
-          $.data_description,
-          prec(3, alias($._copy_include_statement, $.copy_statement)),
+      seq(
+        C($),
+        repeat1(
+          prec.right(seq(
+            choice(
+              $._PREFIX,
+              seq($._PREFIX, $._comment),
+              prec(4, choice(
+                seq(alias($._copy_include_statement, $.copy_statement), "."),
+                alias($._copy_include_statement, $.copy_statement),
+              )),
+              $.section,
+              $.paragraph,
+              seq($.exec_sql, op(".")),
+              $._sentence,
+              seq(op($._PREFIX), $.data_description, op(".")),
+              prec(3, choice(seq($.copy_statement, "."), $.copy_statement)),
+            ),
+            C($),
+          )),
         ),
       ),
 

@@ -16,6 +16,8 @@ module.exports = {
       kw("GET"),
       kw("LINK"),
       kw("DELETE"),
+      kw("IGNORE"),
+      kw("HANDLE"),
       kw("SYNCPOINT"),
     ),
 
@@ -33,6 +35,11 @@ module.exports = {
       seq(kw("CHANNEL"), paren($.variable)),
       seq(kw("RESP"), paren($.variable)),
       seq(kw("RESP2"), paren($.variable)),
+      seq(kw("ABCODE"), paren($.variable)),
+      seq(kw("SYSID"), paren($.variable)),
+      seq(kw("USERID"), paren($.variable)),
+      kw("CONDITION"),
+      seq(kw("ABEND"), kw("CANCEL")),
       seq(
         choice($._LENGTH, "FLENGTH"),
         paren(choice(seq($._LENGTH, $._OF, $.variable), $.variable)),

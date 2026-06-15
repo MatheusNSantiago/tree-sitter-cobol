@@ -75,6 +75,10 @@ static inline int get_column(TSLexer *lexer) {
 static inline bool is_inline_space(char c) {
   return isspace(c) && c != '\n' && c != '\r';
 }
+
+static inline bool is_sequence_area_char(char c) {
+  return isdigit(c) || c == ' ';
+}
 /* ╾───────────────────────────────────────────────────────────────────────────────────╼*/
 
 void *tree_sitter_cobol_external_scanner_create() {
@@ -280,8 +284,22 @@ bool tree_sitter_cobol_external_scanner_scan(void *payload, TSLexer *lexer,
 
   if (valid_symbols[PREFIX]) {
     if (get_column(lexer) == 0) {
-      while (get_column(lexer) <= 5 && !is_next_char_terminal(lexer))
+      int width = 0;
+      bool star_prefix = *next_char == '*';
+      while (width < 6 && !is_next_char_terminal(lexer)) {
+        if (star_prefix) {
+          if (*next_char != '*')
+            return false;
+        } else if (!is_sequence_area_char(*next_char)) {
+          return false;
+        }
+
         advance(lexer);
+        width++;
+      }
+
+      if (width != 6)
+        return false;
 
       return end_token(lexer, PREFIX);
     }
@@ -290,6 +308,15 @@ bool tree_sitter_cobol_external_scanner_scan(void *payload, TSLexer *lexer,
   //  ╭──────────────────────────────────────────────────────────╮
   //  │     Indicador da coluna 7 (comentários/continuação)      │
   //  ╰──────────────────────────────────────────────────────────╯
+
+  if (valid_symbols[LINE_COMMENT] && get_column(lexer) == 0) {
+    if (*next_char == '*') {
+      while (!is_next_char_terminal(lexer) && get_column(lexer) <= 71)
+        advance(lexer);
+
+      return end_token(lexer, LINE_COMMENT);
+    }
+  }
 
   if (get_column(lexer) == 6) {
     // Checar por hífen de continuação
@@ -309,6 +336,14 @@ bool tree_sitter_cobol_external_scanner_scan(void *payload, TSLexer *lexer,
 
         return end_token(lexer, LINE_COMMENT);
       }
+    }
+  }
+
+  if (valid_symbols[CONTINUATION_HYPHEN] && get_column(lexer) == 5) {
+    if (*next_char == '-') {
+      advance(lexer);
+
+      return end_token(lexer, CONTINUATION_HYPHEN);
     }
   }
 
