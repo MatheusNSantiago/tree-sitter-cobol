@@ -991,10 +991,52 @@
           "named": true
         },
         {
+          "type": "exec_cics_generic_option",
+          "named": true
+        },
+        {
           "type": "variable",
           "named": true
         }
       ]
+    }
+  },
+  {
+    "type": "exec_cics_generic_option",
+    "named": true,
+    "fields": {
+      "name": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "WORD",
+            "named": true
+          }
+        ]
+      },
+      "value": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "constant",
+            "named": true
+          },
+          {
+            "type": "number",
+            "named": true
+          },
+          {
+            "type": "string",
+            "named": true
+          },
+          {
+            "type": "variable",
+            "named": true
+          }
+        ]
+      }
     }
   },
   {
@@ -6642,6 +6684,10 @@
     "named": false
   },
   {
+    "type": "LOAD",
+    "named": false
+  },
+  {
     "type": "LOCAL-STORAGE",
     "named": false
   },
@@ -7788,6 +7834,10 @@
   },
   {
     "type": "literal",
+    "named": false
+  },
+  {
+    "type": "load",
     "named": false
   },
   {

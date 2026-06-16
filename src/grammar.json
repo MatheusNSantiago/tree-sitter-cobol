@@ -14381,6 +14381,19 @@
           "members": [
             {
               "type": "STRING",
+              "value": "LOAD"
+            },
+            {
+              "type": "STRING",
+              "value": "load"
+            }
+          ]
+        },
+        {
+          "type": "CHOICE",
+          "members": [
+            {
+              "type": "STRING",
               "value": "DELETE"
             },
             {
@@ -14868,6 +14881,10 @@
           ]
         },
         {
+          "type": "SYMBOL",
+          "name": "exec_cics_generic_option"
+        },
+        {
           "type": "CHOICE",
           "members": [
             {
@@ -14877,6 +14894,19 @@
             {
               "type": "STRING",
               "value": "condition"
+            }
+          ]
+        },
+        {
+          "type": "CHOICE",
+          "members": [
+            {
+              "type": "STRING",
+              "value": "ABEND"
+            },
+            {
+              "type": "STRING",
+              "value": "abend"
             }
           ]
         },
@@ -15021,6 +15051,44 @@
           ]
         }
       ]
+    },
+    "exec_cics_generic_option": {
+      "type": "SEQ",
+      "members": [
+        {
+          "type": "FIELD",
+          "name": "name",
+          "content": {
+            "type": "SYMBOL",
+            "name": "exec_cics_option_name"
+          }
+        },
+        {
+          "type": "SEQ",
+          "members": [
+            {
+              "type": "STRING",
+              "value": "("
+            },
+            {
+              "type": "FIELD",
+              "name": "value",
+              "content": {
+                "type": "SYMBOL",
+                "name": "variable"
+              }
+            },
+            {
+              "type": "STRING",
+              "value": ")"
+            }
+          ]
+        }
+      ]
+    },
+    "exec_cics_option_name": {
+      "type": "PATTERN",
+      "value": "[A-Za-z][A-Za-z0-9-]*"
     },
     "_FROM": {
       "type": "CHOICE",

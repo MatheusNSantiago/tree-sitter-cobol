@@ -15,6 +15,7 @@ module.exports = {
       $._ASSIGN,
       kw("GET"),
       kw("LINK"),
+      kw("LOAD"),
       kw("DELETE"),
       kw("IGNORE"),
       kw("HANDLE"),
@@ -38,7 +39,9 @@ module.exports = {
       seq(kw("ABCODE"), paren($.variable)),
       seq(kw("SYSID"), paren($.variable)),
       seq(kw("USERID"), paren($.variable)),
+      $.exec_cics_generic_option,
       kw("CONDITION"),
+      kw("ABEND"),
       seq(kw("ABEND"), kw("CANCEL")),
       seq(
         choice($._LENGTH, "FLENGTH"),
@@ -49,6 +52,14 @@ module.exports = {
       kw("NODATA"),
       kw("ROLLBACK"),
     ),
+
+  exec_cics_generic_option: ($) =>
+    seq(
+      field("name", $.exec_cics_option_name),
+      paren(field("value", $.variable)),
+    ),
+
+  exec_cics_option_name: (_) => /[A-Za-z][A-Za-z0-9-]*/,
 
   // ╾───────────────────────────────────────────────────────────────────────────────────╼
   _OF: () => kw("OF"),
