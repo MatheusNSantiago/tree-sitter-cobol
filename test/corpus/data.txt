@@ -1,0 +1,66 @@
+==================
+OCCURS with key and indexed by
+==================
+
+005390     03  TAB-CONTAS OCCURS 2832 TIMES ASCENDING KEY TAB-CONTA
+005391                                      INDEXED BY    IDX-CTA.
+
+---
+
+(source_file
+  (data_description
+    level: (level_number)
+    name: (data_name
+      (variable))
+    occurs: (occurs
+      times: (number
+        (integer))
+      key_spec: (occurs_key_spec
+        (sort_key
+          keys: (variable)))
+      (indexed_by
+        (variable)))))
+
+==================
+OCCURS with indexed by only continued
+==================
+
+000001 03 X OCCURS 2
+000002    INDEXED BY I.
+
+---
+
+(source_file
+  (data_description
+    level: (level_number)
+    name: (data_name
+      (variable))
+    occurs: (occurs
+      times: (number
+        (integer))
+      (indexed_by
+        (variable)))))
+
+==================
+OCCURS with key and indexed by both continued
+==================
+
+000001 03 X OCCURS 2 TIMES
+000002    ASCENDING KEY Y
+000003    INDEXED BY I.
+
+---
+
+(source_file
+  (data_description
+    level: (level_number)
+    name: (data_name
+      (variable))
+    occurs: (occurs
+      times: (number
+        (integer))
+      key_spec: (occurs_key_spec
+        (sort_key
+          keys: (variable)))
+      (indexed_by
+        (variable)))))

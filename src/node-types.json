@@ -1010,7 +1010,7 @@
         "required": true,
         "types": [
           {
-            "type": "WORD",
+            "type": "exec_cics_option_name",
             "named": true
           }
         ]
@@ -1019,18 +1019,6 @@
         "multiple": false,
         "required": true,
         "types": [
-          {
-            "type": "constant",
-            "named": true
-          },
-          {
-            "type": "number",
-            "named": true
-          },
-          {
-            "type": "string",
-            "named": true
-          },
           {
             "type": "variable",
             "named": true
@@ -2390,9 +2378,13 @@
         ]
       },
       "key_spec": {
-        "multiple": false,
+        "multiple": true,
         "required": false,
         "types": [
+          {
+            "type": "comment",
+            "named": true
+          },
           {
             "type": "occurs_key_spec",
             "named": true
@@ -2421,9 +2413,13 @@
       }
     },
     "children": {
-      "multiple": false,
+      "multiple": true,
       "required": false,
       "types": [
+        {
+          "type": "comment",
+          "named": true
+        },
         {
           "type": "indexed_by",
           "named": true
@@ -2439,10 +2435,6 @@
       "multiple": true,
       "required": true,
       "types": [
-        {
-          "type": "indexed_by",
-          "named": true
-        },
         {
           "type": "sort_key",
           "named": true
@@ -7595,6 +7587,10 @@
   {
     "type": "exec",
     "named": false
+  },
+  {
+    "type": "exec_cics_option_name",
+    "named": true
   },
   {
     "type": "exists",

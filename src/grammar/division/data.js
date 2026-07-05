@@ -179,19 +179,12 @@ module.exports = {
       opseq($._TO, field("to", $.number)),
       op($._TIMES),
       field("depending", opseq($._DEPENDING, op($._ON), $.variable)),
-      field("key_spec", op($.occurs_key_spec)),
-      op($.indexed_by),
+      field("key_spec", op(seq(C($), $.occurs_key_spec))),
+      op(seq(C($), $.indexed_by)),
       // op(choice($._picture, $.indexed_by)),
     )),
 
-  occurs_key_spec: ($) =>
-    prec.left(
-      2,
-      choice(
-        seq(repeat1($.sort_key), optional($.indexed_by)),
-        seq($.indexed_by, repeat($.sort_key)),
-      ),
-    ),
+  occurs_key_spec: ($) => prec.left(2, repeat1($.sort_key)),
 
   sort_key: ($) =>
     seq(
