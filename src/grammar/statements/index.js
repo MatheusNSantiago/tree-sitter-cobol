@@ -65,7 +65,8 @@ module.exports = {
   ...require("./unstring"),
   ...require("./inspect"),
 
-  exit_statement: ($) => $._EXIT,
+  exit_statement: ($) =>
+    choice(prec(2, seq($._EXIT, $._PERFORM)), $._EXIT),
   goback_statement: ($) => $._GOBACK,
   stop_run_statement: ($) => seq($._STOP, $._RUN),
   close_statement: ($) => seq($._CLOSE, repeat1($.file_name)),

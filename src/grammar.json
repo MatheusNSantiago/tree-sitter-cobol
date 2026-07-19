@@ -16017,8 +16017,30 @@
       ]
     },
     "exit_statement": {
-      "type": "SYMBOL",
-      "name": "_EXIT"
+      "type": "CHOICE",
+      "members": [
+        {
+          "type": "PREC",
+          "value": 2,
+          "content": {
+            "type": "SEQ",
+            "members": [
+              {
+                "type": "SYMBOL",
+                "name": "_EXIT"
+              },
+              {
+                "type": "SYMBOL",
+                "name": "_PERFORM"
+              }
+            ]
+          }
+        },
+        {
+          "type": "SYMBOL",
+          "name": "_EXIT"
+        }
+      ]
     },
     "goback_statement": {
       "type": "SYMBOL",

@@ -22,6 +22,45 @@ OCCURS with key and indexed by
         (variable)))))
 
 ==================
+EXIT PERFORM inside EVALUATE
+==================
+
+000001     PERFORM VARYING IC-1 FROM 1 BY 1 UNTIL IC-1 > 22
+000002        EVALUATE TRUE
+000003           WHEN TRUE
+000004              CONTINUE
+000005           WHEN OTHER
+000006              EXIT PERFORM
+000007        END-EVALUATE
+000008     END-PERFORM.
+
+---
+
+(source_file
+  (perform_statement
+    (variable)
+    from: (number
+      (integer))
+    by: (number
+      (integer))
+    condition: (expr
+      (variable)
+      (gt)
+      (number
+        (integer)))
+    body: (statement_block
+      (evaluate_statement
+        (evaluate_subjects
+          value: (expr
+            (boolean)))
+        condition: (expr
+          (boolean))
+        body: (statement_block
+          (continue_statement))
+        body: (statement_block
+          (exit_statement))))))
+
+==================
 OCCURS with indexed by only continued
 ==================
 
