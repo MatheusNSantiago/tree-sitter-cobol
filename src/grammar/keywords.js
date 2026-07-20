@@ -318,6 +318,7 @@ module.exports = {
   // _TAPE: (_) => kw("TAPE"),
   _TABLE: (_) => kw("TABLE"),
   // _TERMINATE: (_) => kw("TERMINATE"),
+  _TEST: (_) => kw("TEST"),
   _THAN: (_) => kw("THAN"),
   _THEN: (_) => kw("THEN"),
   _TIME: (_) => kw("TIME"),

@@ -61,6 +61,44 @@ EXIT PERFORM inside EVALUATE
           (exit_statement))))))
 
 ==================
+PERFORM WITH TEST AFTER
+==================
+
+000001     PERFORM WITH TEST AFTER VARYING IC-CTRA-INC FROM 1 BY 1
+000002             UNTIL IC-CTRA-INC > QT-CTRA-INC
+000003        IF CD-CTRA-TIT-VL EQUAL CD-CTRA-INC(IC-CTRA-INC)
+000004           MOVE 'S' TO IN-CTRA-INC
+000005        END-IF
+000006     END-PERFORM.
+
+---
+
+(source_file
+  (perform_statement
+    (variable)
+    from: (number
+      (integer))
+    by: (number
+      (integer))
+    condition: (expr
+      (variable)
+      (gt)
+      (variable))
+    body: (statement_block
+      (if_statement
+        condition: (expr
+          (variable)
+          (eq)
+          (variable
+            subscripts: (subscript_reference
+              (expr
+                (variable)))))
+        then: (statement_block
+          (move_statement
+            from: (string)
+            to: (variable)))))))
+
+==================
 OCCURS with indexed by only continued
 ==================
 

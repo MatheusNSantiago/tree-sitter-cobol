@@ -16,8 +16,13 @@ module.exports = {
         $._PERFORM,
         choice(
           seq(field("times", choice($.integer, $.variable)), $._TIMES),
-          seq($._UNTIL, field("condition", $.expr)),
-          seq($._perform_varying_until_clause),
+          seq(
+            op($._perform_test_clause),
+            choice(
+              seq($._UNTIL, field("condition", $.expr)),
+              $._perform_varying_until_clause,
+            ),
+          ),
         ),
         field("body", $.statement_block),
         $._END_PERFORM,
@@ -53,4 +58,7 @@ module.exports = {
       seq($._BY, field("by", $._expr_data)),
       seq($._UNTIL, field("condition", $.expr)),
     ),
+
+  _perform_test_clause: ($) =>
+    seq($._WITH, $._TEST, choice($._BEFORE, $._AFTER)),
 };

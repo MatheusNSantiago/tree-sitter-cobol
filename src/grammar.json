@@ -5340,6 +5340,19 @@
         }
       ]
     },
+    "_TEST": {
+      "type": "CHOICE",
+      "members": [
+        {
+          "type": "STRING",
+          "value": "TEST"
+        },
+        {
+          "type": "STRING",
+          "value": "test"
+        }
+      ]
+    },
     "_THAN": {
       "type": "CHOICE",
       "members": [
@@ -8251,25 +8264,42 @@
                 "type": "SEQ",
                 "members": [
                   {
-                    "type": "SYMBOL",
-                    "name": "_UNTIL"
+                    "type": "CHOICE",
+                    "members": [
+                      {
+                        "type": "SYMBOL",
+                        "name": "_perform_test_clause"
+                      },
+                      {
+                        "type": "BLANK"
+                      }
+                    ]
                   },
                   {
-                    "type": "FIELD",
-                    "name": "condition",
-                    "content": {
-                      "type": "SYMBOL",
-                      "name": "expr"
-                    }
-                  }
-                ]
-              },
-              {
-                "type": "SEQ",
-                "members": [
-                  {
-                    "type": "SYMBOL",
-                    "name": "_perform_varying_until_clause"
+                    "type": "CHOICE",
+                    "members": [
+                      {
+                        "type": "SEQ",
+                        "members": [
+                          {
+                            "type": "SYMBOL",
+                            "name": "_UNTIL"
+                          },
+                          {
+                            "type": "FIELD",
+                            "name": "condition",
+                            "content": {
+                              "type": "SYMBOL",
+                              "name": "expr"
+                            }
+                          }
+                        ]
+                      },
+                      {
+                        "type": "SYMBOL",
+                        "name": "_perform_varying_until_clause"
+                      }
+                    ]
                   }
                 ]
               }
@@ -8453,6 +8483,32 @@
                 "type": "SYMBOL",
                 "name": "expr"
               }
+            }
+          ]
+        }
+      ]
+    },
+    "_perform_test_clause": {
+      "type": "SEQ",
+      "members": [
+        {
+          "type": "SYMBOL",
+          "name": "_WITH"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "_TEST"
+        },
+        {
+          "type": "CHOICE",
+          "members": [
+            {
+              "type": "SYMBOL",
+              "name": "_BEFORE"
+            },
+            {
+              "type": "SYMBOL",
+              "name": "_AFTER"
             }
           ]
         }

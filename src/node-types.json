@@ -7024,6 +7024,10 @@
     "named": false
   },
   {
+    "type": "TEST",
+    "named": false
+  },
+  {
     "type": "THAN",
     "named": false
   },
@@ -8216,6 +8220,10 @@
   },
   {
     "type": "tallying",
+    "named": false
+  },
+  {
+    "type": "test",
     "named": false
   },
   {
